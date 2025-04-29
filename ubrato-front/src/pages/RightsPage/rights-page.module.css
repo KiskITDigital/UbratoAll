@@ -1,0 +1,123 @@
+.btnsContainer {
+    padding: 4px;
+    background-color: var(--color-back-gray);
+    border-radius: 13px;
+    gap: 10px;
+    display: flex;
+    width: fit-content;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 12px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 11px;
+    text-wrap: nowrap;
+}
+
+.btn:disabled {
+    background-color: white;
+}
+
+.container {
+    background-color: var(--color-back-gray);
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    z-index: 10;
+}
+
+.main {
+    max-width: 1130px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--color-white);
+    padding: 60px 0 70px;
+    border-radius: 30px;
+}
+
+.title {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.underTitle {
+    text-align: center;
+    font-weight: 500;
+    font-size: 22px;
+}
+
+.underTitle>span {
+    color: var(--color-blue-primary);
+}
+
+.info {
+    padding: 8px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background-color: var(--color-blue-primary-6);
+    border-radius: 13px;
+    max-width: 780px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.infoTitle {
+    color: var(--color-blue-primary);
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.infoDate {
+    color: var(--color-black-50);
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.textContainer {
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    max-width: 780px;
+    width: 100%;
+    margin-top: 15px;
+    position: relative;
+}
+
+.textContainer>p {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+
+
+
+
+.button {
+    width: 100%;
+    height: 113px;
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    transition: all 0.3s ease;
+}
+
+.gradient {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, #ffffff 100%);
+    height: 113px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    transition: bottom 0.5s ease;
+}
+
+.active {
+    bottom: -113px;
+    height: 0;
+}

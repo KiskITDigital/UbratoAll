@@ -1,0 +1,10 @@
+.flake8
+.gitignore
+flake.lock
+flake.nix
+__pycache__
+.vscode
+.venv
+.env.example
+typesense-data/
+redis-data/

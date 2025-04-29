@@ -1,0 +1,75 @@
+components:
+  requestBodies:
+    AuthenticationRequest:
+      description: Describes a form required to create a new session initiated from user or agent
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UserLogin"
+  schemas:
+    UserLogin:
+      description: Describes a form required to create a new session initiated from user
+      type: object
+      properties:
+        login:
+          title: Login
+          description: login or email
+          type: string
+          minLength: 3
+          maxLength: 200
+        password:
+          title: password
+          type: string
+          format: password
+          maxLength: 200
+      required:
+        - login
+        - password
+    Tokens:
+      description: Pair of JWT tokens used for signing outgoing HTTP requests and refreshing HTTP sessions
+      type: object
+      properties:
+        access_token:
+          description: Token for authentication
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        refresh_token:
+          description: Refresh token for session
+          type: string
+          example: 123e4567-e89b-12d3-a456-426655440000
+      required:
+        - access_token
+        - refresh_token
+    Session:
+      type: object
+      description: A set of parameters characterizing a user, agent or manager session
+      properties:
+        id:
+          description: Session ID
+          type: integer
+          format: int64
+          example: 1
+        user_id:
+          description: User ID
+          type: integer
+          example: 321
+        ip:
+          description: IP-address (IPv4 or IPv6)
+          type: string
+          example: 127.0.0.1
+        created_at:
+          description: Time of session create in UNIX format
+          type: integer
+          format: int64
+          example: 1682419987
+        refresh_token_expired_at:
+          description: Time of session expired in UNIX format
+          type: integer
+          format: int64
+          example: 1682463187
+      required:
+        - id
+        - user_id
+        - refresh_token
+        - created_at
+        - expired_at

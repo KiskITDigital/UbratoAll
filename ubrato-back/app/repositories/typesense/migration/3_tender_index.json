@@ -1,0 +1,23 @@
+{
+  "name": "tender_index",
+  "fields": [
+    {"name": "id", "type": "string"},
+    {"name": "name", "type": "string"},
+    {"name": "price", "type": "int32"},
+    {"name": "is_contract_price", "type": "bool"},
+    {"name": "is_nds_price", "type": "bool"},
+    {"name": "city_id", "type": "string", "reference": "city_index.id"},
+    {"name": "floor_space", "type": "int32"},
+    {"name": "description", "type": "string"},
+    {"name": "wishes", "type": "string"},
+    {"name": "reception_start", "type": "int64"},
+    {"name": "reception_end", "type": "int64"},
+    {"name": "work_start", "type": "int64"},
+    {"name": "work_end", "type": "int64"},
+    {"name": "user_id", "type": "string"},
+    {"name": "verified", "type": "bool"},
+    {"name": "created_at", "type": "int64"}
+  ],
+  "default_sorting_field": "created_at",
+  "default_sorting_order": "desc"
+}

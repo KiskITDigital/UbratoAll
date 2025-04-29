@@ -1,0 +1,47 @@
+.fileHeader {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.fileText {
+  font-size: 16px;
+  color: var(--color-black-60);
+}
+
+.inputFile {
+  display: none;
+}
+
+.fileBtn {
+  background-color: var(--color-blue-primary);
+  padding: 9px 15px;
+  border-radius: 13px;
+  color: var(--color-white);
+  margin-top: 10px;
+  width: fit-content;
+}
+
+.fileContainer {
+  padding: 15px;
+  padding-bottom: 30px;
+  border-bottom: 2px solid #e7e7e7;
+  width: 100%;
+  display: flex;
+}
+
+.label {
+  position: relative;
+  display: block;
+  width: fit-content;
+}
+
+.error {
+  color: #f90a0a;
+  font-size: 10px;
+  position: absolute;
+  line-height: 22px;
+}
+
+.inputFile:disabled + .fileBtn {
+  opacity: 0.7;
+}

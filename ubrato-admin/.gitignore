@@ -1,0 +1,38 @@
+# IDE files and directories
+.idea/
+.vscode/*.json
+!.vscode/*.example.json
+
+# Build files
+bin/
+*.mk
+
+# Temp files and directories
+tmp/
+temp/
+
+# Code coverage files
+.coverage.*
+
+# Any TODO file
+*.todo
+*.TODO
+
+# In MacOs, .DS_Store is a file that stores custom attributes
+.DS_Store
+/remote-agent/
+/init.sh
+/init.sql
+/Dockerfile
+/docker-compose.yml
+
+# Configuration files.
+configs/*.yaml
+config.yaml
+!configs/*.example.yaml
+
+allure/
+.aider*
+
+# declarate persistent files
+persistent*

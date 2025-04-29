@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package models.v1;
+
+import "models/v1/contact.proto";
+import "models/v1/company.proto";
+import "models/v1/lead.proto";
+
+message CreateLead {
+    reserved 1;
+    string name = 2;
+    int64 external_lead_id = 3;
+    models.v1.Status status = 4;
+    models.v1.Pipeline pipeline = 5;
+    oneof contact {
+        int64 contact_external_id = 6;
+        models.v1.Contact contact_model = 7;
+    }
+    oneof company {
+        int64 company_external_id = 8;
+        models.v1.Company company_model = 9;
+    }
+    optional string initial_message = 10;
+}

@@ -1,0 +1,206 @@
+openapi: 3.0.3
+info:
+  title: Ubrato admin panel
+  description: admin panel oas
+  version: 1.0.0
+servers:
+  - url: https://api.ubrato.ru/admin/v1
+    description: v1
+paths:
+  /sessions:
+    post:
+      tags:
+        - sessions
+      summary: User authentication.
+      operationId: createSession
+      requestBody:
+        $ref: '#/components/requestBodies/AuthenticationRequest'
+      responses:
+        '201':
+          description: The created tokens object
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: admin_refresh_token=7ff581a1-4dcf-4f53-a9cb-0ef408d4a7bb; Path=/; Max-Age=1727209098; HttpOnly; Secure; SameSite=Lax
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      tokens:
+                        $ref: '#/components/schemas/Tokens'
+                      session:
+                        $ref: '#/components/schemas/Session'
+        default:
+          $ref: '#/components/responses/Errors'
+    put:
+      tags:
+        - sessions
+      summary: User authentication.
+      operationId: updateSession
+      parameters:
+        - name: admin_refresh_token
+          in: cookie
+          required: true
+          description: The refresh_token for the user.
+          schema:
+            type: string
+      responses:
+        '201':
+          description: The updated tokens object
+          headers:
+            Set-Cookie:
+              schema:
+                type: string
+                example: admin_refresh_token=7ff581a1-4dcf-4f53-a9cb-0ef408d4a7bb; Path=/; Max-Age=1727209098; HttpOnly; Secure; SameSite=Lax
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      tokens:
+                        $ref: '#/components/schemas/Tokens'
+                      session:
+                        $ref: '#/components/schemas/Session'
+        default:
+          $ref: '#/components/responses/Errors'
+    delete:
+      tags:
+        - sessions
+      summary: Delete user session.
+      operationId: deleteSession
+      parameters:
+        - name: admin_refresh_token
+          in: cookie
+          required: true
+          description: The admin_refresh_token for the user.
+          schema:
+            type: string
+      responses:
+        '204':
+          description: The user session delete successfully
+        default:
+          $ref: '#/components/responses/Errors'
+components:
+  schemas:
+    Errors:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            required:
+              - code
+              - title
+              - detail
+            properties:
+              code:
+                type: string
+                description: an application-specific error code, expressed as a string value.
+                example: ERR_APP_CODE
+              title:
+                type: string
+                description: |
+                  a short, human-readable summary of the problem that SHOULD NOT change from occurrence to occurrence
+                  of the problem, except for purposes of localization.
+                example: Error has been occurred
+              detail:
+                type: string
+                description: a human-readable explanation specific to this occurrence of the problem.
+                example: Unexpected error occurred during processing request
+      example:
+        errors:
+          - code: ERR_INVALID_REQUEST
+            title: Invalid request received
+            detail: Missing value for 'name' property
+          - code: ERR_INTERNAL
+            title: Internal error has been occurred
+            detail: Timeout exceeded while connecting repository
+    Tokens:
+      description: Pair of JWT tokens used for signing outgoing HTTP requests and refreshing HTTP sessions
+      type: object
+      properties:
+        access_token:
+          description: Token for authentication
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+        refresh_token:
+          description: Refresh token for session
+          type: string
+          example: 123e4567-e89b-12d3-a456-426655440000
+      required:
+        - access_token
+        - refresh_token
+    Session:
+      type: object
+      description: A set of parameters characterizing a user, agent or manager session
+      properties:
+        id:
+          description: Session ID
+          type: integer
+          format: int64
+          example: 1
+        user_id:
+          description: User ID
+          type: integer
+          example: 321
+        ip:
+          description: IP-address (IPv4 or IPv6)
+          type: string
+          example: 127.0.0.1
+        created_at:
+          description: Time of session create in UNIX format
+          type: integer
+          format: int64
+          example: 1682419987
+        refresh_token_expired_at:
+          description: Time of session expired in UNIX format
+          type: integer
+          format: int64
+          example: 1682463187
+      required:
+        - id
+        - user_id
+        - refresh_token
+        - created_at
+        - expired_at
+    UserLogin:
+      description: Describes a form required to create a new session initiated from user
+      type: object
+      properties:
+        login:
+          title: Login
+          description: login or email
+          type: string
+          minLength: 3
+          maxLength: 200
+        password:
+          title: password
+          type: string
+          format: password
+          maxLength: 200
+      required:
+        - login
+        - password
+  responses:
+    Errors:
+      description: operation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+  requestBodies:
+    AuthenticationRequest:
+      description: Describes a form required to create a new session initiated from user or agent
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserLogin'

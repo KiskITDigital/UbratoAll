@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  input::placeholder,
+  textarea::placeholder,
+  select::placeholder {
+    @apply opacity-50
+  }
+}
+
+@layer components {
+  .page-box {
+    @apply rounded-lg bg-white shadow-medium;
+  }
+}

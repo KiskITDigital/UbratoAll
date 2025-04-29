@@ -1,0 +1,84 @@
+.checkBase {
+  display: flex;
+  align-items: center;
+  position: relative;
+  gap: 9px;
+}
+
+.checkBase[data-selected] > .checkWrapper {
+  background-color: var(--color-blue-primary);
+}
+
+.checkIcon {
+  width: 80%;
+  height: 80%;
+}
+
+.checkIcon > polyline {
+  stroke: white;
+}
+
+.checkWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--color-blue-primary);
+  transition: background-color 0.3s ease;
+  border-radius: 7px;
+  background-color: transparent;
+}
+
+.checkText {
+  color: var(--color-black-60);
+  font-size: 16px;
+  width: fit-content;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  height: 30px;
+}
+
+.input {
+  padding: 4px 8px;
+  padding-right: 20px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  border: 1px solid var(--color-light-gray-tertiary);
+  outline: none;
+  font-size: 16px;
+  height: 30px;
+  width: 90px;
+}
+
+.inpContainer {
+  position: relative;
+  display: flex;
+}
+
+.rub {
+  position: absolute;
+  color: var(--color-black-50);
+  font-size: 16px;
+  right: 56px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.area {
+  background-color: #ecf0f3;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  border: 1px solid var(--color-light-gray-tertiary);
+  padding-left: 8px;
+  padding-right: 8px;
+  display: flex;
+  align-items: center;
+  height: 30px;
+  font-size: 13px;
+}

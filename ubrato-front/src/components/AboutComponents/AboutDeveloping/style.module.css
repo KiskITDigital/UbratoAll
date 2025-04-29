@@ -1,0 +1,42 @@
+.develop_container{
+    display: flex;
+    flex-direction: column;
+    margin: 0px auto;
+    width: 1130px;
+    gap: 40px;
+}
+
+.develop_header{
+    font-size: 36px;
+    font-weight: 700;
+    color: #0084FF;
+
+}
+
+.develop_list{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.list_elem{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    
+}
+
+.list_elem
+ > 
+img {
+    height: 50px;
+    width: 50px;
+}
+
+.list_elem
+ > 
+p {
+    width: 280px;   
+    font-size: 20px;
+    font-weight: 500;
+}

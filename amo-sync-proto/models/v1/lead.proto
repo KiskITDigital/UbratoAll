@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package models.v1;
+
+enum Pipeline {
+    IncomingRequests = 0;
+}
+
+enum Status {
+    IncomingRequestsNewLead = 0;
+}
+
+// message Lead {
+
+// }

@@ -1,0 +1,38 @@
+.embla__container {
+    display: flex;
+    max-width: 1130px;
+}
+
+.embla__slide {
+    flex: 0 0 100%;
+    /* min-width: 0; */
+    /* display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px; */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, fit-content);
+    gap: 30px;
+    margin-bottom: 10px;
+    /* display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 10px;
+    justify-content: flex-start !important;
+    align-items: flex-start !important; */
+}
+
+@media screen and (max-width: 450px) {
+    .embla__slide {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+.embla__slide:not(:last-child) {
+    margin-right: 200px;
+}

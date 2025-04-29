@@ -1,0 +1,63 @@
+image: docker:latest
+services:
+  - docker:dind
+before_script:
+  - docker info
+  - "command -v ssh-agent >/dev/null || ( apt-get update -y && apt-get install openssh-client -y )"
+
+  - eval $(ssh-agent -s)
+
+  - chmod 400 "$SSH_PRIVATE_KEY"
+  - ssh-add "$SSH_PRIVATE_KEY"
+
+  - mkdir -p ~/.ssh
+  - chmod 700 ~/.ssh
+
+  - cp $KNOWN_HOSTS ~/.ssh/known_hosts
+
+stages:
+  - build
+  - deploy
+
+variables:
+  REMOTE_USER: "ubrato"
+  REMOTE_HOST: "194.58.96.228"
+  REMOTE_PORT: "2022"
+
+stage-build:
+  only:
+    - stage
+  stage: build
+  script:
+    - cp $ENV_TEST .env
+    - docker login -u $CI_REGISTRY_USER -p "$CI_JOB_TOKEN" $CI_REGISTRY
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:stage" .
+    - docker push "$CI_REGISTRY_IMAGE:stage"
+
+stage-deploy:
+  only:
+    - stage
+  stage: deploy
+  script:
+    - ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST -p $REMOTE_PORT "docker service update --with-registry-auth --force --image registry.ubrato.ru/ubrato/ubrato-admin-front:stage stack_ubrato-admin-front"
+
+prod-build:
+  only:
+    - main
+    - master
+  when: manual
+  stage: build
+  script:
+    - cp $ENV_TEST .env
+    - docker login -u $CI_REGISTRY_USER -p "$CI_JOB_TOKEN" $CI_REGISTRY
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:latest" .
+    - docker push "$CI_REGISTRY_IMAGE:latest"
+
+prod-deploy:
+  only:
+    - master
+    - main
+  when: manual
+  stage: deploy
+  script:
+    - ssh -o StrictHostKeyChecking=no $REMOTE_USER@$REMOTE_HOST -p $REMOTE_PORT "docker service update --with-registry-auth --force --image registry.ubrato.ru:5050/ubrato/ubrato-admin-front:latest stack_ubrato-admin-front"

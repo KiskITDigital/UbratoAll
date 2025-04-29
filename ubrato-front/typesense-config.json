@@ -1,0 +1,10 @@
+{
+  "apiKey": "32c69dfccc4aadaacba3dad3113afdc5",
+  "node": {
+    "host":"search.ubrato.ru",
+    "port":"443",
+    "protocol":"https",
+    "path":"",
+    "tls":true
+  }
+}

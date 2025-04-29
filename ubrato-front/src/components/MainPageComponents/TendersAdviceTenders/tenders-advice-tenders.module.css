@@ -1,0 +1,157 @@
+.embla__container {
+    display: flex;
+    max-width: 1130px;
+}
+
+.embla__slide {
+    flex: 0 0 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, fit-content);
+    gap: 30px;
+    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 450px) {
+    .embla__slide {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+.embla__slide:not(:last-child) {
+    margin-right: 200px;
+}
+
+
+.tenderForCarousel {
+    border-bottom: 0;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 1px 1px 2px -1px rgb(0 0 0 / 0.1);
+    padding: 30px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tenderForCarousel>div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-bottom: 1px dashed var(--color-black-14);
+    padding-bottom: 20px;
+}
+
+.tenderForCarousel>div:last-of-type {
+    gap: 20px;
+    border: 0;
+    padding: 0;
+}
+
+.tenderName {
+    font-weight: 600;
+    font-size: 20px;
+    text-decoration: underline;
+}
+
+.tenderText {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--color-black-60);
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.tenderText>img {
+    margin-top: 5px;
+}
+
+.tenderText>img:hover {
+    cursor: pointer;
+}
+
+.tenderPrice {
+    font-weight: 600;
+    font-size: 20px;
+    color: var(--color-blue-primary);
+}
+
+.tenderTime {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--color-black-60);
+}
+
+
+@media screen and (max-width: 450px) {
+    .tenderName {
+        font-size: 17px;
+    }
+
+    .tenderText {
+        font-size: 14px;
+    }
+
+    .tenderPrice {
+        font-size: 17px;
+    }
+
+    .tenderTime {
+        font-size: 14px;
+    }
+}
+
+.tenderLocation {
+    padding: 1px 6px;
+    background-color: var(--color-black-30);
+    border-radius: 8px;
+    color: var(--color-white);
+    width: fit-content;
+}
+
+.locationsAndLinkBlock {
+    height: 100%;
+}
+
+.executorButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    width: 100%;
+    margin-top: auto;
+}
+
+.executorButtons>button,
+.executorButtons>a>button {
+    border-radius: 13px;
+    padding: 15px;
+    height: fit-content;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+.executorButtons>button>img {
+    width: 24px;
+    height: 22px;
+}
+
+.executorLoveButton {
+    border: 1px solid var(--color-text-gray-1);
+}
+
+.executorButtons>a {
+    width: 100%;
+}
+
+.executorOfferButton {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-back-gray);
+    color: var(--color-black);
+    width: 100%;
+    font-weight: 700;
+}

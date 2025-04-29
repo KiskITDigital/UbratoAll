@@ -1,0 +1,134 @@
+.container {
+  max-width: 270px;
+  border-radius: 30px;
+  box-shadow: 0 10px 20px var(--color-black-10);
+  display: flex;
+  flex-direction: column;
+  padding-top: 26px;
+  padding-bottom: 20px;
+  align-items: center;
+  position: relative;
+  min-width: 42px;
+  height: fit-content;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.16);
+}
+
+.link {
+  display: flex;
+  gap: 11px;
+  font-size: 16px;
+  color: var(--color-black-60);
+  padding-left: 15px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  align-items: center;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+
+.become_link{
+  border: 1px solid #0084FF;
+  border-radius: 7px;
+  padding: 5px;
+  color: #0084FF;
+  font-size: 16px;
+}
+
+.linkActive {
+  padding-left: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.link:hover {
+  background-color: var(--color-back-gray);
+}
+
+.logout {
+  display: flex;
+  gap: 6px;
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 16px;
+  color: var(--color-black-60);
+  align-items: center;
+  border: 1px solid rgba(7, 12, 44, 0.1);
+  border-radius: 10px;
+  width: 240px;
+  justify-content: center;
+}
+
+.info {
+  background-color: var(--color-back-gray);
+  border-radius: 12px;
+  color: black;
+  font-weight: 600;
+  padding: 10px 18px;
+  width: 245px;
+  margin-top: 9px;
+  margin-bottom: 28px;
+}
+
+.blueText {
+  color: var(--color-blue-primary);
+}
+
+.active {
+  border-right: 3px solid var(--color-blue-primary);
+  color: var(--color-blue-primary);
+}
+
+.active > svg > path {
+  fill: var(--color-blue-primary);
+  fill-opacity: 1;
+}
+
+.active2 > svg > path {
+  fill: var(--color-blue-primary);
+  fill-opacity: 1;
+}
+
+.menuBtn {
+  position: absolute;
+  top: 14px;
+  right: 17px;
+}
+
+.menuBtn > img {
+  transform-origin: center;
+  transform: rotate(180deg);
+  transition: all 0.3s ease;
+}
+
+.menuBtnActive {
+  position: relative;
+  top: -16px;
+  left: 3px;
+}
+
+.menuBtnActive > img {
+  transform: rotate(0deg);
+}
+
+.avatar {
+  width: 270px;
+  display: flex;
+  justify-content: center;
+}
+
+.sublink {
+  padding-left: 60px;
+}
+
+.become_link__padding{
+  padding-left: 55px;
+}

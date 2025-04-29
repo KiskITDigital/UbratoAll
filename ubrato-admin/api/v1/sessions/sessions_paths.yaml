@@ -1,0 +1,80 @@
+post:
+  tags:
+    - sessions
+  summary: User authentication.
+  operationId: createSession
+  requestBody:
+    $ref: "info.yaml#/components/requestBodies/AuthenticationRequest"
+  responses:
+    "201":
+      description: The created tokens object
+      headers:
+        Set-Cookie:
+          schema: 
+            type: string
+            example: admin_refresh_token=7ff581a1-4dcf-4f53-a9cb-0ef408d4a7bb; Path=/; Max-Age=1727209098; HttpOnly; Secure; SameSite=Lax
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  tokens:
+                    $ref: "info.yaml#/components/schemas/Tokens"
+                  session:
+                    $ref: "info.yaml#/components/schemas/Session"
+    "default":
+      $ref: "../schemas.yaml#/components/responses/Errors"
+put:
+  tags:
+    - sessions
+  summary: User authentication.
+  operationId: updateSession
+  parameters:
+        - name: admin_refresh_token
+          in: cookie
+          required: true
+          description: The admin_refresh_token for the user.
+          schema:
+            type: string
+  responses:
+    "201":
+      description: The updated tokens object
+      headers:
+        Set-Cookie:
+          schema: 
+            type: string
+            example: admin_refresh_token=7ff581a1-4dcf-4f53-a9cb-0ef408d4a7bb; Path=/; Max-Age=1727209098; HttpOnly; Secure; SameSite=Lax
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                properties:
+                  tokens:
+                    $ref: "info.yaml#/components/schemas/Tokens"
+                  session:
+                    $ref: "info.yaml#/components/schemas/Session"
+    "default":
+      $ref: "../schemas.yaml#/components/responses/Errors"
+delete:
+  tags:
+    - sessions
+  summary: Delete user session.
+  operationId: deleteSession
+  parameters:
+        - name: admin_refresh_token
+          in: cookie
+          required: true
+          description: The admin_refresh_token for the user.
+          schema:
+            type: string
+  responses:
+    "204":
+      description: The user session delete successfully
+    "default":
+      $ref: "../schemas.yaml#/components/responses/Errors"

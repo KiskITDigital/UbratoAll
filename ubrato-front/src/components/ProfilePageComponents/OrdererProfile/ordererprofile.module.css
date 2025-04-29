@@ -1,0 +1,284 @@
+.header {
+  margin-top: 22px;
+  font-size: 28px;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.infoContainer {
+  background-color: rgba(0, 0, 0, 0.03);
+  padding: 12px 14px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  border-radius: 14px;
+}
+
+.infoText {
+  font-size: 14px;
+  color: black;
+  font-weight: 600;
+}
+
+.text {
+  margin-left: 14px;
+  font-size: 14px;
+  color: var(--color-black-50);
+  font-weight: 600;
+}
+
+.infoTextBig {
+  font-size: 16px;
+  color: black;
+  font-weight: 600;
+}
+
+.borderedContainer {
+  border-top: 1px dashed rgba(0, 0, 0, 0.15);
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.15);
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.textarea {
+  resize: none;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--color-light-gray-tertiary);
+  border-radius: 13px;
+  outline: none;
+  padding: 14px 15px;
+  width: 490px;
+  height: 51px;
+  overflow-y: hidden;
+  line-height: 22px;
+}
+
+.description {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.15);
+  font-size: 16px;
+}
+
+.locations {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.15);
+}
+
+.locations>p {
+  margin-top: 15px;
+}
+
+.inputContainer {
+  width: 490px;
+  position: relative;
+}
+
+.input {
+  border: 1px solid var(--color-light-gray-tertiary);
+  width: 100%;
+  border-radius: 13px;
+  padding: 14px 15px;
+  outline: none;
+  font-size: 16px;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.04);
+}
+
+.citiesList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-light-gray-tertiary);
+  border-top: none;
+  border-bottom-left-radius: 13px;
+  border-bottom-right-radius: 13px;
+  padding-top: 10px;
+  margin-top: -10px;
+  position: absolute;
+  top: 53px;
+  background-color: white;
+  /* overflow-y: scroll;
+  max-height: 500px; */
+}
+
+.city {
+  padding: 10px 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--color-black);
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 400;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  border-radius: 10px;
+}
+
+.city:hover {
+  background-color: var(--color-blue-primary-6);
+  color: var(--color-blue-primary);
+  cursor: pointer;
+}
+
+.save {
+  padding: 15px;
+  width: 100%;
+  background-color: var(--color-blue-primary);
+  color: white;
+  border: 1px solid transparent;
+  margin-top: 35px;
+  border-radius: 10px;
+}
+
+.save:disabled {
+  background-color: transparent;
+  color: var(--color-black-60);
+  border: 1px solid var(--color-black-60);
+}
+
+.locationsList {
+  display: flex;
+  flex-wrap: wrap;
+  /* height: 100px; */
+  gap: 10px;
+  margin-top: 16px;
+  /* overflow-y: scroll; */
+}
+
+.locationItem {
+  padding: 3px 10px;
+  background-color: var(--color-blue-primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 700;
+  gap: 8px;
+  border-radius: 10px;
+}
+
+.deleteBtn {
+  width: 20px;
+  height: 14px;
+  padding-left: 6px;
+  border-left: 2px solid rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+}
+
+.deleteBtn>img {
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+}
+
+.listContainer {
+  justify-content: space-between;
+  display: flex;
+  margin-top: 16px;
+}
+
+.partHeader {
+  font-size: 16px;
+  color: var(--color-black-60);
+  margin-top: 15px;
+}
+
+.accordionWrapper {
+  width: 100%;
+  padding: 0;
+}
+
+.accordionItem {
+  border-radius: 30px;
+  flex-direction: column;
+  justify-content: center;
+  background-color: var(--color-white);
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.accordionTitle {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 15px;
+  color: var(--color-blue-primary);
+}
+
+.accordionTitleWrapper {
+  align-self: flex-start;
+}
+
+.accordionTrigger {
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  gap: 16px;
+  display: flex;
+  outline: none;
+  background-color: var(--color-blue-light);
+  border-radius: 13px;
+}
+
+.accordionHeading {
+  height: 100%;
+  width: 100%;
+}
+
+.accordionIndicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  outline: none;
+}
+
+.accordionIndicator>svg {
+  transition: 0.3s ease transform;
+}
+
+.accordionHeading[data-open]>.accordionTrigger>.accordionIndicator>svg {
+  transform: rotate(180deg);
+}
+
+.accordionContent {
+  z-index: 3;
+  margin-top: 16px;
+  margin-left: 15px;
+}
+
+.wrapper {
+  width: 680px;
+}
+
+.subList {
+  display: flex;
+  flex-direction: column;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.areAllLocationsButton {
+  color: var(--color-blue-primary);
+  text-decoration: underline;
+  font-weight: 600;
+  outline: none;
+}

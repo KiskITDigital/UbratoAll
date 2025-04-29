@@ -1,0 +1,296 @@
+.sort {
+    display: flex;
+    margin: 10px 0 0;
+}
+
+.paginationRoot {
+    display: flex;
+    width: 200px;
+    margin-top: 20px;
+}
+
+.paginationList {
+    display: flex;
+    justify-content: space-around;
+}
+
+.hitsList {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.paginationItem {
+    width: 41px;
+    height: 41px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hitsRoot {
+    margin: 20px 0 40px;
+}
+
+.selected_item_pagination {
+    background-color: rgba(89, 89, 95, 0.178);
+}
+
+
+.counter_tender {
+    width: 763px;
+    font-size: 24px;
+}
+
+
+
+.base ul {
+    display: flex;
+    flex-direction: column;
+    padding: 6px;
+    border-radius: 10px;
+    background-color: var(--color-white);
+}
+
+.base ul>li {
+    /* padding: 5px 8px;
+    border-radius: 6px;
+    outline: none; */
+    padding: 10px 8px;
+    font-size: 18px;
+    line-height: 21px;
+    font-weight: 400;
+    border-radius: 10px;
+    outline: none;
+}
+
+.base ul>li>span {
+    color: var(--color-text-gray-second);
+}
+
+.base ul>li:hover {
+    background-color: var(--color-blue-primary-6);
+    cursor: pointer;
+}
+
+.base ul>li:hover>span {
+    color: var(--color-blue-primary);
+}
+
+.executors {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    gap: 30px;
+}
+
+.executor {
+    padding-bottom: 30px;
+    border-bottom: 1px dashed var(--color-black-14);
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.executorInfo {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+.executorInfo>.executorImage {
+    width: 86px;
+    height: 86px;
+    border-radius: 100px;
+}
+
+.executorInfo>.executorTextBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.executorInfo>.executorTextBlock>.executorName {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--color-dark-text);
+}
+
+.executorInfo>.executorTextBlock>.executorText {
+    font-size: 18px;
+    color: var(--color-black-60);
+}
+
+.executorInfo>.executorTextBlock>.executorRegions {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.executorInfo>.executorTextBlock>.executorRegions>.executorRegion {
+    padding: 1px 6px;
+    background-color: var(--color-black-30);
+    border-radius: 8px;
+    color: var(--color-white);
+}
+
+.services {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.service {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 10px;
+    background-color: var(--color-gray);
+    border-radius: 14px;
+    justify-content: center;
+}
+
+.service:hover {
+    cursor: pointer;
+}
+
+.service>.serviceName {
+    font-size: 16px;
+    font-weight: 700;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.service>.servicePrice {
+    color: var(--color-blue-primary);
+    font-size: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
+.executorButtons {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.executorButtons>button {
+    border-radius: 13px;
+    padding: 15px;
+    height: fit-content;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+.executorButtons>button>img {
+    width: 24px;
+    height: 22px;
+}
+
+.executorLoveButton {
+    border: 1px solid var(--color-text-gray-1);
+}
+
+.executorOfferButton {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: var(--color-blue-primary);
+    color: var(--color-white);
+    width: 100%;
+    font-weight: 700;
+}
+
+.showMore {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-back-gray);
+    border-radius: 12px;
+}
+
+.showMore>img {
+    width: 20px;
+    height: 20px;
+}
+
+.paginationBase {
+    width: fit-content;
+}
+
+.paginationBase>.wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.paginationBase>.wrapper>.cursor {
+    display: none;
+}
+
+.paginationBase>.wrapper>li {
+    border-radius: 12px;
+    padding: 11px 20px;
+    color: var(--color-black-60);
+    outline: none;
+}
+
+.paginationBase>.wrapper>li[aria-current="true"] {
+    background-color: var(--color-back-gray);
+    color: var(--color-black);
+}
+
+/* .paginationBase>.wrapper>.next {
+    transform: rotate(180deg);
+} */
+
+.sortingBlock {
+    padding: 0 5px 5px 5px;
+    display: grid;
+    grid-template-columns: 150px 150px 100px 100px 100px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 13px;
+    height: 65px;
+}
+
+.sorting_label_field {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.sortingButton {
+    background-color: transparent;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+    display: flex;
+}
+
+.sortingButton:hover {
+    background-color: #f0f0f0;
+}
+
+.sortingButton:active {
+    background-color: #ccc;
+}
+
+.asc {
+    transform: rotate(0deg);
+}
+
+.desc {
+    transform: rotate(180deg);
+}

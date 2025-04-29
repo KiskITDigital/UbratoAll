@@ -1,0 +1,12 @@
+.block_container {
+    width: 1103px;
+    margin: 20px auto;
+    display: flex;
+    gap: 30px;
+}
+
+
+.main_blokkk {
+    width: 1103px;
+    margin: 20px auto;
+}

@@ -1,0 +1,30 @@
+.block{
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    padding: 30px 0;
+    width: 1024px;
+    /* border-top: 1px dashed #00000033; */
+    border-top-width: 2px;
+}
+
+.notif_header{
+    font-size: 20px;
+}
+
+.notif_paragraph{
+    font-size: 18px;
+    color: #666666;
+}
+
+
+
+
+@media screen and (width < 450px) {
+    .block{
+        width: 358px;
+        margin: 20px auto;
+        
+    }
+   
+   }

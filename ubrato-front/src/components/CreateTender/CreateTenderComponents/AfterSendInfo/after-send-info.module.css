@@ -1,0 +1,89 @@
+.container {
+    width: 657px;
+    min-height: 200px;
+    background-color: white;
+    border-radius: 20px;
+    gap: 20px;
+    box-shadow: 0 0 20px var(--color-black-10);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.title {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    justify-content: space-between;
+}
+
+.title__text {
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.title__closeIcon {
+    padding: 4px 5px;
+    border-radius: 10px;
+    margin-top: 8px;
+    background-color: var(--color-light-gray-secondary);
+    height: fit-content;
+}
+
+.title__closeIcon>img {
+    width: 24px;
+    max-width: none;
+    height: 24px;
+}
+
+.info {
+    background-color: var(--color-light-gray-secondary);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding: 10px;
+}
+
+.info__img {
+    width: 16px;
+    height: 16px;
+    margin-top: 6px;
+}
+
+.info__text {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.link {
+    color: var(--color-blue-primary);
+    text-decoration: underline;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+}
+
+.buttons button {
+    padding: 12px 18px;
+    width: 200px;
+    border-radius: 17px;
+    font-size: 18px;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+.buttons__myTendersButton {
+    background-color: var(--color-light-gray-secondary);
+    font-weight: 500;
+    color: var(--color-black-60);
+}
+
+.buttons__createTenderButton {
+    background-color: var(--color-blue-primary);
+    font-weight: 600;
+    color: var(--color-white);
+}

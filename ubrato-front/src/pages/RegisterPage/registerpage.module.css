@@ -1,0 +1,347 @@
+.innerWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 15px;
+}
+
+.input {
+  outline: none;
+  margin: 14px 15px;
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.base {
+  border: 1px solid #e7e7e7;
+  position: relative;
+  margin-top: 38px;
+  border-radius: 10px;
+  width: 478px;
+  flex-direction: column;
+  transition: all ease-in-out .15s;
+}
+
+.base:has(.input:focus) {
+  border-color: var(--color-blue-primary) !important;
+}
+
+.label {
+  position: absolute;
+  top: -28px;
+  left: 15px;
+  color: var(--color-black-60);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.helperWrapper {
+  display: block;
+}
+
+.errorMessage {
+  color: #f90a0a;
+  font-size: 10px;
+  position: absolute;
+  left: 15px;
+  line-height: 22px;
+}
+
+.base[data-invalid] {
+  border: 1px solid #f90a0a;
+}
+
+.inputContainer {
+  height: fit-content;
+  padding-bottom: 20px;
+}
+
+.checkBase {
+  display: block;
+  display: flex;
+  align-items: center;
+  margin-bottom: 33px;
+  position: relative;
+}
+
+.checkBase[data-selected]>.checkWrapper {
+  background-color: var(--color-light-gray);
+}
+
+.checkIcon {
+  width: 80%;
+  height: 80%;
+}
+
+.checkIcon>polyline {
+  stroke: var(--color-blue-primary);
+}
+
+.checkWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 2px solid var(--color-black-10);
+  transition: background-color 0.3s ease;
+  border-radius: 6px;
+  background-color: transparent;
+}
+
+.formContainer {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  font-size: 27px;
+  font-weight: 600;
+  margin-top: 70px;
+  margin-left: 15px;
+}
+
+.create {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 22px;
+}
+
+.info {
+  width: 16px;
+  height: 16px;
+}
+
+.createInfo {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  margin-top: 30px;
+  margin-left: 15px;
+}
+
+.buttonsContainer {
+  width: 478px;
+  padding: 3px;
+  background-color: var(--color-light-gray);
+  border-radius: 11px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.button {
+  font-size: 17px;
+  line-height: 19.7px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-weight: 500;
+  width: 234px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.active {
+  border-radius: 9px;
+  background-color: var(--color-blue-primary);
+  color: var(--color-white);
+}
+
+.questionsAboutRegistration {
+  font-size: 17px;
+  color: var(--color-black-60);
+  line-height: 22px;
+  text-align: center;
+  width: 472px;
+  margin-top: 15px;
+}
+
+.questionsAboutRegistrationContainer {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--color-light-gray);
+  width: 478px;
+}
+
+.link {
+  color: var(--color-blue-primary);
+  text-decoration: underline;
+}
+
+.inputGrHeader {
+  margin-top: 36px;
+  margin-left: 15px;
+  font-size: 20px;
+  line-height: 22px;
+}
+
+.submit {
+  border-radius: 10px;
+  padding: 10px;
+  width: 448px;
+  background-color: var(--color-blue-primary);
+  color: var(--color-white);
+  cursor: pointer;
+}
+
+.submit:disabled {
+  opacity: 0.8;
+}
+
+.submitContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.infoText {
+  color: var(--color-black-60);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+  max-width: 463px;
+  margin-left: 15px;
+}
+
+.weCall {
+  margin-top: 15px;
+  max-width: 100%;
+}
+
+.approvalContainer {
+  margin-top: 24px;
+  padding-left: 15px;
+}
+
+.checkText {
+  max-width: 410px;
+}
+
+.checkErr {
+  left: 0;
+}
+
+.stillHaveQuestions {
+  width: 340px;
+  align-self: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  margin-bottom: 90px;
+}
+
+.companyName {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.companyText {
+  top: 0;
+  position: relative;
+  align-self: center;
+}
+
+.companyText:not(:first-of-type) {
+  align-self: flex-start;
+  margin-top: 5px;
+}
+
+.nameConfirm {
+  padding: 14px 15px;
+  background-color: var(--color-back-gray);
+  border: 1px solid #e7e7e7;
+  width: 478px;
+  height: 53px;
+  border-radius: 10px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.companyBtns {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.companyBtns>button {
+  width: 200px;
+  padding: 10px 15px;
+  background-color: var(--color-blue-light);
+  border-radius: 10px;
+  height: fit-content;
+}
+
+@media screen and (width < 450px) {
+  .base {
+    width: 360px;
+  }
+
+  .buttonsContainer {
+    width: 360px;
+    gap: 3px;
+  }
+
+  .questionsAboutRegistrationContainer {
+    width: 360px;
+  }
+
+  .header {
+    font-size: 22px;
+  }
+
+  .submit {
+    width: 360px;
+  }
+
+  .formContainer {
+    align-items: center;
+  }
+
+  .form {
+    align-items: center;
+    margin-bottom: 45px;
+  }
+
+  .checkText {
+    font-size: 14px;
+    width: 320px;
+  }
+
+  .stillHaveQuestions {
+    font-size: 14px;
+  }
+
+  .weCall {
+    text-align: center;
+  }
+
+  .nameConfirm {
+    max-width: 360px;
+    align-self: center;
+  }
+
+  .companyBtns {
+    max-width: 360px;
+  }
+
+  .companyBtns>button {
+    padding: 10px;
+    max-width: 45%;
+  }
+}

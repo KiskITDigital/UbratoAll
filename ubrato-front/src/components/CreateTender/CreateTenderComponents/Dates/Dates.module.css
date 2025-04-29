@@ -1,0 +1,64 @@
+.dateTimeContainer {
+    position: relative;
+}
+
+.dateTime {
+    position: absolute;
+    display: flex;
+    margin-top: 38px;
+    flex-direction: row;
+    align-items: center;
+
+    right: 0;
+    margin-right: calc(100% / 2 + 6px);
+    max-width: 60px;
+}
+
+.dateTime2 {
+    margin-right: 14px;
+}
+
+@media screen and (min-width: 1050px) {
+    .dateTime {
+        width: 60px;
+        left: 0;
+        max-width: none;
+        margin-left: 106px;
+    }
+
+    .dateTime2 {
+        margin-left: calc(50% + 102px);
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .dateTime {
+        margin-left: 122px;
+        font-size: 14px;
+        line-height: 16px;
+    }
+
+    .dateTime2 {
+        margin-left: calc(50% + 114px);
+    }
+}
+
+@media screen and (min-width: 1280px) {
+    .dateTime {
+        width: 66px;
+    }
+}
+
+.dateTime>input {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20.88px;
+    padding: 5px 8px;
+    border: none;
+}
+
+@media screen and (max-width: 1050px) {
+    .dateTime>input {
+        border-radius: 0 6px 6px 0;
+    }
+}

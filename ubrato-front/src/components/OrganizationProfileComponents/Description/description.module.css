@@ -1,0 +1,27 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.title {
+    font-weight: 500;
+    font-size: 28px;
+    margin: 0 30px;
+}
+
+.text {
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--color-black-60);
+    margin: 0 30px;
+}
+
+.showMore {
+    color: var(--color-blue-primary);
+    text-decoration: underline;
+}
+
+.showMore:hover {
+    cursor: pointer;
+}

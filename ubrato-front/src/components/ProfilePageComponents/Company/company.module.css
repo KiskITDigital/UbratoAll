@@ -1,0 +1,19 @@
+.btnsContainer {
+  padding: 4px;
+  background-color: var(--color-back-gray);
+  border-radius: 13px;
+  gap: 10px;
+  display: flex;
+  width: fit-content;
+}
+
+.btn {
+  padding: 10px 12px;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 11px;
+}
+
+.btn:disabled {
+  background-color: white;
+}

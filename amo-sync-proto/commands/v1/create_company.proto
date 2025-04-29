@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package models.v1;
+
+import "models/v1/company.proto";
+import "models/v1/contact.proto";
+
+message CreateCompany {
+    models.v1.Company company = 1;
+    models.v1.Contact contact = 2;
+    int64 company_external_id = 3;
+    int64 contact_external_id = 4;
+}

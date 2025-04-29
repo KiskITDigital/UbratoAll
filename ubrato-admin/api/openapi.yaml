@@ -1,0 +1,11 @@
+openapi: 3.0.3
+servers:
+  - url: https://api.ubrato.ru/admin/v1
+    description: v1
+info:
+  title: Ubrato admin panel
+  description: admin panel oas
+  version: 1.0.0
+paths:
+  /sessions:
+    $ref: "v1/sessions/sessions_paths.yaml"

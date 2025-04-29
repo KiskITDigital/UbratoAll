@@ -1,0 +1,9 @@
+.mainBlock {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    gap: 30px;
+    border-bottom: 1px dashed var(--color-black-14);
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+}

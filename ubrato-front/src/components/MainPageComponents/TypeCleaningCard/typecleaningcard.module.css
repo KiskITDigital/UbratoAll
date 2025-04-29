@@ -1,0 +1,151 @@
+/* .container {
+  width: 100%;
+  height: 130px;
+  border-radius: 20px;
+  padding: 15px;
+  border: 1px solid transparent;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 16px;
+  padding-top: 14px;
+  gap: 20px;
+  background-size: contain;
+  background-origin: content-box;
+  background-repeat: no-repeat;
+  background-position-x: calc(100%);
+  border: 1px solid var(--color-black-10);
+  transition: border 0.3s ease;
+  transition: box-shadow 0.3s ease;
+}
+
+.textContent {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  height: 102px;
+  justify-content: space-between;
+}
+
+.active {
+  border: 1px solid var(--color-blue-primary);
+  box-shadow: 0 4px 0 0 var(--color-blue-primary);
+}
+
+.header {
+  font-size: 20px;
+  max-width: 260px;
+  font-weight: 600;
+}
+
+.text {
+  color: var(--color-black-60);
+}
+
+@media screen and (width < 450px) {
+  .container {
+    padding: 10px 15px;
+    height: 90px;
+    min-width: 170px;
+  }
+
+  .header {
+    font-size: 12px;
+    font-weight: 700;
+    height: fit-content;
+  }
+
+  .textContent {
+    height: 100%;
+  }
+} */
+
+
+
+.container {
+  width: 100%;
+  height: 130px;
+  border-radius: 20px;
+  padding: 15px;
+  border: 1px solid var(--color-black-10);
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+
+.active {
+  border: 1px solid var(--color-blue-primary);
+  box-shadow: 0 4px 0 0 var(--color-blue-primary);
+}
+
+.textContent {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 54%;
+  justify-content: space-between;
+  position: absolute;
+  z-index: 2;
+}
+
+.header {
+  font-size: 20px;
+  max-width: 260px;
+  font-weight: 600;
+}
+
+.text {
+  color: var(--color-black-60);
+  text-wrap: nowrap;
+}
+
+.img {
+  width: 130px;
+  min-width: 130px;
+  height: 130px;
+  position: absolute;
+  right: 0;
+  z-index: -1;
+  object-fit: contain;
+}
+
+@media screen and (width < 640px) {
+  .textContent {
+    width: 100%;
+  }
+}
+
+@media screen and (width < 450px) {
+  .container {
+    padding: 10px 15px;
+    width: 170px;
+    min-width: 170px;
+    height: 90px;
+  }
+
+  .textContent {
+    gap: 5px;
+  }
+
+  .img {
+    width: 60px;
+    min-width: 60px;
+    height: 60px;
+  }
+
+  /* .textContent {
+    position: relative;
+  }
+
+  .img {
+    width: 40px;
+    height: 40px;
+  } */
+
+  .header {
+    font-size: 12px;
+    font-weight: 700;
+  }
+}

@@ -1,0 +1,57 @@
+.count {
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-blue-primary);
+  border-radius: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--color-white);
+  font-size: 13px;
+  box-shadow: 0px 2px 4px 0px #0084ff33;
+  position: absolute;
+  left: 60%;
+}
+
+.img {
+  width: 16px;
+  height: 20px;
+}
+
+.dis:disabled {
+  background-color: red;
+}
+
+.trigger {
+  display: flex;
+  position: relative;
+}
+
+.trigger > button {
+  padding: 5px;
+  border-radius: 100%;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+}
+
+.trigger > button:hover {
+  background-color: #e7e7e7;
+}
+
+.container {
+  display: flex;
+  gap: 10px;
+  position: relative;
+}
+
+.content {
+  position: absolute;
+}
+@media screen and (width < 450px) {
+  .container {
+    gap: 5px;
+  }
+}

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package models.v1;
+
+message Contact {
+    string first_name = 1;
+    string last_name = 2;
+    string middle_name = 3;
+    string phone = 4;
+    string email = 5;
+}

@@ -1,0 +1,10 @@
+version: "3"
+services:
+  typesense-web:
+    image: ghcr.io/bfritscher/typesense-dashboard:latest
+    container_name: ubrato-typesense-web
+    restart: on-failure
+    ports:
+      - "3003:80"
+    volumes:
+      - ./typesense-config.json:/srv/config.json
