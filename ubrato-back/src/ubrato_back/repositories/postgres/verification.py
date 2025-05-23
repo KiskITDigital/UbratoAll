@@ -7,7 +7,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from ubrato_back.config import get_config
 from ubrato_back.repositories.postgres.database import get_db_connection
 from ubrato_back.repositories.postgres.exceptions import RepositoryException
-from ubrato_back.repositories.postgres.schemas import Document, DocumentType, VerificationRequest
+from ubrato_back.repositories.postgres.schemas import (
+    Document,
+    DocumentType,
+    VerificationRequest,
+)
 from ubrato_back.schemas import models
 
 
@@ -80,19 +84,13 @@ class VerificationRepository:
         )
         await self.db.commit()
 
-    async def response_verification_requests(
-        self, verf_id: str, is_verified: bool, msg: Optional[str]
-    ) -> None:
-        query = await self.db.execute(
-            select(VerificationRequest).where(VerificationRequest.id == verf_id)
-        )
+    async def response_verification_requests(self, verf_id: str, is_verified: bool, msg: Optional[str]) -> None:
+        query = await self.db.execute(select(VerificationRequest).where(VerificationRequest.id == verf_id))
         verf_req = query.scalar_one_or_none()
         if verf_req is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config()
-                .Localization.config["errors"]["verified_request_not_found"]
-                .format(verf_id),
+                detail=get_config().Localization.config["errors"]["verified_request_not_found"].format(verf_id),
                 sql_msg="",
             )
 
@@ -103,24 +101,18 @@ class VerificationRepository:
         await self.db.commit()
 
     async def get_verf_by_id(self, verf_id: str) -> VerificationRequest:
-        query = await self.db.execute(
-            select(VerificationRequest).where(VerificationRequest.id == verf_id)
-        )
+        query = await self.db.execute(select(VerificationRequest).where(VerificationRequest.id == verf_id))
         verf_req = query.scalar_one_or_none()
         if verf_req is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config()
-                .Localization.config["errors"]["verified_request_not_found"]
-                .format(verf_id),
+                detail=get_config().Localization.config["errors"]["verified_request_not_found"].format(verf_id),
                 sql_msg="",
             )
         return verf_req
 
     async def get_verification_history(self, user_id: str) -> List[models.VerificationInfo]:
-        query = await self.db.execute(
-            select(VerificationRequest).where(VerificationRequest.user_id == user_id)
-        )
+        query = await self.db.execute(select(VerificationRequest).where(VerificationRequest.user_id == user_id))
 
         verf_req_list: List[models.VerificationInfo] = []
 

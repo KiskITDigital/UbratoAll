@@ -1,7 +1,17 @@
 from datetime import datetime
 from typing import List
 
-from sqlalchemy import ARRAY, TIMESTAMP, Boolean, ForeignKey, Identity, Integer, String, Text, func
+from sqlalchemy import (
+    ARRAY,
+    TIMESTAMP,
+    Boolean,
+    ForeignKey,
+    Identity,
+    Integer,
+    String,
+    Text,
+    func,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from ubrato_back.repositories.postgres.schemas.base import Base
 from ubrato_back.repositories.typesense.schemas import TypesenseTender
@@ -21,22 +31,12 @@ class Tender(Base):
     wishes: Mapped[str] = mapped_column(String(400))
     specification: Mapped[str] = mapped_column(String(400))
     attachments: Mapped[List[str]] = mapped_column(ARRAY(Text))
-    reception_start: Mapped[datetime] = mapped_column(
-        TIMESTAMP(timezone=True), server_default=func.current_timestamp()
-    )
-    reception_end: Mapped[datetime] = mapped_column(
-        TIMESTAMP(timezone=True), server_default=func.current_timestamp()
-    )
-    work_start: Mapped[datetime] = mapped_column(
-        TIMESTAMP(timezone=True), server_default=func.current_timestamp()
-    )
-    work_end: Mapped[datetime] = mapped_column(
-        TIMESTAMP(timezone=True), server_default=func.current_timestamp()
-    )
+    reception_start: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), server_default=func.current_timestamp())
+    reception_end: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), server_default=func.current_timestamp())
+    work_start: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), server_default=func.current_timestamp())
+    work_end: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), server_default=func.current_timestamp())
     user_id: Mapped[str] = mapped_column(String(40), ForeignKey("users.id"), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(
-        TIMESTAMP(timezone=True), server_default=func.current_timestamp()
-    )
+    created_at: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), server_default=func.current_timestamp())
     verified: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 
     user = relationship("User", back_populates="tender")

@@ -2,7 +2,10 @@ from typing import List
 
 from fastapi import Depends
 from ubrato_back.repositories.typesense.client import get_db_connection
-from ubrato_back.repositories.typesense.schemas import TypesenseContractor, TypesenseContractorService
+from ubrato_back.repositories.typesense.schemas import (
+    TypesenseContractor,
+    TypesenseContractorService,
+)
 from typesense.client import Client
 
 
@@ -38,9 +41,7 @@ class ContractorIndex:
         contractor_id: str,
         locations: List[int],
     ) -> None:
-        self.db.collections["contractor_city"].documents.delete(
-            {"filter_by": f"contractor_id:{contractor_id}"}
-        )
+        self.db.collections["contractor_city"].documents.delete({"filter_by": f"contractor_id:{contractor_id}"})
         for location in locations:
             self.db.collections["contractor_city"].documents.create(
                 {"contractor_id": contractor_id, "city_id": str(location)}
@@ -51,9 +52,7 @@ class ContractorIndex:
         contractor_id: str,
         objects: List[int],
     ) -> None:
-        self.db.collections["contractor_object"].documents.delete(
-            {"filter_by": f"contractor_id: {contractor_id}"}
-        )
+        self.db.collections["contractor_object"].documents.delete({"filter_by": f"contractor_id: {contractor_id}"})
         for object in objects:
             self.db.collections["contractor_object"].documents.create(
                 {
@@ -67,8 +66,6 @@ class ContractorIndex:
         contractor_id: str,
         services: List[TypesenseContractorService],
     ) -> None:
-        self.db.collections["contractor_service"].documents.delete(
-            {"filter_by": f"contractor_id: {contractor_id}"}
-        )
+        self.db.collections["contractor_service"].documents.delete({"filter_by": f"contractor_id: {contractor_id}"})
         for service in services:
             self.db.collections["contractor_service"].documents.create(service.model_dump())

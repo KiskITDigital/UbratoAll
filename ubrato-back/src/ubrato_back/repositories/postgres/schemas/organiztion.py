@@ -30,9 +30,7 @@ class Organization(Base):
         TIMESTAMP(timezone=True),
         server_default=func.current_timestamp(),
     )
-    created_at: Mapped[datetime] = mapped_column(
-        TIMESTAMP(timezone=True), server_default=func.current_timestamp()
-    )
+    created_at: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), server_default=func.current_timestamp())
 
     user = relationship("User", back_populates="organization")
     customer_profile = relationship("CustomerProfile", back_populates="org")

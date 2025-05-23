@@ -36,9 +36,7 @@ router = APIRouter(
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
     },
 )
-async def get_customer_profile(
-    org_id: str, org_service: OrganizationService = Depends()
-) -> models.CustomerProfile:
+async def get_customer_profile(org_id: str, org_service: OrganizationService = Depends()) -> models.CustomerProfile:
     return await org_service.get_customer_profile(org_id)
 
 
@@ -50,9 +48,7 @@ async def get_customer_profile(
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
     },
 )
-async def get_contractor_profile(
-    org_id: str, org_service: OrganizationService = Depends()
-) -> models.ContractorProfile:
+async def get_contractor_profile(org_id: str, org_service: OrganizationService = Depends()) -> models.ContractorProfile:
     return await org_service.get_contractor_profile(org_id)
 
 
@@ -64,9 +60,7 @@ async def get_contractor_profile(
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
     },
 )
-async def get_organization_profile(
-    org_id: str, org_service: OrganizationService = Depends()
-) -> models.Organization:
+async def get_organization_profile(org_id: str, org_service: OrganizationService = Depends()) -> models.Organization:
     return (await org_service.get_organization_by_id(org_id)).to_model()
 
 
@@ -143,9 +137,7 @@ async def update_my_contractor_profile(
     await org_service.update_contractor_info(org_id=user.org_id, description=data.description)
     await org_service.set_contractor_locations(
         org_id=user.org_id,
-        locations=[
-            ContractorLocation(org_id=user.org_id, city_id=city_id) for city_id in data.locations
-        ],
+        locations=[ContractorLocation(org_id=user.org_id, city_id=city_id) for city_id in data.locations],
     )
     await org_service.set_contractor_services(
         org_id=user.org_id,
@@ -160,9 +152,7 @@ async def update_my_contractor_profile(
     )
     await org_service.set_contractor_objects(
         org_id=user.org_id,
-        objects=[
-            ContractorObject(org_id=user.org_id, object_type_id=object_id) for object_id in data.objects
-        ],
+        objects=[ContractorObject(org_id=user.org_id, object_type_id=object_id) for object_id in data.objects],
     )
     return SuccessResponse()
 

@@ -1,7 +1,12 @@
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, status
-from ubrato_back.routers.v1.dependencies import authorized, get_user, is_creator_or_manager, localization
+from ubrato_back.routers.v1.dependencies import (
+    authorized,
+    get_user,
+    is_creator_or_manager,
+    localization,
+)
 from ubrato_back.schemas import models
 from ubrato_back.schemas.create_draft_tender import CreateDraftTenderRequest
 from ubrato_back.schemas.create_tender import CreateTenderRequest
@@ -135,9 +140,7 @@ async def get_tender_respond_status(
     tender_service: TenderService = Depends(),
     user: JWTUser = Depends(get_user),
 ) -> SuccessResponse:
-    return SuccessResponse(
-        status=await tender_service.is_responded(tender_id=tender_id, user_id=user.id)
-    )
+    return SuccessResponse(status=await tender_service.is_responded(tender_id=tender_id, user_id=user.id))
 
 
 @router.get(

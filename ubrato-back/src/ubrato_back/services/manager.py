@@ -1,7 +1,11 @@
 from typing import List, Optional
 
 from fastapi import Depends
-from ubrato_back.repositories.postgres import TenderRepository, UserRepository, VerificationRepository
+from ubrato_back.repositories.postgres import (
+    TenderRepository,
+    UserRepository,
+    VerificationRepository,
+)
 from ubrato_back.repositories.postgres.schemas import VerificationRequest
 from ubrato_back.repositories.typesense import TenderIndex
 from ubrato_back.schemas import models
@@ -28,9 +32,7 @@ class ManagerService:
     async def response_user_verification_request(
         self, user_id: str, status: bool, verf_id: str, msg: Optional[str]
     ) -> None:
-        await self.verf_repository.response_verification_requests(
-            verf_id=verf_id, is_verified=status, msg=msg
-        )
+        await self.verf_repository.response_verification_requests(verf_id=verf_id, is_verified=status, msg=msg)
         await self.user_repository.update_verified_status(user_id=user_id, verified=status)
 
     async def get_verfication_request(self, verf_id: str) -> VerificationRequest:

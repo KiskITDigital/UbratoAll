@@ -29,9 +29,7 @@ class TenderObjectType(Base):
     __tablename__ = "tender_objects_types"
 
     tender_id: Mapped[int] = mapped_column(Integer, ForeignKey("tender.id"), primary_key=True)
-    object_type_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("objects_types.id"), primary_key=True
-    )
+    object_type_id: Mapped[int] = mapped_column(Integer, ForeignKey("objects_types.id"), primary_key=True)
 
     tender_object_type = relationship("ObjectType", back_populates="tender_object_type")
     tender = relationship("Tender", back_populates="tender_object_type")

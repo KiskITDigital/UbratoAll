@@ -81,9 +81,7 @@ class ProfileRepository:
         return locations
 
     async def get_contractor(self, org_id: str) -> ContractorProfile:
-        query = await self.db.execute(
-            select(ContractorProfile).where(ContractorProfile.org_id == org_id)
-        )
+        query = await self.db.execute(select(ContractorProfile).where(ContractorProfile.org_id == org_id))
 
         profile = query.scalar()
         if profile is None:
@@ -243,9 +241,7 @@ class ProfileRepository:
         await self.db.commit()
 
     async def update_contractor_info(self, org_id: str, description: str) -> None:
-        query = await self.db.execute(
-            select(ContractorProfile).where(ContractorProfile.org_id == org_id)
-        )
+        query = await self.db.execute(select(ContractorProfile).where(ContractorProfile.org_id == org_id))
 
         profile_to_update = query.scalar()
         if profile_to_update is None:
@@ -277,11 +273,7 @@ class ProfileRepository:
     async def set_brand_emails(self, org_id: str, emails: List[Tuple[str, str]]) -> None:
         await self.db.execute(
             update(Organization)
-            .values(
-                email=[
-                    {"contact": contact, "description": description} for contact, description in emails
-                ]
-            )
+            .values(email=[{"contact": contact, "description": description} for contact, description in emails])
             .where(Organization.id == org_id)
         )
         await self.db.commit()
@@ -289,11 +281,7 @@ class ProfileRepository:
     async def set_brand_phones(self, org_id: str, phones: List[Tuple[str, str]]) -> None:
         await self.db.execute(
             update(Organization)
-            .values(
-                phone=[
-                    {"contact": contact, "description": description} for contact, description in phones
-                ]
-            )
+            .values(phone=[{"contact": contact, "description": description} for contact, description in phones])
             .where(Organization.id == org_id)
         )
         await self.db.commit()
@@ -301,12 +289,7 @@ class ProfileRepository:
     async def set_brand_messengers(self, org_id: str, messengers: List[Tuple[str, str]]) -> None:
         await self.db.execute(
             update(Organization)
-            .values(
-                messenger=[
-                    {"contact": contact, "description": description}
-                    for contact, description in messengers
-                ]
-            )
+            .values(messenger=[{"contact": contact, "description": description} for contact, description in messengers])
             .where(Organization.id == org_id)
         )
         await self.db.commit()

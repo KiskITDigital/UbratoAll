@@ -112,9 +112,7 @@ class OrganizationService:
         await self.profile_repository.update_contractor_info(org_id=org_id, description=description)
 
     async def set_contractor_locations(self, org_id: str, locations: List[ContractorLocation]) -> None:
-        self.contractor_index.update_locations(
-            contractor_id=org_id, locations=[id.city_id for id in locations]
-        )
+        self.contractor_index.update_locations(contractor_id=org_id, locations=[id.city_id for id in locations])
         await self.profile_repository.set_contractor_locations(org_id=org_id, locations=locations)
 
     async def set_contractor_services(self, org_id: str, services: List[ContractorService]) -> None:
@@ -140,9 +138,7 @@ class OrganizationService:
 
         await self.profile_repository.set_contractor_objects(org_id=org_id, objects=objects)
 
-    async def save_contractor_cv(
-        self, org_id: str, name: str, description: str, links: List[str]
-    ) -> str:
+    async def save_contractor_cv(self, org_id: str, name: str, description: str, links: List[str]) -> str:
         id = "cv_" + str(uuid.uuid4())
         cv: ContractorCV = ContractorCV(
             id=id,

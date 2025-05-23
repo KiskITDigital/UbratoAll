@@ -14,6 +14,4 @@ class Logs(Base):
     body: Mapped[str] = mapped_column(Text, nullable=False)
     code: Mapped[int] = mapped_column(SmallInteger, nullable=False)
     msg: Mapped[str] = mapped_column(Text, default="")
-    created_at: Mapped[datetime] = mapped_column(
-        TIMESTAMP(timezone=True), default=func.current_timestamp()
-    )
+    created_at: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), default=func.current_timestamp())

@@ -245,9 +245,7 @@ async def offer_tender(
     notice_service: NoticeService = Depends(),
     user: JWTUser = Depends(get_user),
 ) -> SuccessResponse:
-    await tender_service.make_offer(
-        contractor_id=contractor_id, tender_id=data.tender_id, user_id=user.id
-    )
+    await tender_service.make_offer(contractor_id=contractor_id, tender_id=data.tender_id, user_id=user.id)
     org = await org_service.get_organization_by_id(org_id=contractor_id)
     await notice_service.add_notice(
         user_id=org.user_id,

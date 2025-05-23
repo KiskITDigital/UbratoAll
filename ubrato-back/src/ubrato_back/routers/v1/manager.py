@@ -93,9 +93,7 @@ async def update_tender_verified_status(
     await notice_service.add_notice(
         user_id=tender.user_id,
         header=localization["notice"][notice_type]["header"],
-        msg=localization["notice"][notice_type]["text"].format(
-            tender.work_start.strftime("%d/%m/%Y в %H:%M")
-        ),
+        msg=localization["notice"][notice_type]["text"].format(tender.work_start.strftime("%d/%m/%Y в %H:%M")),
         href=localization["notice"][notice_type]["href"]["link"].format(tender_id),
         href_text=localization["notice"][notice_type]["href"]["text"],
         href_color=None,

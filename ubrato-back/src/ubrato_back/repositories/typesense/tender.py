@@ -25,17 +25,13 @@ class TenderIndex:
             )
 
     def update(self, tender: TypesenseTender, services: List[int], objects: List[int]) -> None:
-        self.db.collections["tender_index"].documents.update(
-            tender.__dict__, {"filter_by": f"id:{tender.id}"}
-        )
+        self.db.collections["tender_index"].documents.update(tender.__dict__, {"filter_by": f"id:{tender.id}"})
 
         self.db.collections["tender_service"].documents.delete({"filter_by": f"id:{tender.id}"})
         self.db.collections["tender_object"].documents.delete({"filter_by": f"id:{tender.id}"})
 
         for service in services:
-            self.db.collections["tender_service"].documents.create(
-                {"tender_id": tender.id, "service_type_id": service}
-            )
+            self.db.collections["tender_service"].documents.create({"tender_id": tender.id, "service_type_id": service})
 
         for object in objects:
             self.db.collections["tender_object"].documents.create(
@@ -43,6 +39,4 @@ class TenderIndex:
             )
 
     def update_verified_status(self, tender_id: int, verified: bool) -> None:
-        self.db.collections["tender_index"].documents.update(
-            {"verified": verified}, {"filter_by": f"id:{tender_id}"}
-        )
+        self.db.collections["tender_index"].documents.update({"verified": verified}, {"filter_by": f"id:{tender_id}"})

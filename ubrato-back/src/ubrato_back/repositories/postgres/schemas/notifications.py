@@ -17,8 +17,6 @@ class Notification(Base):
     href_text: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     href_color: Mapped[Optional[int]] = mapped_column(Integer, default=0)
     read: Mapped[bool] = mapped_column(Boolean, default=False)
-    created_at: Mapped[datetime] = mapped_column(
-        TIMESTAMP(timezone=True), default=func.current_timestamp()
-    )
+    created_at: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), default=func.current_timestamp())
 
     user = relationship("User", back_populates="notification")

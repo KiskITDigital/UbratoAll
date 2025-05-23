@@ -4,7 +4,12 @@ from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from ubrato_back.repositories.postgres.database import get_db_connection
-from ubrato_back.repositories.postgres.schemas import ObjectGroup, ObjectType, ServiceGroup, ServiceType
+from ubrato_back.repositories.postgres.schemas import (
+    ObjectGroup,
+    ObjectType,
+    ServiceGroup,
+    ServiceType,
+)
 from ubrato_back.schemas.models import (
     ObjectGroupWithTypes,
     ObjectsGroupsWithTypes,
@@ -29,15 +34,11 @@ class TagsRepository:
         groups_data: List[ObjectGroupWithTypes] = []
 
         for group in query.scalars().all():
-            query = await self.db.execute(
-                select(ObjectType).where(ObjectType.object_group_id == group.id)
-            )
+            query = await self.db.execute(select(ObjectType).where(ObjectType.object_group_id == group.id))
 
             types_in_group = query.scalars().all()
 
-            types_list = [
-                ObjectTypeModel(id=obj_type.id, name=obj_type.name) for obj_type in types_in_group
-            ]
+            types_list = [ObjectTypeModel(id=obj_type.id, name=obj_type.name) for obj_type in types_in_group]
             groups_data.append(ObjectGroupWithTypes(id=group.id, name=group.name, types=types_list))
 
         return ObjectsGroupsWithTypes(groups=groups_data)
@@ -50,15 +51,11 @@ class TagsRepository:
         groups_data: List[ServiceGroupWithTypes] = []
 
         for group in query.scalars().all():
-            query = await self.db.execute(
-                select(ServiceType).where(ServiceType.service_group_id == group.id)
-            )
+            query = await self.db.execute(select(ServiceType).where(ServiceType.service_group_id == group.id))
 
             types_in_group = query.scalars().all()
 
-            types_list = [
-                ServiceTypeModel(id=obj_type.id, name=obj_type.name) for obj_type in types_in_group
-            ]
+            types_list = [ServiceTypeModel(id=obj_type.id, name=obj_type.name) for obj_type in types_in_group]
             groups_data.append(ServiceGroupWithTypes(id=group.id, name=group.name, types=types_list))
 
         return ServicesGroupsWithTypes(groups=groups_data)

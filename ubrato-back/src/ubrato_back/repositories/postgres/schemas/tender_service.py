@@ -29,9 +29,7 @@ class TenderServiceType(Base):
     __tablename__ = "tender_services_types"
 
     tender_id: Mapped[int] = mapped_column(Integer, ForeignKey("tender.id"), primary_key=True)
-    service_type_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("services_types.id"), primary_key=True
-    )
+    service_type_id: Mapped[int] = mapped_column(Integer, ForeignKey("services_types.id"), primary_key=True)
 
     tender_service_type = relationship("ServiceType", back_populates="tender_service_type")
     tender = relationship("Tender", back_populates="tender_service_type")

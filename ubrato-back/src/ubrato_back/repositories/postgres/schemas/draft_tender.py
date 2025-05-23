@@ -1,7 +1,17 @@
 from datetime import datetime
 from typing import List, Optional
 
-from sqlalchemy import ARRAY, TIMESTAMP, Boolean, ForeignKey, Identity, Integer, String, Text, func
+from sqlalchemy import (
+    ARRAY,
+    TIMESTAMP,
+    Boolean,
+    ForeignKey,
+    Identity,
+    Integer,
+    String,
+    Text,
+    func,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from ubrato_back.repositories.postgres.schemas.base import Base
 

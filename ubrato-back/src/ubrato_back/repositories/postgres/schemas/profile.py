@@ -37,9 +37,7 @@ class ContractorService(Base):
     __tablename__ = "contractor_services"
 
     org_id: Mapped[str] = mapped_column(String(40), ForeignKey("organizations.id"), primary_key=True)
-    service_type_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("services_types.id"), primary_key=True
-    )
+    service_type_id: Mapped[int] = mapped_column(Integer, ForeignKey("services_types.id"), primary_key=True)
     price: Mapped[int] = mapped_column(Integer)
 
     org = relationship("Organization", back_populates="contractor_services")
@@ -50,9 +48,7 @@ class ContractorObject(Base):
     __tablename__ = "contractor_objects"
 
     org_id: Mapped[str] = mapped_column(String(40), ForeignKey("organizations.id"), primary_key=True)
-    object_type_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("objects_types.id"), primary_key=True
-    )
+    object_type_id: Mapped[int] = mapped_column(Integer, ForeignKey("objects_types.id"), primary_key=True)
 
     org = relationship("Organization", back_populates="contractor_objects")
     object_type = relationship("ObjectType", back_populates="contractor_objects", lazy="selectin")

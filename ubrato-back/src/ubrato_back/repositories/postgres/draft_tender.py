@@ -235,9 +235,7 @@ class DraftTenderRepository:
         )
 
     async def get_user_tenders(self, user_id: str) -> List[models.DraftTender]:
-        query = await self.db.execute(
-            select(DraftTender, City.name).join(City).where(DraftTender.user_id == user_id)
-        )
+        query = await self.db.execute(select(DraftTender, City.name).join(City).where(DraftTender.user_id == user_id))
 
         found_tenders = query.tuples().all()
 

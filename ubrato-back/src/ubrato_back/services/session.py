@@ -29,9 +29,7 @@ class SessionService:
     async def create_session(self, user_id: str) -> str:
         session_id = secrets.token_hex(32 // 2)
         expires_at = datetime.datetime.now() + datetime.timedelta(hours=self.time_live)
-        await self.session_repository.create(
-            session=Session(id=session_id, user_id=user_id, expires_at=expires_at)
-        )
+        await self.session_repository.create(session=Session(id=session_id, user_id=user_id, expires_at=expires_at))
         return session_id
 
     async def get_user_session_by_id(self, session_id: str) -> models.User:

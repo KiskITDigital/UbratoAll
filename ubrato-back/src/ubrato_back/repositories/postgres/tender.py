@@ -141,9 +141,7 @@ class TenderRepository:
             )
         )
 
-        floor_space_from_condition = (floor_space_from is None) or (
-            Tender.floor_space >= floor_space_from
-        )
+        floor_space_from_condition = (floor_space_from is None) or (Tender.floor_space >= floor_space_from)
 
         floor_space_to_condition = (floor_space_to is None) or (Tender.floor_space <= floor_space_to)
 
@@ -196,9 +194,7 @@ class TenderRepository:
         if found_tender is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config()
-                .Localization.config["errors"]["tenderid_not_found"]
-                .format(tender_id),
+                detail=get_config().Localization.config["errors"]["tenderid_not_found"].format(tender_id),
                 sql_msg="",
             )
 
@@ -217,24 +213,16 @@ class TenderRepository:
         if tender is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config()
-                .Localization.config["errors"]["tenderid_not_found"]
-                .format(tender_id),
+                detail=get_config().Localization.config["errors"]["tenderid_not_found"].format(tender_id),
                 sql_msg="",
             )
 
         tender.verified = verified
         await self.db.commit()
 
-    async def get_count_active_tenders(
-        self, object_type_id: Optional[int], service_type_ids: Optional[int]
-    ) -> int:
-        service_object_condition = (
-            object_type_id is None or TenderObjectType.object_type_id == object_type_id
-        )
-        service_type_condition = (
-            service_type_ids is None or TenderServiceType.service_type_id == service_type_ids
-        )
+    async def get_count_active_tenders(self, object_type_id: Optional[int], service_type_ids: Optional[int]) -> int:
+        service_object_condition = object_type_id is None or TenderObjectType.object_type_id == object_type_id
+        service_type_condition = service_type_ids is None or TenderServiceType.service_type_id == service_type_ids
 
         query = await self.db.execute(
             select(func.count(Tender.id))
@@ -456,9 +444,7 @@ class TenderRepository:
         if tender is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config()
-                .Localization.config["errors"]["tenderid_not_found"]
-                .format(tender_id),
+                detail=get_config().Localization.config["errors"]["tenderid_not_found"].format(tender_id),
                 sql_msg="",
             )
 
@@ -524,9 +510,7 @@ class TenderRepository:
         return tenders
 
     async def get_user_tenders(self, user_id: str) -> List[models.Tender]:
-        query = await self.db.execute(
-            select(Tender, City.name).join(City).where(Tender.user_id == user_id)
-        )
+        query = await self.db.execute(select(Tender, City.name).join(City).where(Tender.user_id == user_id))
 
         tenders: List[models.Tender] = []
 

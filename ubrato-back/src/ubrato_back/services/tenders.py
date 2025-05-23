@@ -181,9 +181,7 @@ class TenderService:
         await self.tender_repository.make_offer(contractor_id=contractor_id, tender_id=tender_id)
 
     async def is_already_got_offer(self, contractor_id: str, tender_id: int) -> bool:
-        return await self.tender_repository.is_offer_exist(
-            contractor_id=contractor_id, tender_id=tender_id
-        )
+        return await self.tender_repository.is_offer_exist(contractor_id=contractor_id, tender_id=tender_id)
 
     async def has_permission_make_offer(self, user_id: str, tender_id: int) -> bool:
         return await self.tender_repository.is_tender_owner(user_id=user_id, tender_id=tender_id)

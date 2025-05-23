@@ -134,14 +134,10 @@ class UserService:
         await self.user_repository.add_favorite_contratctor(user_id=user_id, contractor_id=contractor_id)
 
     async def remove_favorite_contratctor(self, user_id: str, contractor_id: str) -> None:
-        await self.user_repository.remove_favorite_contratctor(
-            user_id=user_id, contractor_id=contractor_id
-        )
+        await self.user_repository.remove_favorite_contratctor(user_id=user_id, contractor_id=contractor_id)
 
     async def is_favorite_contratctor(self, user_id: str, contractor_id: str) -> bool:
-        return await self.user_repository.is_favorite_contratctor(
-            user_id=user_id, contractor_id=contractor_id
-        )
+        return await self.user_repository.is_favorite_contratctor(user_id=user_id, contractor_id=contractor_id)
 
     async def list_favorite_contratctor(self, user_id: str) -> List[models.FavoriteContractor]:
         return await self.user_repository.get_favorite_contratctor(user_id=user_id)

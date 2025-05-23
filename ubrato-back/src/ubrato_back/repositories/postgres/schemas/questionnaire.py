@@ -12,8 +12,6 @@ class Questionnaire(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     answers: Mapped[List[str]] = mapped_column(ARRAY(Text))
     user_id: Mapped[str] = mapped_column(String(40), ForeignKey("users.id"), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(
-        TIMESTAMP(timezone=True), server_default=func.current_timestamp()
-    )
+    created_at: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), server_default=func.current_timestamp())
 
     user = relationship("User", back_populates="questionnaire")

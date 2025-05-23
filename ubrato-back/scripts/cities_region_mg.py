@@ -6,7 +6,7 @@ filter: list[str] = []
 for row in df.values:
     if len(filter) == 0:
         filter.append(row[4])
-    if filter[len(filter)-1] != row[4]:
+    if filter[len(filter) - 1] != row[4]:
         filter.append(row[4])
 
 print("INSERT INTO regions (name) VALUES")

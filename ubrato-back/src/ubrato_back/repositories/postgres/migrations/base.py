@@ -2,8 +2,12 @@ from ubrato_back.repositories.postgres.schemas.base import Base  # noqa: F401
 from ubrato_back.repositories.postgres.schemas.city import City  # noqa: F401
 from ubrato_back.repositories.postgres.schemas.document import Document, DocumentType  # noqa: F401
 from ubrato_back.repositories.postgres.schemas.draft_tender import DraftTender  # noqa: F401
-from ubrato_back.repositories.postgres.schemas.draft_tender_object import DraftTenderObjectType  # noqa: F401
-from ubrato_back.repositories.postgres.schemas.draft_tender_service import DraftTenderServiceType  # noqa: F401
+from ubrato_back.repositories.postgres.schemas.draft_tender_object import (
+    DraftTenderObjectType,
+)  # noqa: F401
+from ubrato_back.repositories.postgres.schemas.draft_tender_service import (
+    DraftTenderServiceType,
+)  # noqa: F401
 from ubrato_back.repositories.postgres.schemas.logs import Logs  # noqa: F401
 from ubrato_back.repositories.postgres.schemas.notifications import Notification  # noqa: F401
 from ubrato_back.repositories.postgres.schemas.organiztion import Organization  # noqa: F401
@@ -32,6 +36,12 @@ from ubrato_back.repositories.postgres.schemas.tender_service import (  # noqa: 
     TenderServiceType,
 )
 from ubrato_back.repositories.postgres.schemas.user import User  # noqa: F401
-from ubrato_back.repositories.postgres.schemas.user_favorite_contractor import UserFavoriteContractor  # noqa: F401
-from ubrato_back.repositories.postgres.schemas.user_favorite_tender import UserFavoriteTender  # noqa: F401
-from ubrato_back.repositories.postgres.schemas.verification_requests import VerificationRequest  # noqa: F401
+from ubrato_back.repositories.postgres.schemas.user_favorite_contractor import (
+    UserFavoriteContractor,
+)  # noqa: F401
+from ubrato_back.repositories.postgres.schemas.user_favorite_tender import (
+    UserFavoriteTender,
+)  # noqa: F401
+from ubrato_back.repositories.postgres.schemas.verification_requests import (
+    VerificationRequest,
+)  # noqa: F401

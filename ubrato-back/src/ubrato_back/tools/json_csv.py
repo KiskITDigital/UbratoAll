@@ -19,9 +19,7 @@ def flatten_json(json_obj, parent_key="", separator="/"):
 
 def convert_json_to_csv(json_data: List[Dict[str, Any]]) -> str:
     csv_content = StringIO()
-    writer = csv.DictWriter(
-        csv_content, fieldnames=flatten_json(json_data[0]).keys()
-    )
+    writer = csv.DictWriter(csv_content, fieldnames=flatten_json(json_data[0]).keys())
     writer.writeheader()
     for data in json_data:
         flattened_data = flatten_json(data)

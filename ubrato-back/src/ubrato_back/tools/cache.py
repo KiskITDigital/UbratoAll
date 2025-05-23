@@ -18,9 +18,7 @@ def redis_cache(
         @wraps(func)
         async def wrapper(*args: Any, **kwargs: Any) -> Any:
             redis_client = redis.get_db_connection()
-            filtered_kwargs = {
-                k: v for k, v in kwargs.items() if not any(isinstance(v, cls) for cls in ignore_classes)
-            }
+            filtered_kwargs = {k: v for k, v in kwargs.items() if not any(isinstance(v, cls) for cls in ignore_classes)}
             hash_sum = sha256()
             for _, value in filtered_kwargs.items():
                 hash_sum.update(str(value).encode())
