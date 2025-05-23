@@ -1,54 +1,38 @@
-FROM python:3.11.6-alpine3.18
+FROM python:3.13-slim-bookworm AS python-base
 
-ARG SERVER_PORT=3000
-ARG SERVER_ADDR=0.0.0.0
-ARG GIT_VERSION
-ARG DB_DSN
-ARG JWT_SECRET
-ARG JWT_TTL=20
-ARG SESSION_TTL=336
-ARG DADATA_TOKEN
-ARG REDIS_HOST
-ARG REDIS_PASSWORD
-ARG NATS_HOST
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONOPTIMIZE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_DEFAULT_TIMEOUT=100 \
+    APP_PATH="/app" \
+    UV_VERSION="0.6.14"
+#  PYTHONFAULTHANDLER=1 \
+#  PYTHONHASHSEED=random \
 
-ENV SERVER_PORT=${SERVER_PORT}
-ENV SERVER_ADDR=${SERVER_ADDR}
-ENV GIT_VERSION=${GIT_VERSION}
-ENV DB_DSN=${DB_DSN}
-ENV JWT_SECRET=${JWT_SECRET}
-ENV JWT_TTL=${JWT_TTL}
-ENV SESSION_TTL=${SESSION_TTL}
-ENV DADATA_TOKEN=${DADATA_TOKEN}
-ENV REDIS_HOST=${REDIS_HOST}
-ENV REDIS_PASSWORD=${REDIS_PASSWORD}
-ENV NATS_HOST=${NATS_HOST}
+ENV VIRTUAL_ENV="$APP_PATH/.venv"
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-ENV PYTHONFAULTHANDLER=1 \
-  PYTHONUNBUFFERED=1 \
-  PYTHONHASHSEED=random \
-  PIP_NO_CACHE_DIR=off \
-  PIP_DISABLE_PIP_VERSION_CHECK=on \
-  PIP_DEFAULT_TIMEOUT=100
+WORKDIR $APP_PATH
 
+FROM python-base AS builder
 
-RUN pip install poetry
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends gcc git \
+    && rm -rf /var/lib/apt/lists/
 
-WORKDIR /ubrato
-COPY poetry.lock pyproject.toml /ubrato/
+RUN pip install --no-cache-dir "uv==$UV_VERSION"
 
-COPY ./app /ubrato/app
-COPY ./scripts /ubrato/scripts
+COPY ./pyproject.toml ./uv.lock ./
+RUN uv venv -p 3.13 \
+    && uv sync --all-extras --no-install-project
+COPY ./src ./src
+RUN uv sync --all-extras --no-editable
 
-RUN poetry lock
+FROM python-base AS runner
 
-RUN poetry install
+COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
+COPY ./localization.toml ./
 
-EXPOSE $SERVER_PORT
-
-HEALTHCHECK --interval=10s --timeout=5s --start-period=5s --retries=3 \
-    CMD wget --no-verbose --tries=1 --spider http://0.0.0.0:${SERVER_PORT}/health/ || exit 1
-
-WORKDIR /ubrato/app
-
-ENTRYPOINT [ "poetry", "run", "uvicorn", "main:app" ]
+CMD ["ubrato_back"]

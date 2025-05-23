@@ -1,6 +1,11 @@
-version: '3.8'
-
 services:
+  api:
+    container_name: ubrato-back-api
+    image: ubrato-back-api
+    build:
+      context: .
+    restart: unless-stopped
+
   postgres:
     image: postgres
     container_name: ubrato-postgres
