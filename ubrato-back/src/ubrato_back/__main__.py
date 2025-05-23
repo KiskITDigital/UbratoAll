@@ -37,7 +37,7 @@ from ubrato_back.routers.v1 import (
 async def lifespan(app: FastAPI) -> AsyncGenerator[Any, Any]:
     nats_conn = get_nats_connection()
     typesense.get_db_connection()
-    redis.get_db_connection()
+    await redis.get_db_connection()
     await nats_conn.connect()
     yield
     await nats_conn.close()
@@ -106,7 +106,7 @@ app.add_exception_handler(Exception, internal_exception_hander)
 
 
 def main() -> None:
-    uvicorn.run(app)
+    uvicorn.run(app, host="0.0.0.0")
 
 
 if __name__ == "__main__":
