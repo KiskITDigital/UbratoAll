@@ -1,6 +1,7 @@
 import uuid
 
 from fastapi import Depends, Request
+
 from ubrato_back.repositories.postgres import LogsRepository
 from ubrato_back.repositories.postgres.schemas import Logs
 

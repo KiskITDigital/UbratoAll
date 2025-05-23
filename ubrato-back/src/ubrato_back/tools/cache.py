@@ -1,15 +1,16 @@
 import pickle
+from collections.abc import Awaitable, Callable
 from functools import wraps
 from hashlib import sha256
-from typing import Any, Awaitable, Callable, List, Optional, Type
+from typing import Any
 
 from ubrato_back.repositories import redis
 
 
 def redis_cache(
     ttl: int = 3600,
-    key: Optional[str] = None,
-    ignore_classes: Optional[List[Type[Any]]] = None,
+    key: str | None = None,
+    ignore_classes: list[type[Any]] | None = None,
 ) -> Callable[[Callable[..., Awaitable[Any]]], Callable[..., Awaitable[Any]]]:
     if ignore_classes is None:
         ignore_classes = []

@@ -2,12 +2,12 @@ from fastapi import Request, status
 from fastapi.encoders import jsonable_encoder
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+
 from ubrato_back.repositories.postgres.database import async_session_maker
 from ubrato_back.repositories.postgres.exceptions import RepositoryException
 from ubrato_back.repositories.postgres.logs import LogsRepository
 from ubrato_back.services.exceptions import AuthException, ServiceException
 from ubrato_back.services.logs import LogsService
-
 
 __all__ = ["AuthException", "ServiceException"]
 

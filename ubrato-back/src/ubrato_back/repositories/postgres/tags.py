@@ -1,8 +1,7 @@
-from typing import List
-
 from fastapi import Depends
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from ubrato_back.repositories.postgres.database import get_db_connection
 from ubrato_back.repositories.postgres.schemas import (
     ObjectGroup,
@@ -31,7 +30,7 @@ class TagsRepository:
     ) -> ObjectsGroupsWithTypes:
         query = await self.db.execute(select(ObjectGroup))
 
-        groups_data: List[ObjectGroupWithTypes] = []
+        groups_data: list[ObjectGroupWithTypes] = []
 
         for group in query.scalars().all():
             query = await self.db.execute(select(ObjectType).where(ObjectType.object_group_id == group.id))
@@ -48,7 +47,7 @@ class TagsRepository:
     ) -> ServicesGroupsWithTypes:
         query = await self.db.execute(select(ServiceGroup))
 
-        groups_data: List[ServiceGroupWithTypes] = []
+        groups_data: list[ServiceGroupWithTypes] = []
 
         for group in query.scalars().all():
             query = await self.db.execute(select(ServiceType).where(ServiceType.service_group_id == group.id))

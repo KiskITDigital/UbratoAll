@@ -1,5 +1,3 @@
-from typing import List, Optional
-
 from pydantic import BaseModel
 
 
@@ -23,17 +21,17 @@ class ContractorCV(BaseModel):
     id: str
     name: str
     description: str
-    links: List[str]
+    links: list[str]
 
 
 class CustomerProfile(BaseModel):
-    description: Optional[str]
-    locations: List[ProfileLocation]
+    description: str | None
+    locations: list[ProfileLocation]
 
 
 class ContractorProfile(BaseModel):
-    description: Optional[str]
-    locations: List[ProfileLocation]
-    services: List[ContractorPricing]
-    objects: List[ContractorObject]
-    portfolio: List[ContractorCV]
+    description: str | None
+    locations: list[ProfileLocation]
+    services: list[ContractorPricing]
+    objects: list[ContractorObject]
+    portfolio: list[ContractorCV]

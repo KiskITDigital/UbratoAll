@@ -1,8 +1,7 @@
-from typing import List
-
 from fastapi import Depends, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from ubrato_back.config import get_config
 from ubrato_back.repositories.postgres.database import get_db_connection
 from ubrato_back.repositories.postgres.exceptions import RepositoryException
@@ -30,7 +29,7 @@ class CitiesRepository:
             )
         return city
 
-    async def search_by_name(self, name: str) -> List[models.City]:
+    async def search_by_name(self, name: str) -> list[models.City]:
         query = await self.db.execute(
             select(City, Region.name)
             .join(Region, City.region_id == Region.id)
@@ -38,7 +37,7 @@ class CitiesRepository:
             .limit(10)
         )
 
-        cities: List[models.City] = []
+        cities: list[models.City] = []
         for found_city in query.all():
             city, region_name = found_city._tuple()
             city_model = models.City(

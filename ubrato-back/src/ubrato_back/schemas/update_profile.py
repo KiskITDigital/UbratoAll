@@ -1,16 +1,14 @@
-from typing import List
-
 from pydantic import BaseModel
 from pydantic_extra_types.phone_numbers import PhoneNumber
-from ubrato_back.schemas.models.organization import ContactInfo
 
+from ubrato_back.schemas.models.organization import ContactInfo
 
 PhoneNumber.phone_format = "E164"
 
 
 class UpdateCustomerProfileRequest(BaseModel):
     description: str
-    locations: List[int]
+    locations: list[int]
 
 
 class ContractorPricingRequest(BaseModel):
@@ -21,7 +19,7 @@ class ContractorPricingRequest(BaseModel):
 class ContractorCVRequest(BaseModel):
     name: str
     description: str
-    links: List[str]
+    links: list[str]
 
 
 class ContractorCVResponse(BaseModel):
@@ -30,9 +28,9 @@ class ContractorCVResponse(BaseModel):
 
 class UpdateContractorProfileRequest(BaseModel):
     description: str
-    locations: List[int]
-    services: List[ContractorPricingRequest]
-    objects: List[int]
+    locations: list[int]
+    services: list[ContractorPricingRequest]
+    objects: list[int]
 
 
 class UpdateBrandProfileRequest(BaseModel):
@@ -41,9 +39,9 @@ class UpdateBrandProfileRequest(BaseModel):
 
 
 class UpdateBrandContactRequest(BaseModel):
-    emails: List[ContactInfo]
-    phones: List[ContactInfo]
-    messengers: List[ContactInfo]
+    emails: list[ContactInfo]
+    phones: list[ContactInfo]
+    messengers: list[ContactInfo]
 
 
 class UpdAvatarRequest(BaseModel):

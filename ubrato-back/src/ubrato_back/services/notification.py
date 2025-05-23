@@ -1,6 +1,5 @@
-from typing import List, Optional
-
 from fastapi import Depends
+
 from ubrato_back.repositories.postgres import NotificationRepository
 from ubrato_back.schemas import models
 
@@ -17,11 +16,11 @@ class NoticeService:
     async def add_notice(
         self,
         user_id: str,
-        header: Optional[str],
-        msg: Optional[str],
-        href: Optional[str],
-        href_text: Optional[str],
-        href_color: Optional[int],
+        header: str | None,
+        msg: str | None,
+        href: str | None,
+        href_text: str | None,
+        href_color: int | None,
     ) -> None:
         return await self.notification_repository.add_notice(
             user_id=user_id,
@@ -42,5 +41,5 @@ class NoticeService:
             notifications=notifications,
         )
 
-    async def mark_read(self, ids: List[int], user_id: str) -> None:
+    async def mark_read(self, ids: list[int], user_id: str) -> None:
         await self.notification_repository.mark_read(ids=ids, user_id=user_id)

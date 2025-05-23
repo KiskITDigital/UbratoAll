@@ -1,5 +1,3 @@
-from typing import List
-
 from pydantic import BaseModel
 
 
@@ -18,8 +16,8 @@ class ObjectGroupWithTypes(BaseModel):
     id: int
     name: str
     total: int = 0
-    types: List[ObjectTypeModel]
+    types: list[ObjectTypeModel]
 
 
 class ObjectsGroupsWithTypes(BaseModel):
-    groups: List[ObjectGroupWithTypes]
+    groups: list[ObjectGroupWithTypes]

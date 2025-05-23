@@ -1,10 +1,11 @@
 import datetime
 import hashlib
 import uuid
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 from dadata import Dadata
 from fastapi import Depends, status
+
 from ubrato_back.config import get_config
 from ubrato_back.repositories.postgres import OrganizationRepository, ProfileRepository
 from ubrato_back.repositories.postgres.schemas import (
@@ -105,17 +106,17 @@ class OrganizationService:
     async def update_customer_info(self, org_id: str, description: str) -> None:
         await self.profile_repository.update_customer_info(org_id=org_id, description=description)
 
-    async def set_customer_locations(self, org_id: str, locations: List[CustomerLocation]) -> None:
+    async def set_customer_locations(self, org_id: str, locations: list[CustomerLocation]) -> None:
         await self.profile_repository.set_customer_location(org_id=org_id, locations=locations)
 
     async def update_contractor_info(self, org_id: str, description: str) -> None:
         await self.profile_repository.update_contractor_info(org_id=org_id, description=description)
 
-    async def set_contractor_locations(self, org_id: str, locations: List[ContractorLocation]) -> None:
+    async def set_contractor_locations(self, org_id: str, locations: list[ContractorLocation]) -> None:
         self.contractor_index.update_locations(contractor_id=org_id, locations=[id.city_id for id in locations])
         await self.profile_repository.set_contractor_locations(org_id=org_id, locations=locations)
 
-    async def set_contractor_services(self, org_id: str, services: List[ContractorService]) -> None:
+    async def set_contractor_services(self, org_id: str, services: list[ContractorService]) -> None:
         self.contractor_index.update_services(
             contractor_id=org_id,
             services=[
@@ -130,7 +131,7 @@ class OrganizationService:
 
         await self.profile_repository.set_contractor_services(org_id=org_id, services=services)
 
-    async def set_contractor_objects(self, org_id: str, objects: List[ContractorObject]) -> None:
+    async def set_contractor_objects(self, org_id: str, objects: list[ContractorObject]) -> None:
         self.contractor_index.update_objects(
             contractor_id=org_id,
             objects=[object.object_type_id for object in objects],
@@ -138,7 +139,7 @@ class OrganizationService:
 
         await self.profile_repository.set_contractor_objects(org_id=org_id, objects=objects)
 
-    async def save_contractor_cv(self, org_id: str, name: str, description: str, links: List[str]) -> str:
+    async def save_contractor_cv(self, org_id: str, name: str, description: str, links: list[str]) -> str:
         id = "cv_" + str(uuid.uuid4())
         cv: ContractorCV = ContractorCV(
             id=id,
@@ -149,13 +150,13 @@ class OrganizationService:
         )
         return await self.profile_repository.save_contractor_cv(cv=cv)
 
-    async def update_contractor_cv(self, cv_id: str, cv: Dict[str, Any]) -> None:
+    async def update_contractor_cv(self, cv_id: str, cv: dict[str, Any]) -> None:
         await self.profile_repository.update_contractor_cv(cv_id=cv_id, cv=cv)
 
     async def delete_contractor_cv(self, cv_id: str) -> None:
         await self.profile_repository.delete_contractor_cv(cv_id=cv_id)
 
-    async def get_contractor_cv(self, org_id: str) -> List[models.ContractorCV]:
+    async def get_contractor_cv(self, org_id: str) -> list[models.ContractorCV]:
         return await self.profile_repository.get_contractor_cv(org_id=org_id)
 
     async def get_contractor_cv_by_id(self, cv_id: str) -> ContractorCV:
@@ -170,9 +171,9 @@ class OrganizationService:
     async def set_brand_contact_info(
         self,
         org_id: str,
-        emails: List[Tuple[str, str]],
-        phones: List[Tuple[str, str]],
-        messengers: List[Tuple[str, str]],
+        emails: list[tuple[str, str]],
+        phones: list[tuple[str, str]],
+        messengers: list[tuple[str, str]],
     ) -> None:
         await self.profile_repository.set_brand_emails(org_id=org_id, emails=emails)
         await self.profile_repository.set_brand_phones(org_id=org_id, phones=phones)

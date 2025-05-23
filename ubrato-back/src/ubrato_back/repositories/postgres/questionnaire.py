@@ -1,8 +1,7 @@
-from typing import List
-
 from fastapi import Depends, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from ubrato_back.config import get_config
 from ubrato_back.repositories.postgres.database import get_db_connection
 from ubrato_back.repositories.postgres.exceptions import RepositoryException
@@ -17,7 +16,7 @@ class QuestionnaireRepository:
         self.db = db
         self.localization = get_config().Localization.config
 
-    async def save(self, answers: List[str], user_id: str) -> None:
+    async def save(self, answers: list[str], user_id: str) -> None:
         self.db.add(
             Questionnaire(
                 answers=answers,
@@ -26,7 +25,7 @@ class QuestionnaireRepository:
         )
         await self.db.commit()
 
-    async def get_page(self, page: int, page_size: int) -> List[models.QuestionnaireAnswer]:
+    async def get_page(self, page: int, page_size: int) -> list[models.QuestionnaireAnswer]:
         query = await self.db.execute(
             select(Questionnaire, User, Organization)
             .join(User, Questionnaire.user_id == User.id)
@@ -36,7 +35,7 @@ class QuestionnaireRepository:
             .offset((page - 1) * page_size)
         )
 
-        answers: List[models.QuestionnaireAnswer] = []
+        answers: list[models.QuestionnaireAnswer] = []
 
         for found_tender in query.all():
             answer, user, org = found_tender._tuple()
@@ -54,7 +53,7 @@ class QuestionnaireRepository:
 
         return answers
 
-    async def get_all(self) -> List[models.QuestionnaireAnswer]:
+    async def get_all(self) -> list[models.QuestionnaireAnswer]:
         query = await self.db.execute(
             select(Questionnaire, User, Organization)
             .join(User, Questionnaire.user_id == User.id)
@@ -62,7 +61,7 @@ class QuestionnaireRepository:
             .order_by(Questionnaire.created_at.desc())
         )
 
-        answers: List[models.QuestionnaireAnswer] = []
+        answers: list[models.QuestionnaireAnswer] = []
 
         for found_tender in query.all():
             answer, user, org = found_tender._tuple()

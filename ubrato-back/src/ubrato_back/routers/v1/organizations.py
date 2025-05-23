@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, status
+
 from ubrato_back.repositories.postgres.schemas import (
     ContractorLocation,
     ContractorObject,
@@ -20,7 +21,6 @@ from ubrato_back.schemas.update_profile import (
 )
 from ubrato_back.services import OrganizationService
 from ubrato_back.services.exceptions import ServiceException
-
 
 router = APIRouter(
     prefix="/v1/organizations",

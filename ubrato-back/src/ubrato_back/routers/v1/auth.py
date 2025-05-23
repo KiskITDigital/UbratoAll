@@ -1,6 +1,7 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Cookie, Depends, Response, status
+
 from ubrato_back.exceptions import ServiceException
 from ubrato_back.routers.v1.dependencies import authorized, get_user, localization
 from ubrato_back.schemas.change_password import ChangePasswordRequest
@@ -16,7 +17,6 @@ from ubrato_back.services import (
     SessionService,
     UserService,
 )
-
 
 router = APIRouter(
     prefix="/v1/auth",

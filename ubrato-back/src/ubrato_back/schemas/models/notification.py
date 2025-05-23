@@ -1,20 +1,19 @@
 from datetime import datetime
-from typing import List, Optional
 
 from pydantic import BaseModel
 
 
 class Notification(BaseModel):
     id: int
-    header: Optional[str]
-    msg: Optional[str]
-    href: Optional[str]
-    href_text: Optional[str]
-    href_color: Optional[int]
+    header: str | None
+    msg: str | None
+    href: str | None
+    href_text: str | None
+    href_color: int | None
     read: bool
     created_at: datetime
 
 
 class Notifications(BaseModel):
     total: int
-    notifications: List[Notification]
+    notifications: list[Notification]

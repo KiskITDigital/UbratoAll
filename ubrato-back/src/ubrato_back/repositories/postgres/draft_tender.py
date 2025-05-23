@@ -1,9 +1,10 @@
 from datetime import datetime
-from typing import Any, List
+from typing import Any
 
 from fastapi import Depends, status
 from sqlalchemy import and_, delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from ubrato_back.config import get_config
 from ubrato_back.repositories.postgres.database import get_db_connection
 from ubrato_back.repositories.postgres.exceptions import RepositoryException
@@ -30,8 +31,8 @@ class DraftTenderRepository:
     async def create_tender(
         self,
         tender: DraftTender,
-        service_type_ids: List[int],
-        object_type_ids: List[int],
+        service_type_ids: list[int],
+        object_type_ids: list[int],
     ) -> DraftTender:
         self.db.add(tender)
         await self.db.flush()
@@ -145,7 +146,7 @@ class DraftTenderRepository:
         self,
         tender: DraftTender,
     ) -> models.DraftTender:
-        services_type_names: List[int] = []
+        services_type_names: list[int] = []
 
         query = await self.db.execute(
             select(ServiceType.id)
@@ -179,7 +180,7 @@ class DraftTenderRepository:
         for id in query.scalars():
             services_groups_names[id] = None
 
-        objects_type_names: List[int] = []
+        objects_type_names: list[int] = []
 
         query = await self.db.execute(
             select(ObjectType.id)
@@ -234,12 +235,12 @@ class DraftTenderRepository:
             update_at=tender.update_at,
         )
 
-    async def get_user_tenders(self, user_id: str) -> List[models.DraftTender]:
+    async def get_user_tenders(self, user_id: str) -> list[models.DraftTender]:
         query = await self.db.execute(select(DraftTender, City.name).join(City).where(DraftTender.user_id == user_id))
 
         found_tenders = query.tuples().all()
 
-        tenders: List[models.DraftTender] = []
+        tenders: list[models.DraftTender] = []
 
         for found_tender in found_tenders:
             tender, city_name = found_tender

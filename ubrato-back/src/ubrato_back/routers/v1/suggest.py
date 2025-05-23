@@ -1,9 +1,7 @@
-from typing import List
-
 from fastapi import APIRouter, Depends, HTTPException, status
+
 from ubrato_back.schemas import models
 from ubrato_back.services import SuggestService
-
 
 router = APIRouter(
     prefix="/v1/suggest",
@@ -13,23 +11,23 @@ router = APIRouter(
 
 @router.get(
     "/city",
-    response_model=List[models.City],
+    response_model=list[models.City],
 )
 async def search_city(
     query: str,
     suggest_service: SuggestService = Depends(),
-) -> List[models.City]:
+) -> list[models.City]:
     return await suggest_service.search_city(query=query)
 
 
 @router.get(
     "/company",
-    response_model=List[models.EgrulCompany],
+    response_model=list[models.EgrulCompany],
 )
 async def search_company(
     query: str,
     suggest_service: SuggestService = Depends(),
-) -> List[models.EgrulCompany]:
+) -> list[models.EgrulCompany]:
     return await suggest_service.search_company(query=query)
 
 

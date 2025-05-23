@@ -2,6 +2,7 @@ import datetime
 import secrets
 
 from fastapi import Depends, status
+
 from ubrato_back.config import Config, get_config
 from ubrato_back.repositories.postgres import SessionRepository, UserRepository
 from ubrato_back.repositories.postgres.schemas import Session
@@ -24,7 +25,6 @@ class SessionService:
         self.session_repository = session_repository
         self.user_repository = user_repository
         self.localization = get_config().Localization.config
-        return
 
     async def create_session(self, user_id: str) -> str:
         session_id = secrets.token_hex(32 // 2)

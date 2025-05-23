@@ -1,6 +1,6 @@
 import csv
 from io import StringIO
-from typing import Any, Dict, List
+from typing import Any
 
 
 def flatten_json(json_obj, parent_key="", separator="/"):
@@ -17,7 +17,7 @@ def flatten_json(json_obj, parent_key="", separator="/"):
     return items
 
 
-def convert_json_to_csv(json_data: List[Dict[str, Any]]) -> str:
+def convert_json_to_csv(json_data: list[dict[str, Any]]) -> str:
     csv_content = StringIO()
     writer = csv.DictWriter(csv_content, fieldnames=flatten_json(json_data[0]).keys())
     writer.writeheader()

@@ -1,11 +1,11 @@
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
 
 from fastapi import status
 from sqlalchemy.exc import IntegrityError, OperationalError, SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+
 from ubrato_back.config import Config, get_config
 from ubrato_back.repositories.postgres.exceptions import RepositoryException
-
 
 config: Config = get_config()
 

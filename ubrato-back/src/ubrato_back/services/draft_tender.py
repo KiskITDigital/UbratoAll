@@ -1,6 +1,5 @@
-from typing import List
-
 from fastapi import Depends
+
 from ubrato_back.repositories.postgres import DraftTenderRepository, TagsRepository
 from ubrato_back.repositories.postgres.schemas import DraftTender
 from ubrato_back.schemas import models
@@ -58,7 +57,7 @@ class DraftTenderService:
             id=id,
         )
 
-    async def get_user_tenders(self, user_id: str) -> List[models.DraftTender]:
+    async def get_user_tenders(self, user_id: str) -> list[models.DraftTender]:
         return await self.tender_repository.get_user_tenders(
             user_id=user_id,
         )

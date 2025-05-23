@@ -1,7 +1,6 @@
-from typing import List, Optional
-
 from sqlalchemy import ARRAY, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from ubrato_back.repositories.postgres.schemas.base import Base
 
 
@@ -9,7 +8,7 @@ class CustomerProfile(Base):
     __tablename__ = "customer_profile"
 
     org_id: Mapped[str] = mapped_column(String(40), ForeignKey("organizations.id"), primary_key=True)
-    description: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    description: Mapped[str | None] = mapped_column(String, nullable=True)
 
     org = relationship("Organization", back_populates="customer_profile")
 
@@ -28,7 +27,7 @@ class ContractorProfile(Base):
     __tablename__ = "contractor_profile"
 
     org_id: Mapped[str] = mapped_column(String(40), ForeignKey("organizations.id"), primary_key=True)
-    description: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+    description: Mapped[str | None] = mapped_column(String, nullable=True)
 
     org = relationship("Organization", back_populates="contractor_profile")
 
@@ -61,7 +60,7 @@ class ContractorCV(Base):
     org_id: Mapped[str] = mapped_column(String(40), ForeignKey("organizations.id"), primary_key=True)
     name: Mapped[str] = mapped_column(String(50))
     description: Mapped[str] = mapped_column(String)
-    links: Mapped[List[str]] = mapped_column(ARRAY(String))
+    links: Mapped[list[str]] = mapped_column(ARRAY(String))
 
     org = relationship("Organization", back_populates="contractor_cv")
 

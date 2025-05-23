@@ -1,6 +1,6 @@
-from ubrato_back.config import Config, get_config
 from typesense.client import Client
 
+from ubrato_back.config import Config, get_config
 
 config: Config = get_config()
 

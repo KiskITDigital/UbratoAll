@@ -1,9 +1,9 @@
 import uuid
-from typing import Dict, List, Optional
 
 from fastapi import Depends, status
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from ubrato_back.config import get_config
 from ubrato_back.repositories.postgres.database import get_db_connection
 from ubrato_back.repositories.postgres.exceptions import RepositoryException
@@ -21,10 +21,10 @@ class VerificationRepository:
     def __init__(self, db: AsyncSession = Depends(get_db_connection)) -> None:
         self.db = db
 
-    async def get_doc_types(self) -> Dict[str, int]:
+    async def get_doc_types(self) -> dict[str, int]:
         query = await self.db.execute(select(DocumentType))
 
-        doc_types: Dict[str, int] = {}
+        doc_types: dict[str, int] = {}
 
         for doc_type in query.scalars().all():
             doc_types[doc_type.name] = doc_type.id
@@ -41,11 +41,11 @@ class VerificationRepository:
     async def get_user_doc(
         self,
         user_id: str,
-    ) -> List[models.VerificationDoc]:
+    ) -> list[models.VerificationDoc]:
         query = await self.db.execute(
             select(Document, DocumentType.name).join(DocumentType).where(Document.user_id == user_id)
         )
-        docs: List[models.VerificationDoc] = []
+        docs: list[models.VerificationDoc] = []
 
         for doc_info in query.all():
             doc, type_name = doc_info._tuple()
@@ -84,7 +84,7 @@ class VerificationRepository:
         )
         await self.db.commit()
 
-    async def response_verification_requests(self, verf_id: str, is_verified: bool, msg: Optional[str]) -> None:
+    async def response_verification_requests(self, verf_id: str, is_verified: bool, msg: str | None) -> None:
         query = await self.db.execute(select(VerificationRequest).where(VerificationRequest.id == verf_id))
         verf_req = query.scalar_one_or_none()
         if verf_req is None:
@@ -111,10 +111,10 @@ class VerificationRepository:
             )
         return verf_req
 
-    async def get_verification_history(self, user_id: str) -> List[models.VerificationInfo]:
+    async def get_verification_history(self, user_id: str) -> list[models.VerificationInfo]:
         query = await self.db.execute(select(VerificationRequest).where(VerificationRequest.user_id == user_id))
 
-        verf_req_list: List[models.VerificationInfo] = []
+        verf_req_list: list[models.VerificationInfo] = []
 
         for verf_req in query.scalars().all():
             verf_req_list.append(

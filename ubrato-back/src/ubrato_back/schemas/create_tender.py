@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import List
 
 from pydantic import BaseModel
 
@@ -13,9 +12,9 @@ class CreateTenderRequest(BaseModel):
     description: str
     wishes: str
     specification: str
-    attachments: List[str]
-    services_types: List[int]
-    objects_types: List[int]
+    attachments: list[str]
+    services_types: list[int]
+    objects_types: list[int]
     reception_start: datetime
     reception_end: datetime
     work_start: datetime

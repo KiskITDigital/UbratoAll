@@ -1,8 +1,7 @@
-from typing import List, Optional
-
 from fastapi import Depends
 from sqlalchemy import and_, select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from ubrato_back.repositories.postgres.database import get_db_connection
 from ubrato_back.repositories.postgres.schemas import Notification
 from ubrato_back.schemas import models
@@ -17,11 +16,11 @@ class NotificationRepository:
     async def add_notice(
         self,
         user_id: str,
-        header: Optional[str],
-        msg: Optional[str],
-        href: Optional[str],
-        href_text: Optional[str],
-        href_color: Optional[int],
+        header: str | None,
+        msg: str | None,
+        href: str | None,
+        href_text: str | None,
+        href_color: int | None,
     ) -> None:
         self.db.add(
             Notification(
@@ -36,16 +35,16 @@ class NotificationRepository:
 
         await self.db.commit()
 
-    async def get_user_notice(self, user_id: str) -> List[models.Notification]:
+    async def get_user_notice(self, user_id: str) -> list[models.Notification]:
         query = await self.db.execute(select(Notification).where(Notification.user_id == user_id))
 
-        notifications: List[models.Notification] = []
+        notifications: list[models.Notification] = []
         for notice in query.scalars():
             notifications.append(models.Notification(**notice.__dict__))
 
         return notifications
 
-    async def mark_read(self, ids: List[int], user_id: str) -> None:
+    async def mark_read(self, ids: list[int], user_id: str) -> None:
         query = await self.db.execute(
             select(Notification).where(and_(Notification.user_id == user_id, Notification.id.in_(ids)))
         )

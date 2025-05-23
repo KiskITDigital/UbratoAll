@@ -1,9 +1,9 @@
-from datetime import datetime, timezone
-from typing import List, Tuple
+from datetime import UTC, datetime
 
 from fastapi import Depends, status
 from sqlalchemy import and_, delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from ubrato_back.config import get_config
 from ubrato_back.repositories.postgres.database import get_db_connection
 from ubrato_back.repositories.postgres.exceptions import RepositoryException
@@ -23,7 +23,7 @@ class UserRepository:
     def __init__(self, db: AsyncSession = Depends(get_db_connection)) -> None:
         self.db = db
 
-    async def create(self, user: User, org: Organization) -> Tuple[models.User, models.Organization]:
+    async def create(self, user: User, org: Organization) -> tuple[models.User, models.Organization]:
         self.db.add(user)
         await self.db.flush()
         org.user_id = user.id
@@ -74,9 +74,9 @@ class UserRepository:
 
     async def get_all_users(
         self,
-    ) -> List[models.User]:
+    ) -> list[models.User]:
         query = await self.db.execute(select(User).where(User.deleted_at.is_(None)))
-        users: List[models.User] = []
+        users: list[models.User] = []
 
         for user in query:
             users.append(models.User(**user.__dict__))
@@ -145,7 +145,7 @@ class UserRepository:
 
         return query.scalar() is not None
 
-    async def get_favorite_contratctor(self, user_id: str) -> List[models.FavoriteContractor]:
+    async def get_favorite_contratctor(self, user_id: str) -> list[models.FavoriteContractor]:
         query = await self.db.execute(
             select(UserFavoriteContractor.contractor_id, Organization.brand_name)
             .join(
@@ -155,7 +155,7 @@ class UserRepository:
             .where(UserFavoriteContractor.user_id == user_id)
         )
 
-        contractors: List[models.FavoriteContractor] = []
+        contractors: list[models.FavoriteContractor] = []
 
         for contractor in query.all():
             id, name = contractor.tuple()
@@ -198,6 +198,6 @@ class UserRepository:
         await self.db.commit()
 
     async def delete_user(self, user_id: str) -> None:
-        stmt = update(User).values(deleted_at=datetime.now(tz=timezone.utc)).filter_by(id=user_id)
+        stmt = update(User).values(deleted_at=datetime.now(tz=UTC)).filter_by(id=user_id)
         await self.db.execute(stmt)
         await self.db.commit()

@@ -1,9 +1,9 @@
 from datetime import datetime
-from typing import List, Optional
 
 from sqlalchemy import TIMESTAMP, ForeignKey, Integer, String, func
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from ubrato_back.repositories.postgres.schemas.base import Base
 from ubrato_back.schemas import models
 
@@ -21,10 +21,10 @@ class Organization(Base):
     kpp: Mapped[str] = mapped_column(String(12), nullable=False)
     tax_code: Mapped[int] = mapped_column(Integer, nullable=False)
     address: Mapped[str] = mapped_column(String(255), nullable=False)
-    avatar: Mapped[Optional[str]] = mapped_column(String(255), nullable=True)
-    email: Mapped[List[dict[str, str]]] = mapped_column(JSONB, default=[], nullable=True)
-    phone: Mapped[List[dict[str, str]]] = mapped_column(JSONB, default=[], nullable=True)
-    messenger: Mapped[List[dict[str, str]]] = mapped_column(JSONB, default=[], nullable=True)
+    avatar: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    email: Mapped[list[dict[str, str]]] = mapped_column(JSONB, default=[], nullable=True)
+    phone: Mapped[list[dict[str, str]]] = mapped_column(JSONB, default=[], nullable=True)
+    messenger: Mapped[list[dict[str, str]]] = mapped_column(JSONB, default=[], nullable=True)
     user_id: Mapped[str] = mapped_column(String(40), ForeignKey("users.id"), nullable=False)
     update_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True),
@@ -42,15 +42,15 @@ class Organization(Base):
     contractor_locations = relationship("ContractorLocation", back_populates="org")
 
     def to_model(self) -> models.Organization:
-        email: List[models.ContactInfo] = []
+        email: list[models.ContactInfo] = []
         for info in self.email:
             email.append(models.ContactInfo(contact=info["contact"], info=info["description"]))
 
-        phone: List[models.ContactInfo] = []
+        phone: list[models.ContactInfo] = []
         for info in self.phone:
             phone.append(models.ContactInfo(contact=info["contact"], info=info["description"]))
 
-        messenger: List[models.ContactInfo] = []
+        messenger: list[models.ContactInfo] = []
         for info in self.messenger:
             messenger.append(models.ContactInfo(contact=info["contact"], info=info["description"]))
 

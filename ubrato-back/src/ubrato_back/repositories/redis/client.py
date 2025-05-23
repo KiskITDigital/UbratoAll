@@ -1,6 +1,6 @@
 from redis import asyncio as aioredis
-from ubrato_back.config import Config, get_config
 
+from ubrato_back.config import Config, get_config
 
 config: Config = get_config()
 

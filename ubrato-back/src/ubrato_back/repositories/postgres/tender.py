@@ -1,9 +1,10 @@
 from datetime import datetime
-from typing import Any, List, Optional
+from typing import Any
 
 from fastapi import Depends, status
 from sqlalchemy import and_, delete, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from ubrato_back.config import get_config
 from ubrato_back.repositories.postgres.database import get_db_connection
 from ubrato_back.repositories.postgres.exceptions import RepositoryException
@@ -33,8 +34,8 @@ class TenderRepository:
     async def create_tender(
         self,
         tender: Tender,
-        service_type_ids: List[int],
-        object_type_ids: List[int],
+        service_type_ids: list[int],
+        object_type_ids: list[int],
     ) -> Tender:
         self.db.add(tender)
         await self.db.flush()
@@ -114,17 +115,17 @@ class TenderRepository:
         self,
         page: int,
         page_size: int,
-        object_group_id: Optional[int],
-        object_type_id: Optional[int],
-        service_type_ids: Optional[List[int]],
-        service_group_ids: Optional[List[int]],
-        floor_space_from: Optional[int],
-        floor_space_to: Optional[int],
-        price_from: Optional[int],
-        price_to: Optional[int],
-        verified: Optional[bool],
-        user_id: Optional[str],
-    ) -> List[models.Tender]:
+        object_group_id: int | None,
+        object_type_id: int | None,
+        service_type_ids: list[int] | None,
+        service_group_ids: list[int] | None,
+        floor_space_from: int | None,
+        floor_space_to: int | None,
+        price_from: int | None,
+        price_to: int | None,
+        verified: bool | None,
+        user_id: str | None,
+    ) -> list[models.Tender]:
         reception_end_condition = Tender.reception_end > datetime.now()
 
         service_type_condition = (service_type_ids is None) or and_(
@@ -173,7 +174,7 @@ class TenderRepository:
             .limit(page_size)
             .offset((page - 1) * page_size)
         )
-        tenders: List[models.Tender] = []
+        tenders: list[models.Tender] = []
 
         for found_tender in query.all():
             tender, city_name = found_tender._tuple()
@@ -220,7 +221,7 @@ class TenderRepository:
         tender.verified = verified
         await self.db.commit()
 
-    async def get_count_active_tenders(self, object_type_id: Optional[int], service_type_ids: Optional[int]) -> int:
+    async def get_count_active_tenders(self, object_type_id: int | None, service_type_ids: int | None) -> int:
         service_object_condition = object_type_id is None or TenderObjectType.object_type_id == object_type_id
         service_type_condition = service_type_ids is None or TenderServiceType.service_type_id == service_type_ids
 
@@ -256,7 +257,7 @@ class TenderRepository:
 
         return 0
 
-    async def get_services_groups(self, service_type_ids: List[int]) -> List[int]:
+    async def get_services_groups(self, service_type_ids: list[int]) -> list[int]:
         query = await self.db.execute(
             select(ServiceGroup.id)
             .select_from(ServiceGroup)
@@ -265,7 +266,7 @@ class TenderRepository:
         )
 
         result = query.scalars()
-        groups: List[int] = []
+        groups: list[int] = []
         for v in result.all():
             groups.append(v)
 
@@ -276,7 +277,7 @@ class TenderRepository:
         tender: Tender,
         city_name: str,
     ) -> models.Tender:
-        services_type_names: dict[int, List[str]] = {}
+        services_type_names: dict[int, list[str]] = {}
 
         query = await self.db.execute(
             select(ServiceType.name, ServiceType.service_group_id)
@@ -293,7 +294,7 @@ class TenderRepository:
                 services_type_names[service_group_id] = []
             services_type_names[service_group_id].append(service_name)
 
-        services_groups_names: dict[str, List[str]] = {}
+        services_groups_names: dict[str, list[str]] = {}
 
         query = await self.db.execute(
             select(ServiceGroup.name, ServiceGroup.id)
@@ -316,7 +317,7 @@ class TenderRepository:
                 services_groups_names[service_group_name] = []
             services_groups_names[service_group_name] = services_type_names[service_group_id]
 
-        object_type_names: List[str] = []
+        object_type_names: list[str] = []
 
         query = await self.db.execute(
             select(ObjectType.name)
@@ -354,9 +355,9 @@ class TenderRepository:
                 sql_msg="failed format tender",
             )
 
-        catergories: List[models.Category] = []
+        catergories: list[models.Category] = []
 
-        for name in services_groups_names.keys():
+        for name in services_groups_names:
             catergories.append(models.Category(name=name, services=services_groups_names[name]))
 
         return models.Tender(
@@ -383,7 +384,7 @@ class TenderRepository:
             verified=tender.verified,
         )
 
-    async def respond_tender(self, tender_id: int, user_id: str, price: Optional[int]) -> None:
+    async def respond_tender(self, tender_id: int, user_id: str, price: int | None) -> None:
         self.db.add(TenderRespond(tender_id=tender_id, user_id=user_id, price=price))
         await self.db.commit()
 
@@ -411,7 +412,7 @@ class TenderRepository:
 
         return query.scalar() is not None
 
-    async def get_user_responses(self, user_id: str) -> List[TenderRespond]:
+    async def get_user_responses(self, user_id: str) -> list[TenderRespond]:
         query = await self.db.execute(
             select(TenderRespond).where(
                 TenderRespond.user_id == user_id,
@@ -484,7 +485,7 @@ class TenderRepository:
 
         await self.db.commit()
 
-    async def get_user_favorites(self, user_id: str) -> List[models.Tender]:
+    async def get_user_favorites(self, user_id: str) -> list[models.Tender]:
         query = await self.db.execute(
             select(Tender, City.name)
             .join(City, Tender.city_id == City.id)
@@ -496,7 +497,7 @@ class TenderRepository:
             )
         )
 
-        tenders: List[models.Tender] = []
+        tenders: list[models.Tender] = []
 
         for found_tender in query.all():
             tender, city_name = found_tender._tuple()
@@ -509,10 +510,10 @@ class TenderRepository:
 
         return tenders
 
-    async def get_user_tenders(self, user_id: str) -> List[models.Tender]:
+    async def get_user_tenders(self, user_id: str) -> list[models.Tender]:
         query = await self.db.execute(select(Tender, City.name).join(City).where(Tender.user_id == user_id))
 
-        tenders: List[models.Tender] = []
+        tenders: list[models.Tender] = []
 
         for found_tender in query.all():
             tender, city_name = found_tender._tuple()
@@ -525,7 +526,7 @@ class TenderRepository:
 
         return tenders
 
-    async def get_tender_responses(self, tender_id: int) -> List[models.TenderResponse]:
+    async def get_tender_responses(self, tender_id: int) -> list[models.TenderResponse]:
         query = await self.db.execute(
             select(Organization, TenderRespond)
             .join(
@@ -535,7 +536,7 @@ class TenderRepository:
             .where(TenderRespond.tender_id == tender_id)
         )
 
-        tenders: List[models.TenderResponse] = []
+        tenders: list[models.TenderResponse] = []
 
         for found_tender in query.all():
             org, response = found_tender._tuple()

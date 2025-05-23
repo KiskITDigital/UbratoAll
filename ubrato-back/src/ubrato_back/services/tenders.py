@@ -1,6 +1,5 @@
-from typing import List, Optional
-
 from fastapi import Depends, status
+
 from ubrato_back.config import get_config
 from ubrato_back.repositories.postgres import TagsRepository, TenderRepository
 from ubrato_back.repositories.postgres.schemas import Tender
@@ -72,17 +71,17 @@ class TenderService:
         self,
         page: int,
         page_size: int,
-        object_group_id: Optional[int],
-        object_type_id: Optional[int],
-        service_type_ids: Optional[List[int]],
-        service_group_ids: Optional[List[int]],
-        floor_space_from: Optional[int],
-        floor_space_to: Optional[int],
-        price_from: Optional[int],
-        price_to: Optional[int],
-        verified: Optional[bool],
-        user_id: Optional[str],
-    ) -> List[models.Tender]:
+        object_group_id: int | None,
+        object_type_id: int | None,
+        service_type_ids: list[int] | None,
+        service_group_ids: list[int] | None,
+        floor_space_from: int | None,
+        floor_space_to: int | None,
+        price_from: int | None,
+        price_to: int | None,
+        verified: bool | None,
+        user_id: str | None,
+    ) -> list[models.Tender]:
         return await self.tender_repository.get_page_tenders(
             page=page,
             page_size=page_size,
@@ -134,8 +133,8 @@ class TenderService:
 
     async def get_count_active_tenders(
         self,
-        object_type_id: Optional[int],
-        service_type_id: Optional[int],
+        object_type_id: int | None,
+        service_type_id: int | None,
     ) -> int:
         return await self.tender_repository.get_count_active_tenders(
             object_type_id=object_type_id, service_type_ids=service_type_id
@@ -156,7 +155,7 @@ class TenderService:
             objects=tender.objects_types,
         )
 
-    async def respond_tender(self, tender_id: int, user_id: str, price: Optional[int]) -> None:
+    async def respond_tender(self, tender_id: int, user_id: str, price: int | None) -> None:
         await self.tender_repository.respond_tender(tender_id=tender_id, user_id=user_id, price=price)
 
     async def is_responded(self, tender_id: int, user_id: str) -> bool:
@@ -195,8 +194,8 @@ class TenderService:
     async def is_favorite(self, user_id: str, tender_id: int) -> bool:
         return await self.tender_repository.is_favorite(tender_id=tender_id, user_id=user_id)
 
-    async def get_user_tenders(self, user_id: str) -> List[models.Tender]:
+    async def get_user_tenders(self, user_id: str) -> list[models.Tender]:
         return await self.tender_repository.get_user_tenders(user_id=user_id)
 
-    async def get_tender_responses(self, tender_id: int) -> List[models.TenderResponse]:
+    async def get_tender_responses(self, tender_id: int) -> list[models.TenderResponse]:
         return await self.tender_repository.get_tender_responses(tender_id=tender_id)

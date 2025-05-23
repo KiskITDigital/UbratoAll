@@ -1,6 +1,5 @@
-from typing import List
-
 from fastapi import APIRouter, Depends, status
+
 from ubrato_back.repositories.postgres.exceptions import RepositoryException
 from ubrato_back.routers.v1.dependencies import authorized, get_user
 from ubrato_back.schemas import models
@@ -17,7 +16,6 @@ from ubrato_back.services import (
     UserService,
     VerificationService,
 )
-
 
 router = APIRouter(
     prefix="/v1/users",
@@ -45,7 +43,7 @@ async def user_requires_verification(
 
 @router.get(
     "/me/verification/history",
-    response_model=List[models.VerificationInfo],
+    response_model=list[models.VerificationInfo],
     responses={
         status.HTTP_400_BAD_REQUEST: {"model": ExceptionResponse},
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
@@ -56,7 +54,7 @@ async def user_requires_verification(
 async def user_verification_history(
     verf_service: VerificationService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> List[models.VerificationInfo]:
+) -> list[models.VerificationInfo]:
     return await verf_service.get_verification_history(user_id=user.id)
 
 
@@ -216,7 +214,7 @@ async def is_favorite_contractor(
 
 @router.get(
     "/me/favorite_contractors",
-    response_model=List[models.FavoriteContractor],
+    response_model=list[models.FavoriteContractor],
     responses={
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
     },
@@ -225,7 +223,7 @@ async def is_favorite_contractor(
 async def list_favorite_contractor(
     user_service: UserService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> List[models.FavoriteContractor]:
+) -> list[models.FavoriteContractor]:
     return await user_service.list_favorite_contratctor(user_id=user.id)
 
 
@@ -260,7 +258,7 @@ async def offer_tender(
 
 @router.get(
     "/me/favorite_tenders",
-    response_model=List[models.Tender],
+    response_model=list[models.Tender],
     responses={
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
     },
@@ -269,7 +267,7 @@ async def offer_tender(
 async def list_favorite_tenders(
     user_service: UserService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> List[models.Tender]:
+) -> list[models.Tender]:
     return await user_service.list_favorite_tenders(user_id=user.id)
 
 

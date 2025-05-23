@@ -1,10 +1,10 @@
 import uuid
 from hashlib import md5
-from typing import List, Tuple
 
 import bcrypt
 import pyotp
 from fastapi import Depends, status
+
 from ubrato_back.broker.nats import NatsClient, get_nats_connection
 from ubrato_back.broker.topic import EMAIL_CONFIRMATION_TOPIC, EMAIL_RESET_PASS_TOPIC
 from ubrato_back.config import get_config
@@ -48,7 +48,7 @@ class UserService:
         is_contractor: bool,
         avatar: str,
         org: Organization,
-    ) -> Tuple[models.User, models.Organization]:
+    ) -> tuple[models.User, models.Organization]:
         id = "usr_" + str(uuid.uuid4())
 
         password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
@@ -139,10 +139,10 @@ class UserService:
     async def is_favorite_contratctor(self, user_id: str, contractor_id: str) -> bool:
         return await self.user_repository.is_favorite_contratctor(user_id=user_id, contractor_id=contractor_id)
 
-    async def list_favorite_contratctor(self, user_id: str) -> List[models.FavoriteContractor]:
+    async def list_favorite_contratctor(self, user_id: str) -> list[models.FavoriteContractor]:
         return await self.user_repository.get_favorite_contratctor(user_id=user_id)
 
-    async def list_favorite_tenders(self, user_id: str) -> List[models.Tender]:
+    async def list_favorite_tenders(self, user_id: str) -> list[models.Tender]:
         return await self.tender_repository.get_user_favorites(user_id=user_id)
 
     async def confirm_email(self, user_id: str) -> None:

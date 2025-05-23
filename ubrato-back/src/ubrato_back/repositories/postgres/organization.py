@@ -3,6 +3,7 @@ from datetime import datetime
 from fastapi import Depends, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from ubrato_back.config import get_config
 from ubrato_back.repositories.postgres.database import get_db_connection
 from ubrato_back.repositories.postgres.exceptions import RepositoryException

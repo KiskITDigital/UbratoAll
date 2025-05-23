@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import List, Optional
 
 from sqlalchemy import (
     ARRAY,
@@ -13,6 +12,7 @@ from sqlalchemy import (
     func,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from ubrato_back.repositories.postgres.schemas.base import Base
 
 
@@ -22,28 +22,26 @@ class DraftTender(Base):
     id: Mapped[int] = mapped_column(Integer, Identity(start=1, cycle=True), primary_key=True)
     user_id: Mapped[str] = mapped_column(String(40), ForeignKey("users.id"))
     name: Mapped[str] = mapped_column(String(255), nullable=False)
-    price: Mapped[Optional[int]] = mapped_column(Integer, nullable=False)
-    is_contract_price: Mapped[Optional[bool]] = mapped_column(Boolean, nullable=False)
-    is_nds_price: Mapped[Optional[bool]] = mapped_column(Boolean, nullable=False)
-    city_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey("cities.id"), nullable=False)
-    floor_space: Mapped[Optional[int]] = mapped_column(Integer, nullable=False)
-    description: Mapped[Optional[str]] = mapped_column(String(400))
-    wishes: Mapped[Optional[str]] = mapped_column(String(400))
-    specification: Mapped[Optional[str]] = mapped_column(String(400))
-    attachments: Mapped[Optional[List[str]]] = mapped_column(ARRAY(Text))
-    reception_start: Mapped[Optional[datetime]] = mapped_column(
+    price: Mapped[int | None] = mapped_column(Integer, nullable=False)
+    is_contract_price: Mapped[bool | None] = mapped_column(Boolean, nullable=False)
+    is_nds_price: Mapped[bool | None] = mapped_column(Boolean, nullable=False)
+    city_id: Mapped[int | None] = mapped_column(Integer, ForeignKey("cities.id"), nullable=False)
+    floor_space: Mapped[int | None] = mapped_column(Integer, nullable=False)
+    description: Mapped[str | None] = mapped_column(String(400))
+    wishes: Mapped[str | None] = mapped_column(String(400))
+    specification: Mapped[str | None] = mapped_column(String(400))
+    attachments: Mapped[list[str] | None] = mapped_column(ARRAY(Text))
+    reception_start: Mapped[datetime | None] = mapped_column(
         TIMESTAMP(timezone=True), server_default=func.current_timestamp()
     )
-    reception_end: Mapped[Optional[datetime]] = mapped_column(
+    reception_end: Mapped[datetime | None] = mapped_column(
         TIMESTAMP(timezone=True), server_default=func.current_timestamp()
     )
-    work_start: Mapped[Optional[datetime]] = mapped_column(
+    work_start: Mapped[datetime | None] = mapped_column(
         TIMESTAMP(timezone=True), server_default=func.current_timestamp()
     )
-    work_end: Mapped[Optional[datetime]] = mapped_column(
-        TIMESTAMP(timezone=True), server_default=func.current_timestamp()
-    )
-    update_at: Mapped[Optional[datetime]] = mapped_column(
+    work_end: Mapped[datetime | None] = mapped_column(TIMESTAMP(timezone=True), server_default=func.current_timestamp())
+    update_at: Mapped[datetime | None] = mapped_column(
         TIMESTAMP(timezone=True), server_default=func.current_timestamp()
     )
 

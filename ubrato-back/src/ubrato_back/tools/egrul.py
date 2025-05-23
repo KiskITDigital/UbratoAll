@@ -1,13 +1,11 @@
-from typing import List
-
 import requests
-from ubrato_back.schemas import models
 
+from ubrato_back.schemas import models
 
 EGRUL_URL = "https://egrul.nalog.ru/"
 
 
-def get_org_by_query(query: str) -> List[models.EgrulCompany]:
+def get_org_by_query(query: str) -> list[models.EgrulCompany]:
     form_data = {
         "vyp3CaptchaToken": "",
         "page": "",
@@ -20,7 +18,7 @@ def get_org_by_query(query: str) -> List[models.EgrulCompany]:
 
     response = requests.get(EGRUL_URL + "search-result/" + response.json()["t"])
 
-    companies: List[models.EgrulCompany] = []
+    companies: list[models.EgrulCompany] = []
 
     for company_data in response.json()["rows"]:
         company = models.EgrulCompany(

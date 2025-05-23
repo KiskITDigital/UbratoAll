@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import List
 
 from sqlalchemy import (
     ARRAY,
@@ -13,6 +12,7 @@ from sqlalchemy import (
     func,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from ubrato_back.repositories.postgres.schemas.base import Base
 from ubrato_back.repositories.typesense.schemas import TypesenseTender
 
@@ -30,7 +30,7 @@ class Tender(Base):
     description: Mapped[str] = mapped_column(String(400))
     wishes: Mapped[str] = mapped_column(String(400))
     specification: Mapped[str] = mapped_column(String(400))
-    attachments: Mapped[List[str]] = mapped_column(ARRAY(Text))
+    attachments: Mapped[list[str]] = mapped_column(ARRAY(Text))
     reception_start: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), server_default=func.current_timestamp())
     reception_end: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), server_default=func.current_timestamp())
     work_start: Mapped[datetime] = mapped_column(TIMESTAMP(timezone=True), server_default=func.current_timestamp())

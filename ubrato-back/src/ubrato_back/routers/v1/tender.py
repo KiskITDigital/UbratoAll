@@ -1,6 +1,5 @@
-from typing import List, Optional
-
 from fastapi import APIRouter, Depends, status
+
 from ubrato_back.routers.v1.dependencies import (
     authorized,
     get_user,
@@ -19,7 +18,6 @@ from ubrato_back.schemas.tender_respond import TenderRespondRequest
 from ubrato_back.services import DraftTenderService, TenderService
 from ubrato_back.services.exceptions import ServiceException
 from ubrato_back.tools.cache import redis_cache
-
 
 router = APIRouter(
     prefix="/v1/tenders",
@@ -47,7 +45,7 @@ async def create_tender(
 
 @router.get(
     "/",
-    response_model=List[models.Tender],
+    response_model=list[models.Tender],
     responses={
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
     },
@@ -57,23 +55,23 @@ async def create_tender(
 async def get_page_tenders(
     page: int = 1,
     page_size: int = 10,
-    object_group_id: Optional[int] = None,
-    object_type_id: Optional[int] = None,
-    service_type_ids_str: Optional[str] = None,
-    service_group_ids_str: Optional[str] = None,
-    floor_space_from: Optional[int] = None,
-    floor_space_to: Optional[int] = None,
-    price_from: Optional[int] = None,
-    price_to: Optional[int] = None,
-    verified: Optional[bool] = True,
-    user_id: Optional[str] = None,
+    object_group_id: int | None = None,
+    object_type_id: int | None = None,
+    service_type_ids_str: str | None = None,
+    service_group_ids_str: str | None = None,
+    floor_space_from: int | None = None,
+    floor_space_to: int | None = None,
+    price_from: int | None = None,
+    price_to: int | None = None,
+    verified: bool | None = True,
+    user_id: str | None = None,
     tender_service: TenderService = Depends(),
-) -> List[models.Tender]:
-    service_type_ids: List[int] | None = None
+) -> list[models.Tender]:
+    service_type_ids: list[int] | None = None
     if service_type_ids_str is not None:
         service_type_ids = [int(x) for x in service_type_ids_str.split(",")]
 
-    service_group_ids: List[int] | None = None
+    service_group_ids: list[int] | None = None
     if service_group_ids_str is not None:
         service_group_ids = [int(x) for x in service_group_ids_str.split(",")]
 
@@ -219,8 +217,8 @@ async def get_all_services_types(
     },
 )
 async def get_count_active_tenders(
-    object_type_id: Optional[int] = None,
-    service_type_id: Optional[int] = None,
+    object_type_id: int | None = None,
+    service_type_id: int | None = None,
     tender_service: TenderService = Depends(),
 ) -> TenderCountResponse:
     count = await tender_service.get_count_active_tenders(
@@ -373,7 +371,7 @@ async def remove_favorite(
 
 @router.get(
     "/my/drafts",
-    response_model=List[models.DraftTender],
+    response_model=list[models.DraftTender],
     responses={
         status.HTTP_404_NOT_FOUND: {"model": ExceptionResponse},
     },
@@ -383,13 +381,13 @@ async def remove_favorite(
 async def get_user_drafts(
     tender_service: DraftTenderService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> List[models.DraftTender]:
+) -> list[models.DraftTender]:
     return await tender_service.get_user_tenders(user_id=user.id)
 
 
 @router.get(
     "/my/tenders",
-    response_model=List[models.Tender],
+    response_model=list[models.Tender],
     responses={
         status.HTTP_404_NOT_FOUND: {"model": ExceptionResponse},
     },
@@ -398,13 +396,13 @@ async def get_user_drafts(
 async def get_user_tenders(
     tender_service: TenderService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> List[models.Tender]:
+) -> list[models.Tender]:
     return await tender_service.get_user_tenders(user_id=user.id)
 
 
 @router.get(
     "/my/tenders/{tender_id}/responses",
-    response_model=List[models.TenderResponse],
+    response_model=list[models.TenderResponse],
     responses={
         status.HTTP_404_NOT_FOUND: {"model": ExceptionResponse},
     },
@@ -414,5 +412,5 @@ async def get_tender_responses(
     tender_id: int,
     tender_service: TenderService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> List[models.TenderResponse]:
+) -> list[models.TenderResponse]:
     return await tender_service.get_tender_responses(tender_id=tender_id)

@@ -1,8 +1,8 @@
 import os
 
 from fastapi import APIRouter
-from ubrato_back.schemas.health import HealthResponse
 
+from ubrato_back.schemas.health import HealthResponse
 
 router = APIRouter(
     prefix="/health",

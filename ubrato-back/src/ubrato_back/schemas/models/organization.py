@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -20,10 +19,10 @@ class Organization(BaseModel):
     kpp: str
     tax_code: int
     address: str
-    avatar: Optional[str]
-    email: List[ContactInfo]
-    phone: List[ContactInfo]
-    messenger: List[ContactInfo]
+    avatar: str | None
+    email: list[ContactInfo]
+    phone: list[ContactInfo]
+    messenger: list[ContactInfo]
     user_id: str
     update_at: datetime
     created_at: datetime
@@ -46,7 +45,7 @@ class OrganizationDTO(BaseModel):
     okpo: str
     ogrn: str
     kpp: str
-    avatar: Optional[str]
+    avatar: str | None
 
 
 class EgrulCompany(BaseModel):

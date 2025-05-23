@@ -1,8 +1,6 @@
-from typing import Dict, Optional
-
 from nats.aio.client import Client
-from ubrato_back.config import Config, get_config
 
+from ubrato_back.config import Config, get_config
 
 config: Config = get_config()
 
@@ -19,7 +17,7 @@ class NatsClient:
         subject: str,
         payload: bytes = b"",
         reply: str = "",
-        headers: Optional[Dict[str, str]] = None,
+        headers: dict[str, str] | None = None,
     ) -> None:
         await self.client.publish(subject=subject, payload=payload, reply=reply, headers=headers)
 

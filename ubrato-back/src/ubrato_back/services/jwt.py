@@ -1,8 +1,8 @@
 import datetime
-from datetime import timezone
 
 import jwt
 from fastapi import Depends, status
+
 from ubrato_back.config import Config, get_config
 from ubrato_back.schemas import models
 from ubrato_back.schemas.jwt_user import JWTAuthUser, JWTUser
@@ -21,7 +21,7 @@ class JWTService:
         self.algorithm = "HS256"
 
     def generate_jwt(self, user: models.User, org: models.Organization) -> str:
-        exp = datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(minutes=self.time_live)
+        exp = datetime.datetime.now(tz=datetime.UTC) + datetime.timedelta(minutes=self.time_live)
 
         jwt_user = JWTUser(
             id=user.id,
@@ -68,7 +68,7 @@ class JWTService:
         return self.decode_jwt(header[1])
 
     def generate_auth_jwt(self, user_id: str) -> str:
-        exp = datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(hours=24)
+        exp = datetime.datetime.now(tz=datetime.UTC) + datetime.timedelta(hours=24)
 
         jwt_user = JWTAuthUser(
             id=user_id,

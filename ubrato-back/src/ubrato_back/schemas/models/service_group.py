@@ -1,5 +1,3 @@
-from typing import List
-
 from pydantic import BaseModel
 
 
@@ -18,8 +16,8 @@ class ServiceGroupWithTypes(BaseModel):
     id: int
     name: str
     total: int = 0
-    types: List[ServiceTypeModel]
+    types: list[ServiceTypeModel]
 
 
 class ServicesGroupsWithTypes(BaseModel):
-    groups: List[ServiceGroupWithTypes]
+    groups: list[ServiceGroupWithTypes]

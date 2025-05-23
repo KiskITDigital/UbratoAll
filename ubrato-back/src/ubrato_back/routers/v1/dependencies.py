@@ -1,11 +1,11 @@
 from typing import Annotated
 
 from fastapi import Depends, Header, status
+
 from ubrato_back.config import get_config
 from ubrato_back.exceptions import AuthException
 from ubrato_back.schemas.jwt_user import JWTUser
 from ubrato_back.services import JWTService
-
 
 localization = get_config().Localization.config
 

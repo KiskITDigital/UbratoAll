@@ -1,9 +1,8 @@
-from typing import List
-
 from fastapi import Depends
+from typesense.client import Client
+
 from ubrato_back.repositories.typesense.client import get_db_connection
 from ubrato_back.repositories.typesense.schemas import TypesenseTender
-from typesense.client import Client
 
 
 class TenderIndex:
@@ -12,7 +11,7 @@ class TenderIndex:
     def __init__(self, db: Client = Depends(get_db_connection)) -> None:
         self.db = db
 
-    def save(self, tender: TypesenseTender, services: List[int], objects: List[int]) -> None:
+    def save(self, tender: TypesenseTender, services: list[int], objects: list[int]) -> None:
         self.db.collections["tender_index"].documents.create(tender.__dict__)
         for service in services:
             self.db.collections["tender_service"].documents.create(
@@ -24,7 +23,7 @@ class TenderIndex:
                 {"tender_id": tender.id, "object_type_id": str(object)}
             )
 
-    def update(self, tender: TypesenseTender, services: List[int], objects: List[int]) -> None:
+    def update(self, tender: TypesenseTender, services: list[int], objects: list[int]) -> None:
         self.db.collections["tender_index"].documents.update(tender.__dict__, {"filter_by": f"id:{tender.id}"})
 
         self.db.collections["tender_service"].documents.delete({"filter_by": f"id:{tender.id}"})

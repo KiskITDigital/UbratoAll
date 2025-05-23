@@ -1,6 +1,7 @@
 from fastapi import Depends
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from ubrato_back.repositories.postgres.database import get_db_connection
 from ubrato_back.repositories.postgres.schemas import Logs
 

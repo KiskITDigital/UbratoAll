@@ -1,8 +1,9 @@
-from typing import Any, List, Tuple
+from typing import Any
 
 from fastapi import Depends, status
 from sqlalchemy import and_, delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from ubrato_back.config import get_config
 from ubrato_back.repositories.postgres.database import get_db_connection
 from ubrato_back.repositories.postgres.exceptions import RepositoryException
@@ -60,7 +61,7 @@ class ProfileRepository:
 
         return profile
 
-    async def get_customer_location(self, org_id: str) -> List[models.ProfileLocation]:
+    async def get_customer_location(self, org_id: str) -> list[models.ProfileLocation]:
         query = await self.db.execute(
             select(City.id, City.name)
             .select_from(CustomerLocation)
@@ -73,7 +74,7 @@ class ProfileRepository:
             )
         )
 
-        locations: List[models.ProfileLocation] = []
+        locations: list[models.ProfileLocation] = []
         for location in query.all():
             id, name = location.tuple()
             locations.append(models.ProfileLocation(id=id, name=name))
@@ -93,7 +94,7 @@ class ProfileRepository:
 
         return profile
 
-    async def get_contractor_location(self, org_id: str) -> List[models.ProfileLocation]:
+    async def get_contractor_location(self, org_id: str) -> list[models.ProfileLocation]:
         query = await self.db.execute(
             select(City.id, City.name)
             .select_from(ContractorLocation)
@@ -106,14 +107,14 @@ class ProfileRepository:
             )
         )
 
-        locations: List[models.ProfileLocation] = []
+        locations: list[models.ProfileLocation] = []
         for location in query.all():
             id, name = location.tuple()
             locations.append(models.ProfileLocation(id=id, name=name))
 
         return locations
 
-    async def get_contractor_services_pricing(self, org_id: str) -> List[models.ContractorPricing]:
+    async def get_contractor_services_pricing(self, org_id: str) -> list[models.ContractorPricing]:
         query = await self.db.execute(
             select(ContractorService.price, ServiceType.id, ServiceType.name)
             .join(
@@ -125,7 +126,7 @@ class ProfileRepository:
             )
         )
 
-        services: List[models.ContractorPricing] = []
+        services: list[models.ContractorPricing] = []
         for service in query.all():
             price, id, name = service._tuple()
             services.append(
@@ -138,7 +139,7 @@ class ProfileRepository:
 
         return services
 
-    async def get_contractor_objects(self, org_id: str) -> List[models.ContractorObject]:
+    async def get_contractor_objects(self, org_id: str) -> list[models.ContractorObject]:
         query = await self.db.execute(
             select(ObjectType.id, ObjectType.name)
             .join(
@@ -150,7 +151,7 @@ class ProfileRepository:
             )
         )
 
-        objects: List[models.ContractorObject] = []
+        objects: list[models.ContractorObject] = []
         for service in query.all():
             id, name = service._tuple()
             objects.append(
@@ -162,10 +163,10 @@ class ProfileRepository:
 
         return objects
 
-    async def get_contractor_cv(self, org_id: str) -> List[models.ContractorCV]:
+    async def get_contractor_cv(self, org_id: str) -> list[models.ContractorCV]:
         query = await self.db.execute(select(ContractorCV).where(ContractorCV.org_id == org_id))
 
-        cv: List[models.ContractorCV] = []
+        cv: list[models.ContractorCV] = []
         for work in query.scalars().all():
             cv.append(
                 models.ContractorCV(
@@ -191,13 +192,13 @@ class ProfileRepository:
 
         return cv
 
-    async def set_contractor_services(self, org_id: str, services: List[ContractorService]) -> None:
+    async def set_contractor_services(self, org_id: str, services: list[ContractorService]) -> None:
         await self.db.execute(delete(ContractorService).where(ContractorService.org_id == org_id))
         self.db.add_all(services)
 
         await self.db.commit()
 
-    async def set_contractor_objects(self, org_id: str, objects: List[ContractorObject]) -> None:
+    async def set_contractor_objects(self, org_id: str, objects: list[ContractorObject]) -> None:
         await self.db.execute(delete(ContractorObject).where(ContractorObject.org_id == org_id))
         self.db.add_all(objects)
 
@@ -230,12 +231,12 @@ class ProfileRepository:
 
         await self.db.commit()
 
-    async def set_contractor_locations(self, org_id: str, locations: List[ContractorLocation]) -> None:
+    async def set_contractor_locations(self, org_id: str, locations: list[ContractorLocation]) -> None:
         await self.db.execute(delete(ContractorLocation).where(ContractorLocation.org_id == org_id))
         self.db.add_all(locations)
         await self.db.commit()
 
-    async def set_customer_location(self, org_id: str, locations: List[CustomerLocation]) -> None:
+    async def set_customer_location(self, org_id: str, locations: list[CustomerLocation]) -> None:
         await self.db.execute(delete(CustomerLocation).where(CustomerLocation.org_id == org_id))
         self.db.add_all(locations)
         await self.db.commit()
@@ -270,7 +271,7 @@ class ProfileRepository:
 
         await self.db.commit()
 
-    async def set_brand_emails(self, org_id: str, emails: List[Tuple[str, str]]) -> None:
+    async def set_brand_emails(self, org_id: str, emails: list[tuple[str, str]]) -> None:
         await self.db.execute(
             update(Organization)
             .values(email=[{"contact": contact, "description": description} for contact, description in emails])
@@ -278,7 +279,7 @@ class ProfileRepository:
         )
         await self.db.commit()
 
-    async def set_brand_phones(self, org_id: str, phones: List[Tuple[str, str]]) -> None:
+    async def set_brand_phones(self, org_id: str, phones: list[tuple[str, str]]) -> None:
         await self.db.execute(
             update(Organization)
             .values(phone=[{"contact": contact, "description": description} for contact, description in phones])
@@ -286,7 +287,7 @@ class ProfileRepository:
         )
         await self.db.commit()
 
-    async def set_brand_messengers(self, org_id: str, messengers: List[Tuple[str, str]]) -> None:
+    async def set_brand_messengers(self, org_id: str, messengers: list[tuple[str, str]]) -> None:
         await self.db.execute(
             update(Organization)
             .values(messenger=[{"contact": contact, "description": description} for contact, description in messengers])
