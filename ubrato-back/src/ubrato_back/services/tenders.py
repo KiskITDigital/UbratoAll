@@ -1,9 +1,9 @@
 from fastapi import Depends, status
 
 from ubrato_back.config import get_config
-from ubrato_back.repositories.postgres import TagsRepository, TenderRepository
-from ubrato_back.repositories.postgres.schemas import Tender
-from ubrato_back.repositories.typesense.tender import TenderIndex
+from ubrato_back.infrastructure.postgres.repos import TagsRepository, TenderRepository
+from ubrato_back.infrastructure.postgres.models import Tender
+from ubrato_back.infrastructure.typesense import TenderIndex
 from ubrato_back.schemas import models
 from ubrato_back.schemas.create_tender import CreateTenderRequest
 from ubrato_back.schemas.models import ObjectsGroupsWithTypes, ServicesGroupsWithTypes

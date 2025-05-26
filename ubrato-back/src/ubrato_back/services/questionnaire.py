@@ -1,8 +1,8 @@
 from fastapi import Depends
 
-from ubrato_back.repositories.postgres import QuestionnaireRepository
+from ubrato_back.infrastructure.postgres.repos import QuestionnaireRepository
 from ubrato_back.schemas import models
-from ubrato_back.tools import convert_json_to_csv
+from ubrato_back.infrastructure.tools import convert_json_to_csv
 
 
 class QuestionnaireService:

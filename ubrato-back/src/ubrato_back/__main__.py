@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
-from ubrato_back.broker import get_nats_connection
+from ubrato_back.infrastructure.broker import get_nats_connection
 from ubrato_back.exceptions import (
     AuthException,
     ServiceException,
@@ -17,20 +17,12 @@ from ubrato_back.exceptions import (
     request_validation_exception_handler,
     service_exception_handler,
 )
-from ubrato_back.repositories import redis, typesense
-from ubrato_back.repositories.postgres.exceptions import RepositoryException
-from ubrato_back.routers.v1 import (
-    auth,
-    health,
-    manager,
-    organizations,
-    questionnaire,
-    role,
-    suggest,
-    tender,
-    users,
-    verification,
-)
+from ubrato_back.infrastructure import redis, typesense
+from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryException
+from ubrato_back.presentation.api.routers.v1 import auth, health, manager, organizations, questionnaire, role, suggest, \
+    tender, \
+    users, \
+    verification
 
 
 @asynccontextmanager

@@ -6,7 +6,7 @@ class ServiceException(HTTPException):
     detail: str
 
     def __init__(self, **kwargs):
-        return super().__init__(**kwargs)
+        super().__init__(**kwargs)
 
 
 class AuthException(HTTPException):
@@ -14,4 +14,4 @@ class AuthException(HTTPException):
     detail: str
 
     def __init__(self, *args, **kwargs):
-        return super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)

@@ -1,7 +1,7 @@
 from fastapi import Depends
 
-from ubrato_back.repositories.postgres import DraftTenderRepository, TagsRepository
-from ubrato_back.repositories.postgres.schemas import DraftTender
+from ubrato_back.infrastructure.postgres.repos import DraftTenderRepository, TagsRepository
+from ubrato_back.infrastructure.postgres.models import DraftTender
 from ubrato_back.schemas import models
 from ubrato_back.schemas.create_draft_tender import CreateDraftTenderRequest
 

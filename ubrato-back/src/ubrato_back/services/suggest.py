@@ -1,8 +1,8 @@
 from fastapi import Depends
 
-from ubrato_back.repositories.postgres import CitiesRepository
+from ubrato_back.infrastructure.postgres.repos import CitiesRepository
 from ubrato_back.schemas import models
-from ubrato_back.tools.egrul import get_org_by_query
+from ubrato_back.infrastructure.tools import get_org_by_query
 
 
 class SuggestService:

@@ -7,8 +7,8 @@ from dadata import Dadata
 from fastapi import Depends, status
 
 from ubrato_back.config import get_config
-from ubrato_back.repositories.postgres import OrganizationRepository, ProfileRepository
-from ubrato_back.repositories.postgres.schemas import (
+from ubrato_back.infrastructure.postgres.repos import OrganizationRepository, ProfileRepository
+from ubrato_back.infrastructure.postgres.models import (
     ContractorCV,
     ContractorLocation,
     ContractorObject,
@@ -16,8 +16,8 @@ from ubrato_back.repositories.postgres.schemas import (
     CustomerLocation,
     Organization,
 )
-from ubrato_back.repositories.typesense import ContractorIndex
-from ubrato_back.repositories.typesense.schemas import TypesenseContractorService
+from ubrato_back.infrastructure.typesense import ContractorIndex
+from ubrato_back.infrastructure.typesense.schemas import TypesenseContractorService
 from ubrato_back.schemas import models
 from ubrato_back.services.exceptions import ServiceException
 

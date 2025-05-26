@@ -1,6 +1,6 @@
 from fastapi import Depends
 
-from ubrato_back.repositories.postgres import NotificationRepository
+from ubrato_back.infrastructure.postgres.repos import NotificationRepository
 from ubrato_back.schemas import models
 
 
