@@ -17,7 +17,7 @@ from ubrato_back.infrastructure.postgres.models import (
     ServiceGroup,
     ServiceType,
 )
-from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryException
+from ubrato_back.infrastructure.postgres.exceptions import RepositoryException
 from ubrato_back.schemas import schema_models
 
 

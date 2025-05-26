@@ -19,7 +19,7 @@ from ubrato_back.exceptions import (
 )
 from ubrato_back.infrastructure import redis, typesense
 from ubrato_back.infrastructure.broker import get_nats_connection
-from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryException
+from ubrato_back.infrastructure.postgres.exceptions import RepositoryException
 from ubrato_back.presentation.api.routers.v1 import (
     auth,
     health,

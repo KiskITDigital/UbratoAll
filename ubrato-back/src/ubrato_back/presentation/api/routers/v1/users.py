@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, status
 
-from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryException
+from ubrato_back.infrastructure.postgres.exceptions import RepositoryException
 from ubrato_back.presentation.api.routers.v1.dependencies import authorized, get_user
 from ubrato_back.schemas import schema_models
 from ubrato_back.schemas.exception import ExceptionResponse

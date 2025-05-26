@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 
 from ubrato_back.infrastructure.postgres.main import async_session_maker
 from ubrato_back.infrastructure.postgres.repos import LogsRepository
-from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryException
+from ubrato_back.infrastructure.postgres.exceptions import RepositoryException
 from ubrato_back.services.exceptions import AuthException, ServiceException
 from ubrato_back.services.logs import LogsService
 

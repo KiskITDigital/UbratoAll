@@ -5,7 +5,7 @@ from sqlalchemy.exc import IntegrityError, OperationalError, SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from ubrato_back.config import Config, get_config
-from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryException
+from ubrato_back.infrastructure.postgres.exceptions import RepositoryException
 
 config: Config = get_config()
 

@@ -16,7 +16,7 @@ class PostgresConfig:
 
     @property
     def dsn(self) -> str:
-        return f"postgresql+asyncpg://{self.user}:{self.password}@{self.host}:{self.port}/{self.db_name}?sslmode={self.ssl_mode}"
+        return f"postgresql+asyncpg://{self.user}:{self.password}@{self.host}:{self.port}/{self.db_name}?ssl={self.ssl_mode}"
 
 
 @dataclass(frozen=True)
