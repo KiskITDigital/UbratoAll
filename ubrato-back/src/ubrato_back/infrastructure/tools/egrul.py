@@ -4,7 +4,7 @@ from ubrato_back.schemas import schema_models
 
 
 class EgrulClient:
-    def __ini__(self) -> None:
+    def __init__(self) -> None:
         self._base_url = "https://egrul.nalog.ru/"
 
     def get_org_by_query(self, query: str) -> list[schema_models.EgrulCompany]:
