@@ -9,7 +9,7 @@ from ubrato_back.infrastructure.postgres.models import (
     ServiceGroup,
     ServiceType,
 )
-from ubrato_back.schemas.models import (
+from ubrato_back.schemas.schema_models import (
     ObjectGroupWithTypes,
     ObjectsGroupsWithTypes,
     ObjectTypeModel,

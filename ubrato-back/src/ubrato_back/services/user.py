@@ -12,7 +12,7 @@ from ubrato_back.infrastructure.postgres.repos import TenderRepository, UserRepo
 from ubrato_back.infrastructure.postgres.models import Organization, User
 from ubrato_back.infrastructure.typesense import ContractorIndex
 from ubrato_back.infrastructure.typesense.schemas import TypesenseContractor
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 from ubrato_back.schemas.pb.models.v1.email_confirmation_pb2 import EmailConfirmation
 from ubrato_back.schemas.pb.models.v1.password_recovery_pb2 import PasswordRecovery
 from ubrato_back.services.exceptions import ServiceException
@@ -48,7 +48,7 @@ class UserService:
         is_contractor: bool,
         avatar: str,
         org: Organization,
-    ) -> tuple[models.User, models.Organization]:
+    ) -> tuple[schema_models.User, schema_models.Organization]:
         id = "usr_" + str(uuid.uuid4())
 
         password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
@@ -84,15 +84,15 @@ class UserService:
 
         return created_user, created_org
 
-    async def get_by_email(self, email: str) -> models.User:
+    async def get_by_email(self, email: str) -> schema_models.User:
         user = await self.user_repository.get_by_email(email)
 
         return user
 
-    async def get_by_id(self, id: str) -> models.UserPrivateDTO:
+    async def get_by_id(self, id: str) -> schema_models.UserPrivateDTO:
         user = await self.user_repository.get_by_id(id)
 
-        return models.UserPrivateDTO(**user.__dict__)
+        return schema_models.UserPrivateDTO(**user.__dict__)
 
     def password_valid(self, password: str, hashed_password: str) -> bool:
         return bcrypt.checkpw(password.encode("utf-8"), hashed_password.encode("utf-8"))
@@ -139,10 +139,10 @@ class UserService:
     async def is_favorite_contratctor(self, user_id: str, contractor_id: str) -> bool:
         return await self.user_repository.is_favorite_contratctor(user_id=user_id, contractor_id=contractor_id)
 
-    async def list_favorite_contratctor(self, user_id: str) -> list[models.FavoriteContractor]:
+    async def list_favorite_contratctor(self, user_id: str) -> list[schema_models.FavoriteContractor]:
         return await self.user_repository.get_favorite_contratctor(user_id=user_id)
 
-    async def list_favorite_tenders(self, user_id: str) -> list[models.Tender]:
+    async def list_favorite_tenders(self, user_id: str) -> list[schema_models.Tender]:
         return await self.tender_repository.get_user_favorites(user_id=user_id)
 
     async def confirm_email(self, user_id: str) -> None:

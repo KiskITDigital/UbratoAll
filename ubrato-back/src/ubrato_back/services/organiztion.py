@@ -18,7 +18,7 @@ from ubrato_back.infrastructure.postgres.models import (
 )
 from ubrato_back.infrastructure.typesense import ContractorIndex
 from ubrato_back.infrastructure.typesense.schemas import TypesenseContractorService
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 from ubrato_back.services.exceptions import ServiceException
 
 
@@ -71,21 +71,21 @@ class OrganizationService:
             org = await self.org_repository.update_org(upd_org=upd_org)
         return org
 
-    async def get_organization_by_user_id(self, user_id: str) -> models.Organization:
+    async def get_organization_by_user_id(self, user_id: str) -> schema_models.Organization:
         org = await self.org_repository.get_organization_by_user_id(user_id=user_id)
 
         return org
 
-    async def get_customer_profile(self, org_id: str) -> models.CustomerProfile:
+    async def get_customer_profile(self, org_id: str) -> schema_models.CustomerProfile:
         customer_info = await self.profile_repository.get_customer(org_id=org_id)
         customer_locations = await self.profile_repository.get_customer_location(org_id=org_id)
 
-        return models.CustomerProfile(
+        return schema_models.CustomerProfile(
             description=customer_info.description,
             locations=customer_locations,
         )
 
-    async def get_contractor_profile(self, org_id: str) -> models.ContractorProfile:
+    async def get_contractor_profile(self, org_id: str) -> schema_models.ContractorProfile:
         contractor_info = await self.profile_repository.get_contractor(org_id=org_id)
         contractor_locations = await self.profile_repository.get_contractor_location(org_id=org_id)
 
@@ -95,7 +95,7 @@ class OrganizationService:
 
         contractor_cv = await self.profile_repository.get_contractor_cv(org_id=org_id)
 
-        return models.ContractorProfile(
+        return schema_models.ContractorProfile(
             description=contractor_info.description,
             locations=contractor_locations,
             services=contractor_pricing,
@@ -156,7 +156,7 @@ class OrganizationService:
     async def delete_contractor_cv(self, cv_id: str) -> None:
         await self.profile_repository.delete_contractor_cv(cv_id=cv_id)
 
-    async def get_contractor_cv(self, org_id: str) -> list[models.ContractorCV]:
+    async def get_contractor_cv(self, org_id: str) -> list[schema_models.ContractorCV]:
         return await self.profile_repository.get_contractor_cv(org_id=org_id)
 
     async def get_contractor_cv_by_id(self, cv_id: str) -> ContractorCV:

@@ -6,12 +6,12 @@ from ubrato_back.presentation.api.routers.v1.dependencies import (
     is_creator_or_manager,
     localization,
 )
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 from ubrato_back.schemas.create_draft_tender import CreateDraftTenderRequest
 from ubrato_back.schemas.create_tender import CreateTenderRequest
 from ubrato_back.schemas.exception import ExceptionResponse, UnauthExceptionResponse
 from ubrato_back.schemas.jwt_user import JWTUser
-from ubrato_back.schemas.models import ObjectsGroupsWithTypes, ServicesGroupsWithTypes
+from ubrato_back.schemas.schema_models import ObjectsGroupsWithTypes, ServicesGroupsWithTypes
 from ubrato_back.schemas.success import SuccessResponse
 from ubrato_back.schemas.tender_count import TenderCountResponse
 from ubrato_back.schemas.tender_respond import TenderRespondRequest
@@ -27,7 +27,7 @@ router = APIRouter(
 
 @router.post(
     "/create",
-    response_model=models.Tender,
+    response_model=schema_models.Tender,
     responses={
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
         status.HTTP_401_UNAUTHORIZED: {"model": UnauthExceptionResponse},
@@ -38,14 +38,14 @@ async def create_tender(
     tender: CreateTenderRequest,
     tender_service: TenderService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> models.Tender:
+) -> schema_models.Tender:
     created_tender = await tender_service.create_tender(tender=tender, user_id=user.id)
     return created_tender
 
 
 @router.get(
     "/",
-    response_model=list[models.Tender],
+    response_model=list[schema_models.Tender],
     responses={
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
     },
@@ -66,7 +66,7 @@ async def get_page_tenders(
     verified: bool | None = True,
     user_id: str | None = None,
     tender_service: TenderService = Depends(),
-) -> list[models.Tender]:
+) -> list[schema_models.Tender]:
     service_type_ids: list[int] | None = None
     if service_type_ids_str is not None:
         service_type_ids = [int(x) for x in service_type_ids_str.split(",")]
@@ -94,7 +94,7 @@ async def get_page_tenders(
 
 @router.get(
     "/tender/{tender_id}",
-    response_model=models.Tender,
+    response_model=schema_models.Tender,
     responses={
         status.HTTP_404_NOT_FOUND: {"model": ExceptionResponse},
     },
@@ -102,7 +102,7 @@ async def get_page_tenders(
 async def get_tender(
     tender_id: int,
     tender_service: TenderService = Depends(),
-) -> models.Tender:
+) -> schema_models.Tender:
     tender = await tender_service.get_by_id(tender_id=tender_id)
     return tender
 
@@ -230,7 +230,7 @@ async def get_count_active_tenders(
 
 @router.post(
     "/draft",
-    response_model=models.DraftTender,
+    response_model=schema_models.DraftTender,
     responses={
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
         status.HTTP_401_UNAUTHORIZED: {"model": UnauthExceptionResponse},
@@ -242,7 +242,7 @@ async def create_draft_tender(
     tender: CreateDraftTenderRequest,
     tender_service: DraftTenderService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> models.DraftTender:
+) -> schema_models.DraftTender:
     created_tender = await tender_service.create_tender(tender=tender, user_id=user.id)
     return created_tender
 
@@ -298,7 +298,7 @@ async def delete_draft_tender(
 
 @router.get(
     "/draft/{id}",
-    response_model=models.DraftTender,
+    response_model=schema_models.DraftTender,
     responses={
         status.HTTP_404_NOT_FOUND: {"model": ExceptionResponse},
     },
@@ -309,7 +309,7 @@ async def get_draft_tender(
     id: int,
     tender_service: DraftTenderService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> models.DraftTender:
+) -> schema_models.DraftTender:
     tender = await tender_service.get_by_id(id=id)
     if tender.user_id != user.id:
         raise ServiceException(
@@ -371,7 +371,7 @@ async def remove_favorite(
 
 @router.get(
     "/my/drafts",
-    response_model=list[models.DraftTender],
+    response_model=list[schema_models.DraftTender],
     responses={
         status.HTTP_404_NOT_FOUND: {"model": ExceptionResponse},
     },
@@ -381,13 +381,13 @@ async def remove_favorite(
 async def get_user_drafts(
     tender_service: DraftTenderService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> list[models.DraftTender]:
+) -> list[schema_models.DraftTender]:
     return await tender_service.get_user_tenders(user_id=user.id)
 
 
 @router.get(
     "/my/tenders",
-    response_model=list[models.Tender],
+    response_model=list[schema_models.Tender],
     responses={
         status.HTTP_404_NOT_FOUND: {"model": ExceptionResponse},
     },
@@ -396,13 +396,13 @@ async def get_user_drafts(
 async def get_user_tenders(
     tender_service: TenderService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> list[models.Tender]:
+) -> list[schema_models.Tender]:
     return await tender_service.get_user_tenders(user_id=user.id)
 
 
 @router.get(
     "/my/tenders/{tender_id}/responses",
-    response_model=list[models.TenderResponse],
+    response_model=list[schema_models.TenderResponse],
     responses={
         status.HTTP_404_NOT_FOUND: {"model": ExceptionResponse},
     },
@@ -412,5 +412,5 @@ async def get_tender_responses(
     tender_id: int,
     tender_service: TenderService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> list[models.TenderResponse]:
+) -> list[schema_models.TenderResponse]:
     return await tender_service.get_tender_responses(tender_id=tender_id)

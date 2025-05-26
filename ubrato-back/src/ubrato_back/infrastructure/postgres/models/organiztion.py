@@ -5,7 +5,7 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ubrato_back.infrastructure.postgres.models.base import Base
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 
 
 class Organization(Base):
@@ -41,20 +41,20 @@ class Organization(Base):
     contractor_cv = relationship("ContractorCV", back_populates="org")
     contractor_locations = relationship("ContractorLocation", back_populates="org")
 
-    def to_model(self) -> models.Organization:
-        email: list[models.ContactInfo] = []
+    def to_model(self) -> schema_models.Organization:
+        email: list[schema_models.ContactInfo] = []
         for info in self.email:
-            email.append(models.ContactInfo(contact=info["contact"], info=info["description"]))
+            email.append(schema_models.ContactInfo(contact=info["contact"], info=info["description"]))
 
-        phone: list[models.ContactInfo] = []
+        phone: list[schema_models.ContactInfo] = []
         for info in self.phone:
-            phone.append(models.ContactInfo(contact=info["contact"], info=info["description"]))
+            phone.append(schema_models.ContactInfo(contact=info["contact"], info=info["description"]))
 
-        messenger: list[models.ContactInfo] = []
+        messenger: list[schema_models.ContactInfo] = []
         for info in self.messenger:
-            messenger.append(models.ContactInfo(contact=info["contact"], info=info["description"]))
+            messenger.append(schema_models.ContactInfo(contact=info["contact"], info=info["description"]))
 
-        return models.Organization(
+        return schema_models.Organization(
             id=self.id,
             brand_name=self.brand_name,
             full_name=self.full_name,

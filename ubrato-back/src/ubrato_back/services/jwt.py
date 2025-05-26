@@ -4,7 +4,7 @@ import jwt
 from fastapi import Depends, status
 
 from ubrato_back.config import Config, get_config
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 from ubrato_back.schemas.jwt_user import JWTAuthUser, JWTUser
 from ubrato_back.services.exceptions import AuthException, ServiceException
 
@@ -20,7 +20,7 @@ class JWTService:
         self.time_live = int(config.JWT.time_live)
         self.algorithm = "HS256"
 
-    def generate_jwt(self, user: models.User, org: models.Organization) -> str:
+    def generate_jwt(self, user: schema_models.User, org: schema_models.Organization) -> str:
         exp = datetime.datetime.now(tz=datetime.UTC) + datetime.timedelta(minutes=self.time_live)
 
         jwt_user = JWTUser(

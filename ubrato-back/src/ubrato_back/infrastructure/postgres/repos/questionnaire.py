@@ -6,7 +6,7 @@ from ubrato_back.config import get_config
 from ubrato_back.infrastructure.postgres.repos.database import get_db_connection
 from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryException
 from ubrato_back.infrastructure.postgres.models import Organization, Questionnaire, User
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 
 
 class QuestionnaireRepository:
@@ -25,7 +25,7 @@ class QuestionnaireRepository:
         )
         await self.db.commit()
 
-    async def get_page(self, page: int, page_size: int) -> list[models.QuestionnaireAnswer]:
+    async def get_page(self, page: int, page_size: int) -> list[schema_models.QuestionnaireAnswer]:
         query = await self.db.execute(
             select(Questionnaire, User, Organization)
             .join(User, Questionnaire.user_id == User.id)
@@ -35,16 +35,16 @@ class QuestionnaireRepository:
             .offset((page - 1) * page_size)
         )
 
-        answers: list[models.QuestionnaireAnswer] = []
+        answers: list[schema_models.QuestionnaireAnswer] = []
 
         for found_tender in query.all():
             answer, user, org = found_tender._tuple()
 
-            org_model = models.OrganizationLiteDTO(**org.__dict__)
-            user_model = models.UserMe(organiztion=org_model, **user.__dict__)
+            org_model = schema_models.OrganizationLiteDTO(**org.__dict__)
+            user_model = schema_models.UserMe(organiztion=org_model, **user.__dict__)
 
             answers.append(
-                models.QuestionnaireAnswer(
+                schema_models.QuestionnaireAnswer(
                     id=answer.id,
                     answers=answer.answers,
                     user=user_model,
@@ -53,7 +53,7 @@ class QuestionnaireRepository:
 
         return answers
 
-    async def get_all(self) -> list[models.QuestionnaireAnswer]:
+    async def get_all(self) -> list[schema_models.QuestionnaireAnswer]:
         query = await self.db.execute(
             select(Questionnaire, User, Organization)
             .join(User, Questionnaire.user_id == User.id)
@@ -61,16 +61,16 @@ class QuestionnaireRepository:
             .order_by(Questionnaire.created_at.desc())
         )
 
-        answers: list[models.QuestionnaireAnswer] = []
+        answers: list[schema_models.QuestionnaireAnswer] = []
 
         for found_tender in query.all():
             answer, user, org = found_tender._tuple()
 
-            org_model = models.OrganizationLiteDTO(**org.__dict__)
-            user_model = models.UserMe(organiztion=org_model, **user.__dict__)
+            org_model = schema_models.OrganizationLiteDTO(**org.__dict__)
+            user_model = schema_models.UserMe(organiztion=org_model, **user.__dict__)
 
             answers.append(
-                models.QuestionnaireAnswer(
+                schema_models.QuestionnaireAnswer(
                     id=answer.id,
                     answers=answer.answers,
                     user=user_model,
@@ -79,7 +79,7 @@ class QuestionnaireRepository:
 
         return answers
 
-    async def get_by_user_id(self, user_id: str) -> models.QuestionnaireAnswer:
+    async def get_by_user_id(self, user_id: str) -> schema_models.QuestionnaireAnswer:
         query = await self.db.execute(
             select(Questionnaire, User, Organization)
             .join(User, Questionnaire.user_id == User.id)
@@ -99,10 +99,10 @@ class QuestionnaireRepository:
 
         answer, user, org = result
 
-        org_model = models.OrganizationLiteDTO(**org.__dict__)
-        user_model = models.UserMe(organiztion=org_model, **user.__dict__)
+        org_model = schema_models.OrganizationLiteDTO(**org.__dict__)
+        user_model = schema_models.UserMe(organiztion=org_model, **user.__dict__)
 
-        return models.QuestionnaireAnswer(
+        return schema_models.QuestionnaireAnswer(
             id=answer.id,
             answers=answer.answers,
             user=user_model,

@@ -20,7 +20,7 @@ from ubrato_back.infrastructure.postgres.models import (
     Organization,
     ServiceType,
 )
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 
 
 class ProfileRepository:
@@ -61,7 +61,7 @@ class ProfileRepository:
 
         return profile
 
-    async def get_customer_location(self, org_id: str) -> list[models.ProfileLocation]:
+    async def get_customer_location(self, org_id: str) -> list[schema_models.ProfileLocation]:
         query = await self.db.execute(
             select(City.id, City.name)
             .select_from(CustomerLocation)
@@ -74,10 +74,10 @@ class ProfileRepository:
             )
         )
 
-        locations: list[models.ProfileLocation] = []
+        locations: list[schema_models.ProfileLocation] = []
         for location in query.all():
             id, name = location.tuple()
-            locations.append(models.ProfileLocation(id=id, name=name))
+            locations.append(schema_models.ProfileLocation(id=id, name=name))
 
         return locations
 
@@ -94,7 +94,7 @@ class ProfileRepository:
 
         return profile
 
-    async def get_contractor_location(self, org_id: str) -> list[models.ProfileLocation]:
+    async def get_contractor_location(self, org_id: str) -> list[schema_models.ProfileLocation]:
         query = await self.db.execute(
             select(City.id, City.name)
             .select_from(ContractorLocation)
@@ -107,14 +107,14 @@ class ProfileRepository:
             )
         )
 
-        locations: list[models.ProfileLocation] = []
+        locations: list[schema_models.ProfileLocation] = []
         for location in query.all():
             id, name = location.tuple()
-            locations.append(models.ProfileLocation(id=id, name=name))
+            locations.append(schema_models.ProfileLocation(id=id, name=name))
 
         return locations
 
-    async def get_contractor_services_pricing(self, org_id: str) -> list[models.ContractorPricing]:
+    async def get_contractor_services_pricing(self, org_id: str) -> list[schema_models.ContractorPricing]:
         query = await self.db.execute(
             select(ContractorService.price, ServiceType.id, ServiceType.name)
             .join(
@@ -126,11 +126,11 @@ class ProfileRepository:
             )
         )
 
-        services: list[models.ContractorPricing] = []
+        services: list[schema_models.ContractorPricing] = []
         for service in query.all():
             price, id, name = service._tuple()
             services.append(
-                models.ContractorPricing(
+                schema_models.ContractorPricing(
                     id=id,
                     name=name,
                     price=price,
@@ -139,7 +139,7 @@ class ProfileRepository:
 
         return services
 
-    async def get_contractor_objects(self, org_id: str) -> list[models.ContractorObject]:
+    async def get_contractor_objects(self, org_id: str) -> list[schema_models.ContractorObject]:
         query = await self.db.execute(
             select(ObjectType.id, ObjectType.name)
             .join(
@@ -151,11 +151,11 @@ class ProfileRepository:
             )
         )
 
-        objects: list[models.ContractorObject] = []
+        objects: list[schema_models.ContractorObject] = []
         for service in query.all():
             id, name = service._tuple()
             objects.append(
-                models.ContractorObject(
+                schema_models.ContractorObject(
                     id=id,
                     name=name,
                 )
@@ -163,13 +163,13 @@ class ProfileRepository:
 
         return objects
 
-    async def get_contractor_cv(self, org_id: str) -> list[models.ContractorCV]:
+    async def get_contractor_cv(self, org_id: str) -> list[schema_models.ContractorCV]:
         query = await self.db.execute(select(ContractorCV).where(ContractorCV.org_id == org_id))
 
-        cv: list[models.ContractorCV] = []
+        cv: list[schema_models.ContractorCV] = []
         for work in query.scalars().all():
             cv.append(
-                models.ContractorCV(
+                schema_models.ContractorCV(
                     id=work.id,
                     name=work.name,
                     description=work.description,

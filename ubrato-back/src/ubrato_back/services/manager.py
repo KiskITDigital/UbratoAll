@@ -7,7 +7,7 @@ from ubrato_back.infrastructure.postgres.repos import (
 )
 from ubrato_back.infrastructure.postgres.models import VerificationRequest
 from ubrato_back.infrastructure.typesense import TenderIndex
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 
 
 class ManagerService:
@@ -39,19 +39,19 @@ class ManagerService:
 
     async def get_all_users(
         self,
-    ) -> list[models.UserPrivateDTO]:
+    ) -> list[schema_models.UserPrivateDTO]:
         users = await self.user_repository.get_all_users()
 
-        usersDTO: list[models.UserPrivateDTO] = []
+        usersDTO: list[schema_models.UserPrivateDTO] = []
         for user in users:
-            usersDTO.append(models.UserPrivateDTO(**user.__dict__))
+            usersDTO.append(schema_models.UserPrivateDTO(**user.__dict__))
 
         return usersDTO
 
-    async def get_user_by_id(self, user_id: str) -> models.UserPrivateDTO:
+    async def get_user_by_id(self, user_id: str) -> schema_models.UserPrivateDTO:
         user = await self.user_repository.get_by_id(user_id=user_id)
 
-        return models.UserPrivateDTO(**user.__dict__)
+        return schema_models.UserPrivateDTO(**user.__dict__)
 
     async def update_tender_verified_status(self, tender_id: int, status: bool) -> None:
         await self.tender_repository.update_verified_status(tender_id=tender_id, verified=status)

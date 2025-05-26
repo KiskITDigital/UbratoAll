@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
-from ubrato_back.schemas.models.organization import ContactInfo
+from ubrato_back.schemas.schema_models.organization import ContactInfo
 
 PhoneNumber.phone_format = "E164"
 

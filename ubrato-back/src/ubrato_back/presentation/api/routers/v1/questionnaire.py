@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, Response, status
 from ubrato_back.presentation.api.routers.v1.dependencies import authorized, get_user, is_admin
 from ubrato_back.schemas.exception import ExceptionResponse
 from ubrato_back.schemas.jwt_user import JWTUser
-from ubrato_back.schemas.models.questionnaire_answer import QuestionnaireAnswer
+from ubrato_back.schemas.schema_models.questionnaire_answer import QuestionnaireAnswer
 from ubrato_back.schemas.questionnaire import QuestionnaireRequest
 from ubrato_back.schemas.success import SuccessResponse
 from ubrato_back.services.questionnaire import QuestionnaireService

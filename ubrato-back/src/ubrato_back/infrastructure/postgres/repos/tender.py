@@ -22,7 +22,7 @@ from ubrato_back.infrastructure.postgres.models import (
     TenderServiceType,
     UserFavoriteTender,
 )
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 
 
 class TenderRepository:
@@ -125,7 +125,7 @@ class TenderRepository:
         price_to: int | None,
         verified: bool | None,
         user_id: str | None,
-    ) -> list[models.Tender]:
+    ) -> list[schema_models.Tender]:
         reception_end_condition = Tender.reception_end > datetime.now()
 
         service_type_condition = (service_type_ids is None) or and_(
@@ -174,7 +174,7 @@ class TenderRepository:
             .limit(page_size)
             .offset((page - 1) * page_size)
         )
-        tenders: list[models.Tender] = []
+        tenders: list[schema_models.Tender] = []
 
         for found_tender in query.all():
             tender, city_name = found_tender._tuple()
@@ -187,7 +187,7 @@ class TenderRepository:
 
         return tenders
 
-    async def get_tender_by_id(self, tender_id: int) -> models.Tender:
+    async def get_tender_by_id(self, tender_id: int) -> schema_models.Tender:
         query = await self.db.execute(select(Tender, City.name).join(City).where(Tender.id == tender_id))
 
         found_tender = query.tuples().first()
@@ -276,7 +276,7 @@ class TenderRepository:
         self,
         tender: Tender,
         city_name: str,
-    ) -> models.Tender:
+    ) -> schema_models.Tender:
         services_type_names: dict[int, list[str]] = {}
 
         query = await self.db.execute(
@@ -355,12 +355,12 @@ class TenderRepository:
                 sql_msg="failed format tender",
             )
 
-        catergories: list[models.Category] = []
+        catergories: list[schema_models.Category] = []
 
         for name in services_groups_names:
-            catergories.append(models.Category(name=name, services=services_groups_names[name]))
+            catergories.append(schema_models.Category(name=name, services=services_groups_names[name]))
 
-        return models.Tender(
+        return schema_models.Tender(
             id=tender.id,
             name=tender.name,
             price=tender.price,
@@ -485,7 +485,7 @@ class TenderRepository:
 
         await self.db.commit()
 
-    async def get_user_favorites(self, user_id: str) -> list[models.Tender]:
+    async def get_user_favorites(self, user_id: str) -> list[schema_models.Tender]:
         query = await self.db.execute(
             select(Tender, City.name)
             .join(City, Tender.city_id == City.id)
@@ -497,7 +497,7 @@ class TenderRepository:
             )
         )
 
-        tenders: list[models.Tender] = []
+        tenders: list[schema_models.Tender] = []
 
         for found_tender in query.all():
             tender, city_name = found_tender._tuple()
@@ -510,10 +510,10 @@ class TenderRepository:
 
         return tenders
 
-    async def get_user_tenders(self, user_id: str) -> list[models.Tender]:
+    async def get_user_tenders(self, user_id: str) -> list[schema_models.Tender]:
         query = await self.db.execute(select(Tender, City.name).join(City).where(Tender.user_id == user_id))
 
-        tenders: list[models.Tender] = []
+        tenders: list[schema_models.Tender] = []
 
         for found_tender in query.all():
             tender, city_name = found_tender._tuple()
@@ -526,7 +526,7 @@ class TenderRepository:
 
         return tenders
 
-    async def get_tender_responses(self, tender_id: int) -> list[models.TenderResponse]:
+    async def get_tender_responses(self, tender_id: int) -> list[schema_models.TenderResponse]:
         query = await self.db.execute(
             select(Organization, TenderRespond)
             .join(
@@ -536,12 +536,12 @@ class TenderRepository:
             .where(TenderRespond.tender_id == tender_id)
         )
 
-        tenders: list[models.TenderResponse] = []
+        tenders: list[schema_models.TenderResponse] = []
 
         for found_tender in query.all():
             org, response = found_tender._tuple()
 
-            response_model = models.TenderResponse(
+            response_model = schema_models.TenderResponse(
                 company_id=org.id,
                 company_name=org.brand_name,
                 company_avatar=org.avatar,

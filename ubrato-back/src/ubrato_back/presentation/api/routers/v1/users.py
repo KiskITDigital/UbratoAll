@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, status
 
 from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryException
 from ubrato_back.presentation.api.routers.v1.dependencies import authorized, get_user
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 from ubrato_back.schemas.exception import ExceptionResponse
 from ubrato_back.schemas.jwt_user import JWTUser
 from ubrato_back.schemas.offer_tender import OfferTenderRequest
@@ -43,7 +43,7 @@ async def user_requires_verification(
 
 @router.get(
     "/me/verification/history",
-    response_model=list[models.VerificationInfo],
+    response_model=list[schema_models.VerificationInfo],
     responses={
         status.HTTP_400_BAD_REQUEST: {"model": ExceptionResponse},
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
@@ -54,13 +54,13 @@ async def user_requires_verification(
 async def user_verification_history(
     verf_service: VerificationService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> list[models.VerificationInfo]:
+) -> list[schema_models.VerificationInfo]:
     return await verf_service.get_verification_history(user_id=user.id)
 
 
 @router.get(
     "/me",
-    response_model=models.UserMe,
+    response_model=schema_models.UserMe,
     responses={
         status.HTTP_400_BAD_REQUEST: {"model": ExceptionResponse},
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
@@ -70,10 +70,10 @@ async def user_verification_history(
 async def get_me(
     user_service: UserService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> models.UserMe:
+) -> schema_models.UserMe:
     dto_user = await user_service.get_by_id(user.id)
 
-    dto_org = models.OrganizationLiteDTO(
+    dto_org = schema_models.OrganizationLiteDTO(
         id=user.org_id,
         short_name=user.org_short_name,
         inn=user.org_inn,
@@ -82,7 +82,7 @@ async def get_me(
         kpp=user.org_kpp,
     )
 
-    return models.UserMe(organiztion=dto_org, **dto_user.__dict__)
+    return schema_models.UserMe(organiztion=dto_org, **dto_user.__dict__)
 
 
 @router.put(
@@ -127,7 +127,7 @@ async def pass_questionnaire(
 
 @router.get(
     "/me/notice",
-    response_model=models.Notifications,
+    response_model=schema_models.Notifications,
     responses={
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
     },
@@ -136,7 +136,7 @@ async def pass_questionnaire(
 async def get_notice(
     notice_service: NoticeService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> models.Notifications:
+) -> schema_models.Notifications:
     return await notice_service.get_user_notice(user_id=user.id)
 
 
@@ -214,7 +214,7 @@ async def is_favorite_contractor(
 
 @router.get(
     "/me/favorite_contractors",
-    response_model=list[models.FavoriteContractor],
+    response_model=list[schema_models.FavoriteContractor],
     responses={
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
     },
@@ -223,7 +223,7 @@ async def is_favorite_contractor(
 async def list_favorite_contractor(
     user_service: UserService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> list[models.FavoriteContractor]:
+) -> list[schema_models.FavoriteContractor]:
     return await user_service.list_favorite_contratctor(user_id=user.id)
 
 
@@ -258,7 +258,7 @@ async def offer_tender(
 
 @router.get(
     "/me/favorite_tenders",
-    response_model=list[models.Tender],
+    response_model=list[schema_models.Tender],
     responses={
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
     },
@@ -267,7 +267,7 @@ async def offer_tender(
 async def list_favorite_tenders(
     user_service: UserService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> list[models.Tender]:
+) -> list[schema_models.Tender]:
     return await user_service.list_favorite_tenders(user_id=user.id)
 
 

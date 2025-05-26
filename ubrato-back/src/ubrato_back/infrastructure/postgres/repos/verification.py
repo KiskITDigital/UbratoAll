@@ -12,7 +12,7 @@ from ubrato_back.infrastructure.postgres.models import (
     DocumentType,
     VerificationRequest,
 )
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 
 
 class VerificationRepository:
@@ -41,16 +41,16 @@ class VerificationRepository:
     async def get_user_doc(
         self,
         user_id: str,
-    ) -> list[models.VerificationDoc]:
+    ) -> list[schema_models.VerificationDoc]:
         query = await self.db.execute(
             select(Document, DocumentType.name).join(DocumentType).where(Document.user_id == user_id)
         )
-        docs: list[models.VerificationDoc] = []
+        docs: list[schema_models.VerificationDoc] = []
 
         for doc_info in query.all():
             doc, type_name = doc_info._tuple()
             docs.append(
-                models.VerificationDoc(
+                schema_models.VerificationDoc(
                     id=doc.id,
                     type=type_name,
                     link=doc.url,
@@ -111,14 +111,14 @@ class VerificationRepository:
             )
         return verf_req
 
-    async def get_verification_history(self, user_id: str) -> list[models.VerificationInfo]:
+    async def get_verification_history(self, user_id: str) -> list[schema_models.VerificationInfo]:
         query = await self.db.execute(select(VerificationRequest).where(VerificationRequest.user_id == user_id))
 
-        verf_req_list: list[models.VerificationInfo] = []
+        verf_req_list: list[schema_models.VerificationInfo] = []
 
         for verf_req in query.scalars().all():
             verf_req_list.append(
-                models.VerificationInfo(
+                schema_models.VerificationInfo(
                     id=verf_req.id,
                     verified=verf_req.verified,
                     msg=verf_req.msg,

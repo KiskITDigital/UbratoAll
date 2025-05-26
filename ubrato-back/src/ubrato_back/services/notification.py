@@ -1,7 +1,7 @@
 from fastapi import Depends
 
 from ubrato_back.infrastructure.postgres.repos import NotificationRepository
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 
 
 class NoticeService:
@@ -31,12 +31,12 @@ class NoticeService:
             href_color=href_color,
         )
 
-    async def get_user_notice(self, user_id: str) -> models.Notifications:
+    async def get_user_notice(self, user_id: str) -> schema_models.Notifications:
         notifications = await self.notification_repository.get_user_notice(user_id=user_id)
 
         total = sum(1 for i in notifications if not i.read)
 
-        return models.Notifications(
+        return schema_models.Notifications(
             total=total,
             notifications=notifications,
         )

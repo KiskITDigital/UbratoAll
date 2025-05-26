@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status
 
 from ubrato_back.presentation.api.routers.v1.dependencies import get_user, is_creator_or_manager
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 from ubrato_back.schemas.add_document import AddDocumentResponse
 from ubrato_back.schemas.exception import ExceptionResponse
 from ubrato_back.schemas.jwt_user import JWTUser
@@ -17,7 +17,7 @@ router = APIRouter(
 
 @router.get(
     "/docs/types",
-    response_model=list[models.VerificationDocType],
+    response_model=list[schema_models.VerificationDocType],
     responses={
         status.HTTP_400_BAD_REQUEST: {"model": ExceptionResponse},
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
@@ -25,7 +25,7 @@ router = APIRouter(
 )
 async def get_doc_types(
     verf_service: VerificationService = Depends(),
-) -> list[models.VerificationDocType]:
+) -> list[schema_models.VerificationDocType]:
     return await verf_service.get_doc_types()
 
 
@@ -48,7 +48,7 @@ async def save_user_doc(
 
 @router.get(
     "/docs",
-    response_model=list[models.VerificationDoc],
+    response_model=list[schema_models.VerificationDoc],
     responses={
         status.HTTP_400_BAD_REQUEST: {"model": ExceptionResponse},
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
@@ -57,7 +57,7 @@ async def save_user_doc(
 async def get_user_docs(
     verf_service: VerificationService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> list[models.VerificationDoc]:
+) -> list[schema_models.VerificationDoc]:
     return await verf_service.get_user_doc(user_id=user.id)
 
 

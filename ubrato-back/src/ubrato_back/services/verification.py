@@ -4,7 +4,7 @@ from fastapi import Depends
 
 from ubrato_back.infrastructure.postgres.repos import VerificationRepository
 from ubrato_back.infrastructure.postgres.models import Document
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 
 
 class VerificationService:
@@ -13,13 +13,13 @@ class VerificationService:
     def __init__(self, verf_repository: VerificationRepository = Depends()) -> None:
         self.verf_repository = verf_repository
 
-    async def get_doc_types(self) -> list[models.VerificationDocType]:
+    async def get_doc_types(self) -> list[schema_models.VerificationDocType]:
         types = await self.verf_repository.get_doc_types()
 
-        doc_types: list[models.VerificationDocType] = []
+        doc_types: list[schema_models.VerificationDocType] = []
 
         for name, id in types.items():
-            doc_types.append(models.VerificationDocType(id=id, name=name))
+            doc_types.append(schema_models.VerificationDocType(id=id, name=name))
 
         return doc_types
 
@@ -34,7 +34,7 @@ class VerificationService:
         await self.verf_repository.save_docs(document)
         return id
 
-    async def get_user_doc(self, user_id: str) -> list[models.VerificationDoc]:
+    async def get_user_doc(self, user_id: str) -> list[schema_models.VerificationDoc]:
         return await self.verf_repository.get_user_doc(user_id=user_id)
 
     async def get_doc_by_id(self, doc_id: str) -> Document:
@@ -46,5 +46,5 @@ class VerificationService:
     async def create_verification_requests(self, user_id: str) -> None:
         await self.verf_repository.create_verification_requests(user_id=user_id)
 
-    async def get_verification_history(self, user_id: str) -> list[models.VerificationInfo]:
+    async def get_verification_history(self, user_id: str) -> list[schema_models.VerificationInfo]:
         return await self.verf_repository.get_verification_history(user_id=user_id)

@@ -7,7 +7,7 @@ from ubrato_back.infrastructure.postgres.models import (
     CustomerLocation,
 )
 from ubrato_back.presentation.api.routers.v1.dependencies import authorized, get_user, localization
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 from ubrato_back.schemas.exception import ExceptionResponse, UnauthExceptionResponse
 from ubrato_back.schemas.jwt_user import JWTUser
 from ubrato_back.schemas.success import SuccessResponse
@@ -30,43 +30,43 @@ router = APIRouter(
 
 @router.get(
     "/profile/{org_id}/customer",
-    response_model=models.CustomerProfile,
+    response_model=schema_models.CustomerProfile,
     responses={
         status.HTTP_400_BAD_REQUEST: {"model": ExceptionResponse},
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
     },
 )
-async def get_customer_profile(org_id: str, org_service: OrganizationService = Depends()) -> models.CustomerProfile:
+async def get_customer_profile(org_id: str, org_service: OrganizationService = Depends()) -> schema_models.CustomerProfile:
     return await org_service.get_customer_profile(org_id)
 
 
 @router.get(
     "/profile/{org_id}/contractor",
-    response_model=models.ContractorProfile,
+    response_model=schema_models.ContractorProfile,
     responses={
         status.HTTP_400_BAD_REQUEST: {"model": ExceptionResponse},
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
     },
 )
-async def get_contractor_profile(org_id: str, org_service: OrganizationService = Depends()) -> models.ContractorProfile:
+async def get_contractor_profile(org_id: str, org_service: OrganizationService = Depends()) -> schema_models.ContractorProfile:
     return await org_service.get_contractor_profile(org_id)
 
 
 @router.get(
     "/profile/{org_id}",
-    response_model=models.OrganizationDTO,
+    response_model=schema_models.OrganizationDTO,
     responses={
         status.HTTP_400_BAD_REQUEST: {"model": ExceptionResponse},
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
     },
 )
-async def get_organization_profile(org_id: str, org_service: OrganizationService = Depends()) -> models.Organization:
+async def get_organization_profile(org_id: str, org_service: OrganizationService = Depends()) -> schema_models.Organization:
     return (await org_service.get_organization_by_id(org_id)).to_model()
 
 
 @router.get(
     "/my/profile/customer",
-    response_model=models.CustomerProfile,
+    response_model=schema_models.CustomerProfile,
     responses={
         status.HTTP_400_BAD_REQUEST: {"model": ExceptionResponse},
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
@@ -76,13 +76,13 @@ async def get_organization_profile(org_id: str, org_service: OrganizationService
 async def get_my_customer_profile(
     org_service: OrganizationService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> models.CustomerProfile:
+) -> schema_models.CustomerProfile:
     return await org_service.get_customer_profile(user.org_id)
 
 
 @router.get(
     "/my/profile/contractor",
-    response_model=models.ContractorProfile,
+    response_model=schema_models.ContractorProfile,
     responses={
         status.HTTP_400_BAD_REQUEST: {"model": ExceptionResponse},
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
@@ -92,7 +92,7 @@ async def get_my_customer_profile(
 async def get_my_contractor_profile(
     org_service: OrganizationService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> models.ContractorProfile:
+) -> schema_models.ContractorProfile:
     return await org_service.get_contractor_profile(user.org_id)
 
 
@@ -237,7 +237,7 @@ async def delete_my_cv(
 
 @router.get(
     "/my",
-    response_model=models.Organization,
+    response_model=schema_models.Organization,
     responses={
         status.HTTP_400_BAD_REQUEST: {"model": ExceptionResponse},
         status.HTTP_401_UNAUTHORIZED: {"model": UnauthExceptionResponse},
@@ -248,7 +248,7 @@ async def delete_my_cv(
 async def get_my_org(
     org_service: OrganizationService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> models.Organization:
+) -> schema_models.Organization:
     return (await org_service.get_organization_by_id(org_id=user.org_id)).to_model()
 
 

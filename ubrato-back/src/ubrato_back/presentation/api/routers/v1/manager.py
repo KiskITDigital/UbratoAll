@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status
 
 from ubrato_back.presentation.api.routers.v1.dependencies import is_admin, localization
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 from ubrato_back.schemas.exception import ExceptionResponse
 from ubrato_back.schemas.success import SuccessResponse
 from ubrato_back.schemas.verify_status_set import VerifyStatusSet
@@ -54,7 +54,7 @@ async def user_verification_response(
 
 @router.get(
     "/users/",
-    response_model=list[models.UserPrivateDTO],
+    response_model=list[schema_models.UserPrivateDTO],
     responses={
         status.HTTP_404_NOT_FOUND: {"model": ExceptionResponse},
     },
@@ -62,7 +62,7 @@ async def user_verification_response(
 )
 async def get_users(
     manager_service: ManagerService = Depends(),
-) -> list[models.UserPrivateDTO]:
+) -> list[schema_models.UserPrivateDTO]:
     users = await manager_service.get_all_users()
     return users
 

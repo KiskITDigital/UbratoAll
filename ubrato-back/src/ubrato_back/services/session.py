@@ -6,7 +6,7 @@ from fastapi import Depends, status
 from ubrato_back.config import Config, get_config
 from ubrato_back.infrastructure.postgres.repos import SessionRepository, UserRepository
 from ubrato_back.infrastructure.postgres.models import Session
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 from ubrato_back.services.exceptions import ServiceException
 
 
@@ -32,7 +32,7 @@ class SessionService:
         await self.session_repository.create(session=Session(id=session_id, user_id=user_id, expires_at=expires_at))
         return session_id
 
-    async def get_user_session_by_id(self, session_id: str) -> models.User:
+    async def get_user_session_by_id(self, session_id: str) -> schema_models.User:
         session = await self.session_repository.get_by_id(session_id=session_id)
 
         if session.expires_at.timestamp() < datetime.datetime.now().timestamp():

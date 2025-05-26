@@ -18,7 +18,7 @@ from ubrato_back.infrastructure.postgres.models import (
     ServiceGroup,
     ServiceType,
 )
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 
 
 class DraftTenderRepository:
@@ -109,7 +109,7 @@ class DraftTenderRepository:
         await self.db.refresh(tender_to_update)
         return tender_to_update
 
-    async def get_draft_tender_by_id(self, tender_id: int) -> models.DraftTender:
+    async def get_draft_tender_by_id(self, tender_id: int) -> schema_models.DraftTender:
         query = await self.db.execute(select(DraftTender).where(DraftTender.id == tender_id))
 
         tender = query.scalar()
@@ -145,7 +145,7 @@ class DraftTenderRepository:
     async def format_draft_tender(
         self,
         tender: DraftTender,
-    ) -> models.DraftTender:
+    ) -> schema_models.DraftTender:
         services_type_names: list[int] = []
 
         query = await self.db.execute(
@@ -211,7 +211,7 @@ class DraftTenderRepository:
 
         object_group_name = query.scalars().first()
 
-        return models.DraftTender(
+        return schema_models.DraftTender(
             id=tender.id,
             user_id=tender.user_id,
             name=tender.name,
@@ -235,12 +235,12 @@ class DraftTenderRepository:
             update_at=tender.update_at,
         )
 
-    async def get_user_tenders(self, user_id: str) -> list[models.DraftTender]:
+    async def get_user_tenders(self, user_id: str) -> list[schema_models.DraftTender]:
         query = await self.db.execute(select(DraftTender, City.name).join(City).where(DraftTender.user_id == user_id))
 
         found_tenders = query.tuples().all()
 
-        tenders: list[models.DraftTender] = []
+        tenders: list[schema_models.DraftTender] = []
 
         for found_tender in found_tenders:
             tender, city_name = found_tender

@@ -14,7 +14,7 @@ from ubrato_back.infrastructure.postgres.models import (
     User,
     UserFavoriteContractor,
 )
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 
 
 class UserRepository:
@@ -23,7 +23,7 @@ class UserRepository:
     def __init__(self, db: AsyncSession = Depends(get_db_connection)) -> None:
         self.db = db
 
-    async def create(self, user: User, org: Organization) -> tuple[models.User, models.Organization]:
+    async def create(self, user: User, org: Organization) -> tuple[schema_models.User, schema_models.Organization]:
         self.db.add(user)
         await self.db.flush()
         org.user_id = user.id
@@ -43,9 +43,9 @@ class UserRepository:
         await self.db.refresh(user)
         await self.db.refresh(org)
 
-        return models.User(**user.__dict__), org.to_model()
+        return schema_models.User(**user.__dict__), org.to_model()
 
-    async def get_by_email(self, email: str) -> models.User:
+    async def get_by_email(self, email: str) -> schema_models.User:
         query = await self.db.execute(select(User).where(User.email == email, User.deleted_at.is_(None)))
         user = query.scalar()
         if user is None:
@@ -55,7 +55,7 @@ class UserRepository:
                 sql_msg="",
             )
 
-        return models.User(**user.__dict__)
+        return schema_models.User(**user.__dict__)
 
     async def update_verified_status(self, user_id: str, verified: bool) -> None:
         query = await self.db.execute(select(User).where(User.id == user_id))
@@ -74,16 +74,16 @@ class UserRepository:
 
     async def get_all_users(
         self,
-    ) -> list[models.User]:
+    ) -> list[schema_models.User]:
         query = await self.db.execute(select(User).where(User.deleted_at.is_(None)))
-        users: list[models.User] = []
+        users: list[schema_models.User] = []
 
         for user in query:
-            users.append(models.User(**user.__dict__))
+            users.append(schema_models.User(**user.__dict__))
 
         return users
 
-    async def get_by_id(self, user_id: str) -> models.User:
+    async def get_by_id(self, user_id: str) -> schema_models.User:
         query = await self.db.execute(select(User).where(User.id == user_id, User.deleted_at.is_(None)))
 
         users = query.scalar()
@@ -95,7 +95,7 @@ class UserRepository:
                 sql_msg="",
             )
 
-        return models.User(**users.__dict__)
+        return schema_models.User(**users.__dict__)
 
     async def update_avatar(self, user_id: str, avatar: str) -> None:
         query = await self.db.execute(select(User).where(User.id == user_id))
@@ -145,7 +145,7 @@ class UserRepository:
 
         return query.scalar() is not None
 
-    async def get_favorite_contratctor(self, user_id: str) -> list[models.FavoriteContractor]:
+    async def get_favorite_contratctor(self, user_id: str) -> list[schema_models.FavoriteContractor]:
         query = await self.db.execute(
             select(UserFavoriteContractor.contractor_id, Organization.brand_name)
             .join(
@@ -155,12 +155,12 @@ class UserRepository:
             .where(UserFavoriteContractor.user_id == user_id)
         )
 
-        contractors: list[models.FavoriteContractor] = []
+        contractors: list[schema_models.FavoriteContractor] = []
 
         for contractor in query.all():
             id, name = contractor.tuple()
             contractors.append(
-                models.FavoriteContractor(
+                schema_models.FavoriteContractor(
                     id=id,
                     org_name=name,
                 )

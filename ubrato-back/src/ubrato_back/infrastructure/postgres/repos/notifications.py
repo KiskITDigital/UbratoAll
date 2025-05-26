@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from ubrato_back.infrastructure.postgres.repos.database import get_db_connection
 from ubrato_back.infrastructure.postgres.models import Notification
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 
 
 class NotificationRepository:
@@ -35,12 +35,12 @@ class NotificationRepository:
 
         await self.db.commit()
 
-    async def get_user_notice(self, user_id: str) -> list[models.Notification]:
+    async def get_user_notice(self, user_id: str) -> list[schema_models.Notification]:
         query = await self.db.execute(select(Notification).where(Notification.user_id == user_id))
 
-        notifications: list[models.Notification] = []
+        notifications: list[schema_models.Notification] = []
         for notice in query.scalars():
-            notifications.append(models.Notification(**notice.__dict__))
+            notifications.append(schema_models.Notification(**notice.__dict__))
 
         return notifications
 

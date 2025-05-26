@@ -8,7 +8,7 @@ from ubrato_back.config import get_config
 from ubrato_back.infrastructure.postgres.repos.database import get_db_connection
 from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryException
 from ubrato_back.infrastructure.postgres.models import Organization
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 
 
 class OrganizationRepository:
@@ -45,7 +45,7 @@ class OrganizationRepository:
     async def get_organization_by_user_id(
         self,
         user_id: str,
-    ) -> models.Organization:
+    ) -> schema_models.Organization:
         query = await self.db.execute(select(Organization).where(Organization.user_id == user_id))
 
         org = query.scalar()

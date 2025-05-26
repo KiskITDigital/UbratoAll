@@ -1,35 +1,37 @@
 import requests
 
-from ubrato_back.schemas import models
-
-EGRUL_URL = "https://egrul.nalog.ru/"
+from ubrato_back.schemas import schema_models
 
 
-def get_org_by_query(query: str) -> list[models.EgrulCompany]:
-    form_data = {
-        "vyp3CaptchaToken": "",
-        "page": "",
-        "query": query,
-        "region": "",
-        "PreventChromeAutocomplete": "",
-    }
+class EgrulClient:
+    def __ini__(self) -> None:
+        self._base_url = "https://egrul.nalog.ru/"
 
-    response = requests.post(EGRUL_URL, data=form_data)
+    def get_org_by_query(self, query: str) -> list[schema_models.EgrulCompany]:
+        form_data = {
+            "vyp3CaptchaToken": "",
+            "page": "",
+            "query": query,
+            "region": "",
+            "PreventChromeAutocomplete": "",
+        }
 
-    response = requests.get(EGRUL_URL + "search-result/" + response.json()["t"])
+        response = requests.post(self._base_url, data=form_data)
 
-    companies: list[models.EgrulCompany] = []
+        response = requests.get(self._base_url + "search-result/" + response.json()["t"])
 
-    for company_data in response.json()["rows"]:
-        company = models.EgrulCompany(
-            name=company_data.get("c", ""),
-            director=company_data.get("g", ""),
-            inn=company_data.get("i", ""),
-            kpp=company_data.get("p", ""),
-            ogrn=company_data.get("o", ""),
-            registration_date=company_data.get("r", ""),
-            region=company_data.get("rn", ""),
-        )
-        companies.append(company)
+        companies: list[schema_models.EgrulCompany] = []
 
-    return companies
+        for company_data in response.json()["rows"]:
+            company = schema_models.EgrulCompany(
+                name=company_data.get("c", ""),
+                director=company_data.get("g", ""),
+                inn=company_data.get("i", ""),
+                kpp=company_data.get("p", ""),
+                ogrn=company_data.get("o", ""),
+                registration_date=company_data.get("r", ""),
+                region=company_data.get("rn", ""),
+            )
+            companies.append(company)
+
+        return companies

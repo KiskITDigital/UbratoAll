@@ -6,7 +6,7 @@ from ubrato_back.config import get_config
 from ubrato_back.infrastructure.postgres.repos.database import get_db_connection
 from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryException
 from ubrato_back.infrastructure.postgres.models import City, Region
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 
 
 class CitiesRepository:
@@ -29,7 +29,7 @@ class CitiesRepository:
             )
         return city
 
-    async def search_by_name(self, name: str) -> list[models.City]:
+    async def search_by_name(self, name: str) -> list[schema_models.City]:
         query = await self.db.execute(
             select(City, Region.name)
             .join(Region, City.region_id == Region.id)
@@ -37,10 +37,10 @@ class CitiesRepository:
             .limit(10)
         )
 
-        cities: list[models.City] = []
+        cities: list[schema_models.City] = []
         for found_city in query.all():
             city, region_name = found_city._tuple()
-            city_model = models.City(
+            city_model = schema_models.City(
                 id=city.id,
                 name=city.name,
                 region=region_name,

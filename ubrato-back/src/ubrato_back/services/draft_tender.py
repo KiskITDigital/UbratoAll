@@ -2,7 +2,7 @@ from fastapi import Depends
 
 from ubrato_back.infrastructure.postgres.repos import DraftTenderRepository, TagsRepository
 from ubrato_back.infrastructure.postgres.models import DraftTender
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 from ubrato_back.schemas.create_draft_tender import CreateDraftTenderRequest
 
 
@@ -18,7 +18,7 @@ class DraftTenderService:
         self.tags_repository = tags_repository
         self.tender_repository = tender_repository
 
-    async def create_tender(self, tender: CreateDraftTenderRequest, user_id: str) -> models.DraftTender:
+    async def create_tender(self, tender: CreateDraftTenderRequest, user_id: str) -> schema_models.DraftTender:
         created_tender = await self.tender_repository.create_tender(
             tender=DraftTender(
                 user_id=user_id,
@@ -43,7 +43,7 @@ class DraftTenderService:
 
         return await self.tender_repository.get_draft_tender_by_id(tender_id=created_tender.id)
 
-    async def get_by_id(self, id: int) -> models.DraftTender:
+    async def get_by_id(self, id: int) -> schema_models.DraftTender:
         return await self.tender_repository.get_draft_tender_by_id(tender_id=id)
 
     async def update_tender(self, tender: CreateDraftTenderRequest, id: int) -> None:
@@ -57,7 +57,7 @@ class DraftTenderService:
             id=id,
         )
 
-    async def get_user_tenders(self, user_id: str) -> list[models.DraftTender]:
+    async def get_user_tenders(self, user_id: str) -> list[schema_models.DraftTender]:
         return await self.tender_repository.get_user_tenders(
             user_id=user_id,
         )

@@ -4,9 +4,9 @@ from ubrato_back.config import get_config
 from ubrato_back.infrastructure.postgres.repos import TagsRepository, TenderRepository
 from ubrato_back.infrastructure.postgres.models import Tender
 from ubrato_back.infrastructure.typesense import TenderIndex
-from ubrato_back.schemas import models
+from ubrato_back.schemas import schema_models
 from ubrato_back.schemas.create_tender import CreateTenderRequest
-from ubrato_back.schemas.models import ObjectsGroupsWithTypes, ServicesGroupsWithTypes
+from ubrato_back.schemas.schema_models import ObjectsGroupsWithTypes, ServicesGroupsWithTypes
 from ubrato_back.services.exceptions import ServiceException
 
 
@@ -25,7 +25,7 @@ class TenderService:
         self.tender_index = tender_index
         self.localization = get_config().Localization.config
 
-    async def create_tender(self, tender: CreateTenderRequest, user_id: str) -> models.Tender:
+    async def create_tender(self, tender: CreateTenderRequest, user_id: str) -> schema_models.Tender:
         # if len(tender.services_types) == 0:
         #     raise ServiceException(
         #         status_code=status.HTTP_400_BAD_REQUEST,
@@ -81,7 +81,7 @@ class TenderService:
         price_to: int | None,
         verified: bool | None,
         user_id: str | None,
-    ) -> list[models.Tender]:
+    ) -> list[schema_models.Tender]:
         return await self.tender_repository.get_page_tenders(
             page=page,
             page_size=page_size,
@@ -140,7 +140,7 @@ class TenderService:
             object_type_id=object_type_id, service_type_ids=service_type_id
         )
 
-    async def get_by_id(self, tender_id: int) -> models.Tender:
+    async def get_by_id(self, tender_id: int) -> schema_models.Tender:
         return await self.tender_repository.get_tender_by_id(tender_id=tender_id)
 
     async def update_tender(self, tender: CreateTenderRequest, tender_id: int) -> None:
@@ -194,8 +194,8 @@ class TenderService:
     async def is_favorite(self, user_id: str, tender_id: int) -> bool:
         return await self.tender_repository.is_favorite(tender_id=tender_id, user_id=user_id)
 
-    async def get_user_tenders(self, user_id: str) -> list[models.Tender]:
+    async def get_user_tenders(self, user_id: str) -> list[schema_models.Tender]:
         return await self.tender_repository.get_user_tenders(user_id=user_id)
 
-    async def get_tender_responses(self, tender_id: int) -> list[models.TenderResponse]:
+    async def get_tender_responses(self, tender_id: int) -> list[schema_models.TenderResponse]:
         return await self.tender_repository.get_tender_responses(tender_id=tender_id)
