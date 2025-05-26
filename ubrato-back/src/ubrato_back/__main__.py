@@ -8,7 +8,6 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
 from ubrato_back.config import get_config
-from ubrato_back.infrastructure.broker import get_nats_connection
 from ubrato_back.exceptions import (
     AuthException,
     ServiceException,
@@ -19,6 +18,7 @@ from ubrato_back.exceptions import (
     service_exception_handler,
 )
 from ubrato_back.infrastructure import redis, typesense
+from ubrato_back.infrastructure.broker import get_nats_connection
 from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryException
 from ubrato_back.presentation.api.routers.v1 import (
     auth,

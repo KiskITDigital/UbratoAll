@@ -1,17 +1,17 @@
 __all__ = [
+    "AuthException",
+    "DraftTenderService",
     "JWTService",
     "LogsService",
     "ManagerService",
+    "NoticeService",
     "OrganizationService",
+    "QuestionnaireService",
     "SessionService",
+    "SuggestService",
     "TenderService",
     "UserService",
-    "AuthException",
-    "SuggestService",
-    "NoticeService",
-    "DraftTenderService",
     "VerificationService",
-    "QuestionnaireService",
 ]
 
 from .draft_tender import DraftTenderService

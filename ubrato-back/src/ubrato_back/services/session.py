@@ -4,8 +4,8 @@ import secrets
 from fastapi import Depends, status
 
 from ubrato_back.config import Config, get_config
-from ubrato_back.infrastructure.postgres.repos import SessionRepository, UserRepository
 from ubrato_back.infrastructure.postgres.models import Session
+from ubrato_back.infrastructure.postgres.repos import SessionRepository, UserRepository
 from ubrato_back.schemas import schema_models
 from ubrato_back.services.exceptions import ServiceException
 

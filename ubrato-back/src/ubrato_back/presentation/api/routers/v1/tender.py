@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, status
 
+from ubrato_back.infrastructure.tools.cache import redis_cache
 from ubrato_back.presentation.api.routers.v1.dependencies import (
     authorized,
     get_user,
@@ -17,7 +18,6 @@ from ubrato_back.schemas.tender_count import TenderCountResponse
 from ubrato_back.schemas.tender_respond import TenderRespondRequest
 from ubrato_back.services import DraftTenderService, TenderService
 from ubrato_back.services.exceptions import ServiceException
-from ubrato_back.infrastructure.tools.cache import redis_cache
 
 router = APIRouter(
     prefix="/v1/tenders",

@@ -2,8 +2,8 @@ import uuid
 
 from fastapi import Depends
 
-from ubrato_back.infrastructure.postgres.repos import VerificationRepository
 from ubrato_back.infrastructure.postgres.models import Document
+from ubrato_back.infrastructure.postgres.repos import VerificationRepository
 from ubrato_back.schemas import schema_models
 
 

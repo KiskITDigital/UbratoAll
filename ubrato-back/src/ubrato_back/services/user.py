@@ -5,11 +5,11 @@ import bcrypt
 import pyotp
 from fastapi import Depends, status
 
+from ubrato_back.config import get_config
 from ubrato_back.infrastructure.broker.nats import NatsClient, get_nats_connection
 from ubrato_back.infrastructure.broker.topic import EMAIL_CONFIRMATION_TOPIC, EMAIL_RESET_PASS_TOPIC
-from ubrato_back.config import get_config
-from ubrato_back.infrastructure.postgres.repos import TenderRepository, UserRepository
 from ubrato_back.infrastructure.postgres.models import Organization, User
+from ubrato_back.infrastructure.postgres.repos import TenderRepository, UserRepository
 from ubrato_back.infrastructure.typesense import ContractorIndex
 from ubrato_back.infrastructure.typesense.schemas import TypesenseContractor
 from ubrato_back.schemas import schema_models
