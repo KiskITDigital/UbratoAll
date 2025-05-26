@@ -4,7 +4,12 @@ from ubrato_back.config import Config, get_config
 
 config: Config = get_config()
 
-redis: aioredis.Redis = aioredis.from_url(config.database.redis.dsn, password=config.database.redis.password)
+redis: aioredis.Redis = aioredis.Redis(
+    host=config.database.redis.host,
+    port=config.database.redis.port,
+    db=config.database.redis.db,
+    password=config.database.redis.password,
+)
 
 
 def get_db_connection() -> aioredis.Redis:

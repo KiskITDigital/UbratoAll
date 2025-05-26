@@ -36,7 +36,9 @@ router = APIRouter(
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
     },
 )
-async def get_customer_profile(org_id: str, org_service: OrganizationService = Depends()) -> schema_models.CustomerProfile:
+async def get_customer_profile(
+    org_id: str, org_service: OrganizationService = Depends()
+) -> schema_models.CustomerProfile:
     return await org_service.get_customer_profile(org_id)
 
 
@@ -48,7 +50,9 @@ async def get_customer_profile(org_id: str, org_service: OrganizationService = D
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
     },
 )
-async def get_contractor_profile(org_id: str, org_service: OrganizationService = Depends()) -> schema_models.ContractorProfile:
+async def get_contractor_profile(
+    org_id: str, org_service: OrganizationService = Depends()
+) -> schema_models.ContractorProfile:
     return await org_service.get_contractor_profile(org_id)
 
 
@@ -60,7 +64,9 @@ async def get_contractor_profile(org_id: str, org_service: OrganizationService =
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
     },
 )
-async def get_organization_profile(org_id: str, org_service: OrganizationService = Depends()) -> schema_models.Organization:
+async def get_organization_profile(
+    org_id: str, org_service: OrganizationService = Depends()
+) -> schema_models.Organization:
     return (await org_service.get_organization_by_id(org_id)).to_model()
 
 

@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
+from ubrato_back.config import get_config
 from ubrato_back.infrastructure.broker import get_nats_connection
 from ubrato_back.exceptions import (
     AuthException,
@@ -19,10 +20,18 @@ from ubrato_back.exceptions import (
 )
 from ubrato_back.infrastructure import redis, typesense
 from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryException
-from ubrato_back.presentation.api.routers.v1 import auth, health, manager, organizations, questionnaire, role, suggest, \
-    tender, \
-    users, \
-    verification
+from ubrato_back.presentation.api.routers.v1 import (
+    auth,
+    health,
+    manager,
+    organizations,
+    questionnaire,
+    role,
+    suggest,
+    tender,
+    users,
+    verification,
+)
 
 
 @asynccontextmanager
@@ -98,7 +107,8 @@ app.add_exception_handler(Exception, internal_exception_hander)
 
 
 def main() -> None:
-    uvicorn.run(app, host="0.0.0.0")
+    config = get_config()
+    uvicorn.run(app, host=config.api.host, port=config.api.port)
 
 
 if __name__ == "__main__":
