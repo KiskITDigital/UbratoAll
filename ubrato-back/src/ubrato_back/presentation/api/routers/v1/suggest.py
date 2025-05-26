@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
+from ubrato_back.infrastructure.postgres.readers.organization import OrganizationReader
 from ubrato_back.schemas import schema_models
 from ubrato_back.services import SuggestService
 
@@ -34,9 +35,8 @@ async def search_company(
 @router.get("/check-inn")
 async def check_inn(
     inn: str,
-    suggest_service: SuggestService = Depends(),
+    organization_reader: OrganizationReader = Depends(),
 ) -> None:
-
-    companies = await suggest_service.search_company(query=inn)
-    if not companies:
+    is_organization_exists = await organization_reader.check_organization_with_inn_exists(inn=inn)
+    if is_organization_exists is False:
         raise HTTPException(status.HTTP_404_NOT_FOUND, "not found")
