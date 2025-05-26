@@ -5,7 +5,7 @@ from sqlalchemy import and_, delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ubrato_back.config import get_config
-from ubrato_back.infrastructure.postgres.repos.database import get_db_connection
+from ubrato_back.infrastructure.postgres.main import get_db_connection
 from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryException
 from ubrato_back.infrastructure.postgres.models import (
     ContractorProfile,
@@ -51,7 +51,7 @@ class UserRepository:
         if user is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["user_email_not_found"].format(email),
+                detail=get_config().localization.config["errors"]["user_email_not_found"].format(email),
                 sql_msg="",
             )
 
@@ -65,7 +65,7 @@ class UserRepository:
         if user is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["userid_not_found"].format(user_id),
+                detail=get_config().localization.config["errors"]["userid_not_found"].format(user_id),
                 sql_msg="",
             )
 
@@ -91,7 +91,7 @@ class UserRepository:
         if users is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["userid_not_found"].format(user_id),
+                detail=get_config().localization.config["errors"]["userid_not_found"].format(user_id),
                 sql_msg="",
             )
 
@@ -105,7 +105,7 @@ class UserRepository:
         if user is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["userid_not_found"].format(user_id),
+                detail=get_config().localization.config["errors"]["userid_not_found"].format(user_id),
                 sql_msg="",
             )
 
@@ -187,7 +187,7 @@ class UserRepository:
         if user is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["userid_not_found"].format(user_id),
+                detail=get_config().localization.config["errors"]["userid_not_found"].format(user_id),
                 sql_msg="",
             )
 

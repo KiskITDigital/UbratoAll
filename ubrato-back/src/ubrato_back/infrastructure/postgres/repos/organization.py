@@ -5,7 +5,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ubrato_back.config import get_config
-from ubrato_back.infrastructure.postgres.repos.database import get_db_connection
+from ubrato_back.infrastructure.postgres.main import get_db_connection
 from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryException
 from ubrato_back.infrastructure.postgres.models import Organization
 from ubrato_back.schemas import schema_models
@@ -16,7 +16,7 @@ class OrganizationRepository:
 
     def __init__(self, db: AsyncSession = Depends(get_db_connection)) -> None:
         self.db = db
-        self.localization = get_config().Localization.config
+        self.localization = get_config().localization.config
 
     async def save_organization(
         self,

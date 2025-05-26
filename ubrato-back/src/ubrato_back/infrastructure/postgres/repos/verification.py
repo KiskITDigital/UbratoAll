@@ -5,7 +5,7 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ubrato_back.config import get_config
-from ubrato_back.infrastructure.postgres.repos.database import get_db_connection
+from ubrato_back.infrastructure.postgres.main import get_db_connection
 from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryException
 from ubrato_back.infrastructure.postgres.models import (
     Document,
@@ -65,7 +65,7 @@ class VerificationRepository:
         if document is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["document_not_found"].format(doc_id),
+                detail=get_config().localization.config["errors"]["document_not_found"].format(doc_id),
                 sql_msg="",
             )
         return document
@@ -90,7 +90,7 @@ class VerificationRepository:
         if verf_req is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["verified_request_not_found"].format(verf_id),
+                detail=get_config().localization.config["errors"]["verified_request_not_found"].format(verf_id),
                 sql_msg="",
             )
 
@@ -106,7 +106,7 @@ class VerificationRepository:
         if verf_req is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["verified_request_not_found"].format(verf_id),
+                detail=get_config().localization.config["errors"]["verified_request_not_found"].format(verf_id),
                 sql_msg="",
             )
         return verf_req

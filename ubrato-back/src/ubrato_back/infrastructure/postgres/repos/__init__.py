@@ -16,7 +16,7 @@ __all__ = [
 ]
 
 from .cities import CitiesRepository
-from .database import async_session_maker, get_db_connection
+from ubrato_back.infrastructure.postgres.main import async_session_maker, get_db_connection
 from .draft_tender import DraftTenderRepository
 from .logs import LogsRepository
 from .notifications import NotificationRepository

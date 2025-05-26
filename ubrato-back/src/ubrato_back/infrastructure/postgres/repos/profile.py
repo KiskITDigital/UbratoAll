@@ -5,7 +5,7 @@ from sqlalchemy import and_, delete, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ubrato_back.config import get_config
-from ubrato_back.infrastructure.postgres.repos.database import get_db_connection
+from ubrato_back.infrastructure.postgres.main import get_db_connection
 from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryException
 from ubrato_back.infrastructure.postgres.models import (
     City,
@@ -37,7 +37,7 @@ class ProfileRepository:
         if org is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["org_not_found"].format(org_id),
+                detail=get_config().localization.config["errors"]["org_not_found"].format(org_id),
                 sql_msg="",
             )
 
@@ -55,7 +55,7 @@ class ProfileRepository:
         if profile is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["profile_not_found"].format(org_id),
+                detail=get_config().localization.config["errors"]["profile_not_found"].format(org_id),
                 sql_msg="",
             )
 
@@ -88,7 +88,7 @@ class ProfileRepository:
         if profile is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["profile_not_found"].format(org_id),
+                detail=get_config().localization.config["errors"]["profile_not_found"].format(org_id),
                 sql_msg="",
             )
 
@@ -186,7 +186,7 @@ class ProfileRepository:
         if cv is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["cv_not_found"].format(cv_id),
+                detail=get_config().localization.config["errors"]["cv_not_found"].format(cv_id),
                 sql_msg="",
             )
 
@@ -217,7 +217,7 @@ class ProfileRepository:
         if cv_to_update is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["cv_not_found"].format(cv_id),
+                detail=get_config().localization.config["errors"]["cv_not_found"].format(cv_id),
                 sql_msg="",
             )
 
@@ -248,7 +248,7 @@ class ProfileRepository:
         if profile_to_update is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["profile_not_found"].format(org_id),
+                detail=get_config().localization.config["errors"]["profile_not_found"].format(org_id),
                 sql_msg="",
             )
 
@@ -263,7 +263,7 @@ class ProfileRepository:
         if profile_to_update is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["profile_not_found"].format(org_id),
+                detail=get_config().localization.config["errors"]["profile_not_found"].format(org_id),
                 sql_msg="",
             )
 

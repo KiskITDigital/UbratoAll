@@ -6,12 +6,12 @@ config: Config = get_config()
 
 client = Client(
     {
-        "api_key": config.Database.Typesense.API_KEY,
+        "api_key": config.database.typesense.api_key,
         "nodes": [
             {
-                "host": config.Database.Typesense.HOST,
-                "port": config.Database.Typesense.PORT,
-                "protocol": config.Database.Typesense.PROTOCOL,
+                "host": config.database.typesense.host,
+                "port": config.database.typesense.port,
+                "protocol": config.database.typesense.protocol,
             },
         ],
         "connection_timeout_seconds": 10,

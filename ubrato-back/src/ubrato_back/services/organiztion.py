@@ -36,7 +36,7 @@ class OrganizationService:
         self.org_repository = org_repository
         self.profile_repository = profile_repository
         self.contractor_index = contractor_index
-        self.dadata = Dadata(get_config().Dadata.api_key)
+        self.dadata = Dadata(get_config().dadata.api_key)
 
     def get_organization_from_api(self, inn: str) -> Organization:
         result = self.dadata.find_by_id("party", inn)

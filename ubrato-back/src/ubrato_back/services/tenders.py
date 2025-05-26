@@ -23,7 +23,7 @@ class TenderService:
         self.tags_repository = tags_repository
         self.tender_repository = tender_repository
         self.tender_index = tender_index
-        self.localization = get_config().Localization.config
+        self.localization = get_config().localization.config
 
     async def create_tender(self, tender: CreateTenderRequest, user_id: str) -> schema_models.Tender:
         # if len(tender.services_types) == 0:

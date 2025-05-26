@@ -6,13 +6,13 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from ubrato_back.config import config as settings
+from ubrato_back.config import load_config
 from ubrato_back.infrastructure.postgres.migrations.base import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-config.set_main_option("sqlalchemy.url", settings.Database.Postgres.DB_DSN)
+config.set_main_option("sqlalchemy.url", load_config().database.postgres.dsn)
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

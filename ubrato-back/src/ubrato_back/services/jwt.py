@@ -15,9 +15,9 @@ class JWTService:
     algorithm: str
 
     def __init__(self, config: Config = Depends(get_config)) -> None:
-        self.localization = get_config().Localization.config
-        self.secret = config.JWT.secret
-        self.time_live = int(config.JWT.time_live)
+        self.localization = get_config().localization.config
+        self.secret = config.jwt.secret
+        self.time_live = int(config.jwt.time_live)
         self.algorithm = "HS256"
 
     def generate_jwt(self, user: schema_models.User, org: schema_models.Organization) -> str:

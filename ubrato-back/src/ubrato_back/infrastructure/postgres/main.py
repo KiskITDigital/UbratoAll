@@ -9,7 +9,7 @@ from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryExcep
 
 config: Config = get_config()
 
-engine = create_async_engine(config.Database.Postgres.DB_DSN)
+engine = create_async_engine(config.database.postgres.dsn)
 async_session_maker = async_sessionmaker(autocommit=False, bind=engine)
 
 
@@ -26,7 +26,7 @@ async def get_db_connection() -> AsyncGenerator[AsyncSession, None]:
             print(err._message())
             raise RepositoryException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=config.Localization.config["errors"]["data_already_exist"],
+                detail=config.localization.config["errors"]["data_already_exist"],
                 sql_msg=err._message(),
             )
         except SQLAlchemyError as err:

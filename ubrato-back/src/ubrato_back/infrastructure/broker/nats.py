@@ -10,7 +10,7 @@ class NatsClient:
         self.client = Client()
 
     async def connect(self) -> None:
-        await self.client.connect(servers=[config.Broker.JetStream.DSN])
+        await self.client.connect(servers=[config.broker.nats.dsn])
 
     async def pub(
         self,

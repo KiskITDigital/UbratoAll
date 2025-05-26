@@ -6,7 +6,7 @@ from sqlalchemy import and_, delete, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ubrato_back.config import get_config
-from ubrato_back.infrastructure.postgres.repos.database import get_db_connection
+from ubrato_back.infrastructure.postgres.main import get_db_connection
 from ubrato_back.infrastructure.postgres.repos.exceptions import RepositoryException
 from ubrato_back.infrastructure.postgres.models import (
     City,
@@ -195,7 +195,7 @@ class TenderRepository:
         if found_tender is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["tenderid_not_found"].format(tender_id),
+                detail=get_config().localization.config["errors"]["tenderid_not_found"].format(tender_id),
                 sql_msg="",
             )
 
@@ -214,7 +214,7 @@ class TenderRepository:
         if tender is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["tenderid_not_found"].format(tender_id),
+                detail=get_config().localization.config["errors"]["tenderid_not_found"].format(tender_id),
                 sql_msg="",
             )
 
@@ -445,7 +445,7 @@ class TenderRepository:
         if tender is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=get_config().Localization.config["errors"]["tenderid_not_found"].format(tender_id),
+                detail=get_config().localization.config["errors"]["tenderid_not_found"].format(tender_id),
                 sql_msg="",
             )
 

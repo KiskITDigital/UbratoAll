@@ -21,10 +21,10 @@ class SessionService:
         user_repository: UserRepository = Depends(),
         session_repository: SessionRepository = Depends(),
     ) -> None:
-        self.time_live = int(config.Session.time_live)
+        self.time_live = int(config.session.time_live)
         self.session_repository = session_repository
         self.user_repository = user_repository
-        self.localization = get_config().Localization.config
+        self.localization = get_config().localization.config
 
     async def create_session(self, user_id: str) -> str:
         session_id = secrets.token_hex(32 // 2)

@@ -35,7 +35,7 @@ class UserService:
         self.tender_repository = tender_repository
         self.nats_client = nats_client
         self.contractor_index = contractor_index
-        self.localization = get_config().Localization.config
+        self.localization = get_config().localization.config
 
     async def create(
         self,

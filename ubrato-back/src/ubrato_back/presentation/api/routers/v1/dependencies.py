@@ -7,7 +7,7 @@ from ubrato_back.exceptions import AuthException
 from ubrato_back.schemas.jwt_user import JWTUser
 from ubrato_back.services import JWTService
 
-localization = get_config().Localization.config
+localization = get_config().localization.config
 
 
 async def authorized(
@@ -32,7 +32,7 @@ async def is_admin(
 ) -> None:
     user = jwt_service.unmarshal_jwt(authorization)
 
-    if user.role < get_config().Role.admin:
+    if user.role < get_config().role.admin:
         raise AuthException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=localization["errors"]["no_access"],
@@ -43,7 +43,7 @@ async def is_creator_or_manager(
     user_id: str,
     user: JWTUser,
 ) -> None:
-    if user.role < get_config().Role.manager and user.id != user_id:
+    if user.role < get_config().role.manager and user.id != user_id:
         raise AuthException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail=localization["errors"]["no_access"],
