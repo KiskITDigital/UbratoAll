@@ -33,6 +33,6 @@ RUN uv sync --all-extras --no-editable
 FROM python-base AS runner
 
 COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
-COPY ./localization.toml ./
+COPY ./localization.toml ./alembic.ini ./
 
 CMD ["ubrato_back"]
