@@ -19,10 +19,15 @@ app = FastAPI(
             "url": "https://cdn.ubrato.ru",
             "description": "prod environment",
         },
+        {
+            "url": "https://localhost:8001",
+            "description": "local environment",
+        },
     ],
 )
 
 origins = [
+    "https://cdn.ubrato.ru",
     "http://ubrato.ru",
     "https://ubrato.ru",
     "http://dev.ubrato.ru",
@@ -30,6 +35,7 @@ origins = [
     "http://localhost",
     "http://localhost:5174",
     "http://localhost:5173",
+    "http://127.0.0.1:8001",
 ]
 
 app.add_middleware(

@@ -1,37 +1,35 @@
-FROM python:3.11.6-alpine3.18
+FROM python:3.13-slim-bookworm AS python-base
 
-ARG SERVER_PORT=3000
-ARG SERVER_ADDR=0.0.0.0
-ARG S3_FOLDER=/files/
-ARG JWT_SECRET
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONOPTIMIZE=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_DEFAULT_TIMEOUT=100 \
+    APP_PATH="/app" \
+    UV_VERSION="0.6.14"
 
-ENV SERVER_PORT=${SERVER_PORT}
-ENV SERVER_ADDR=${SERVER_ADDR}
-ENV S3_FOLDER=${S3_FOLDER}
-ENV JWT_SECRET=${JWT_SECRET}
+ENV VIRTUAL_ENV="$APP_PATH/.venv"
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-ENV PYTHONFAULTHANDLER=1 \
-  PYTHONUNBUFFERED=1 \
-  PYTHONHASHSEED=random \
-  PIP_NO_CACHE_DIR=off \
-  PIP_DISABLE_PIP_VERSION_CHECK=on \
-  PIP_DEFAULT_TIMEOUT=100
+WORKDIR $APP_PATH
 
+FROM python-base AS builder
 
-RUN pip install poetry
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends gcc git \
+    && rm -rf /var/lib/apt/lists/
 
-WORKDIR /ubrato
-COPY poetry.lock pyproject.toml /ubrato/
+RUN pip install --no-cache-dir "uv==$UV_VERSION"
 
-COPY ./app /ubrato/app
-COPY ./scripts /ubrato/scripts
+COPY ./pyproject.toml ./uv.lock ./
+RUN uv venv -p 3.13 \
+    && uv sync --all-extras --no-install-project
+COPY ./src ./src
+RUN uv sync --all-extras --no-editable
 
-RUN poetry lock
+FROM python-base AS runner
 
-RUN poetry install
+COPY --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
 
-RUN mkdir -p ${S3_FOLDER}
-
-EXPOSE $SERVER_PORT
-
-ENTRYPOINT [ "sh", "./scripts/run.sh" ]
+CMD ["ubrato_store"]

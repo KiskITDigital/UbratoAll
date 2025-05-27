@@ -12,7 +12,7 @@ class S3Service:
     s3_folder: str
 
     def __init__(self, config: Config = Depends(get_config)) -> None:
-        self.s3_folder = config.S3.FODLER
+        self.s3_folder = config.S3.FOLDER
 
     async def save_file(self, user_id: str, file: UploadFile, private: bool) -> str:
         prefix = "private/" if private else ""
