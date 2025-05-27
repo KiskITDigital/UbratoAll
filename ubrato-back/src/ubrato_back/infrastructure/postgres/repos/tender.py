@@ -6,6 +6,7 @@ from sqlalchemy import and_, delete, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ubrato_back.config import get_config
+from ubrato_back.infrastructure.postgres.exceptions import RepositoryException
 from ubrato_back.infrastructure.postgres.main import get_db_connection
 from ubrato_back.infrastructure.postgres.models import (
     City,
@@ -21,7 +22,6 @@ from ubrato_back.infrastructure.postgres.models import (
     TenderServiceType,
     UserFavoriteTender,
 )
-from ubrato_back.infrastructure.postgres.exceptions import RepositoryException
 from ubrato_back.schemas import schema_models
 
 
