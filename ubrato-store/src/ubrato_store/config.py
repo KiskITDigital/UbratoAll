@@ -1,13 +1,9 @@
 import os
 
-from dotenv import load_dotenv
-
-load_dotenv()
-
 
 class Config:
     class S3:
-        FODLER: str = os.getenv("S3_FOLDER", "files/")
+        FODLER: str = os.getenv("STORAGE_FOLDER", "files/")
 
     class JWT:
         secret: str = os.getenv("JWT_SECRET", "secret")

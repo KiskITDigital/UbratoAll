@@ -3,9 +3,9 @@ import os
 import time
 from datetime import datetime, timedelta, timezone
 
-from config import Config, get_config
+from ubrato_store.config import Config, get_config
 from fastapi import Depends, HTTPException, UploadFile, status
-from schemas.file_stats import FileStatsResponse
+from ubrato_store.schemas.file_stats import FileStatsResponse
 
 
 class S3Service:

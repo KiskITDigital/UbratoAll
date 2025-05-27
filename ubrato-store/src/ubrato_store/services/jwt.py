@@ -1,8 +1,8 @@
 import jwt
-from config import Config, get_config
+from ubrato_store.config import Config, get_config
 from fastapi import Depends, HTTPException, status
-from schemas.jwt_user import JWTUser
-from services.exceptions import INVALID_BARRIER, NO_BARRIER_TOKEN
+from ubrato_store.schemas.jwt_user import JWTUser
+from ubrato_store.services.exceptions import INVALID_BARRIER, NO_BARRIER_TOKEN
 
 
 class JWTService:
@@ -17,9 +17,7 @@ class JWTService:
 
     def decode_jwt(self, token: str) -> JWTUser:
         try:
-            userd_dict = jwt.decode(
-                token, self.secret, algorithms=[self.algorithm]
-            )
+            userd_dict = jwt.decode(token, self.secret, algorithms=[self.algorithm])
 
             jwt_user = JWTUser(**userd_dict)
 

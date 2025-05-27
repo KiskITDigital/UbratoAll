@@ -1,16 +1,23 @@
-from exceptions import exception_handler, request_validation_exception_handler
+import os
+
+import uvicorn
+
+from ubrato_store.exceptions import (
+    exception_handler,
+    request_validation_exception_handler,
+)
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from routers import s3
+from ubrato_store.routers import s3
 
 app = FastAPI(
-    title="Ubrato API",
+    title="Ubrato store API",
     version="0.1.0",
     servers=[
         {
-            "url": "https://git.godmod.dev",
-            "description": "development environment",
+            "url": "https://cdn.ubrato.ru",
+            "description": "prod environment",
         },
     ],
 )
@@ -45,3 +52,13 @@ app.add_exception_handler(
     HTTPException,
     exception_handler,  # type: ignore
 )
+
+
+def main() -> None:
+    host = os.environ["API_HOST"]
+    port = int(os.environ["API_PORT"])
+    uvicorn.run(app, host=host, port=port)
+
+
+if __name__ == "__main__":
+    main()

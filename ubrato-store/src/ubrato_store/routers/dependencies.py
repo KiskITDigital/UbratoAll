@@ -1,9 +1,9 @@
 from typing import Annotated, Optional
 
-from config import get_config
+from ubrato_store.config import get_config
 from fastapi import Depends, Header, HTTPException, status
-from schemas.jwt_user import JWTUser
-from services.jwt import JWTService
+from ubrato_store.schemas.jwt_user import JWTUser
+from ubrato_store.services.jwt import JWTService
 
 
 async def authorized(

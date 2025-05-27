@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from config import get_config
+from ubrato_store.config import get_config
 from fastapi import (
     APIRouter,
     Depends,
@@ -11,11 +11,11 @@ from fastapi import (
     UploadFile,
     status,
 )
-from routers.dependencies import authorized, get_user
-from schemas.exception import ExceptionResponse
-from schemas.file_stats import FileStatsResponse
-from schemas.jwt_user import JWTUser
-from services.s3 import S3Service
+from ubrato_store.routers.dependencies import authorized, get_user
+from ubrato_store.schemas.exception import ExceptionResponse
+from ubrato_store.schemas.file_stats import FileStatsResponse
+from ubrato_store.schemas.jwt_user import JWTUser
+from ubrato_store.services.s3 import S3Service
 
 router = APIRouter(
     prefix="/s3",
