@@ -16,17 +16,18 @@ app = FastAPI(
     version="0.1.0",
     servers=[
         {
-            "url": "https://cdn.ubrato.ru",
+            "url": "http://api.ubrato.ru:8001",
             "description": "prod environment",
         },
         {
-            "url": "https://localhost:8001",
+            "url": "http://localhost:8001",
             "description": "local environment",
         },
     ],
 )
 
 origins = [
+    "http://api.ubrato.ru:8001",
     "https://cdn.ubrato.ru",
     "http://ubrato.ru",
     "https://ubrato.ru",
