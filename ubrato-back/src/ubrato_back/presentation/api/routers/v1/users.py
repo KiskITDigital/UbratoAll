@@ -1,7 +1,11 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
 
+from ubrato_back.application.identity.interface.identity_provider import IdentityProvider
+from ubrato_back.application.user.dto import UserMeWithOrg
+from ubrato_back.config import get_config
 from ubrato_back.infrastructure.postgres.exceptions import RepositoryException
-from ubrato_back.presentation.api.routers.v1.dependencies import authorized, get_user
+from ubrato_back.infrastructure.postgres.readers.user import UserReader
+from ubrato_back.presentation.api.routers.v1.dependencies import authorized, get_idp, get_user
 from ubrato_back.schemas import schema_models
 from ubrato_back.schemas.exception import ExceptionResponse
 from ubrato_back.schemas.jwt_user import JWTUser
@@ -69,20 +73,17 @@ async def user_verification_history(
 )
 async def get_me(
     user_service: UserService = Depends(),
-    user: JWTUser = Depends(get_user),
-) -> schema_models.UserMe:
-    dto_user = await user_service.get_by_id(user.id)
-
-    dto_org = schema_models.OrganizationLiteDTO(
-        id=user.org_id,
-        short_name=user.org_short_name,
-        inn=user.org_inn,
-        okpo=user.org_okpo,
-        ogrn=user.org_ogrn,
-        kpp=user.org_kpp,
-    )
-
-    return schema_models.UserMe(organiztion=dto_org, **dto_user.__dict__)
+    user_reader: UserReader = Depends(),
+    identity_provider: IdentityProvider = Depends(get_idp),
+) -> UserMeWithOrg:
+    identity = await identity_provider.get_identity()
+    user_with_org = await user_reader.get_me_with_organization(identity.id)
+    if user_with_org is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=get_config().localization.config["errors"]["userid_not_found"].format(identity.id),
+        )
+    return user_with_org
 
 
 @router.put(

@@ -47,6 +47,7 @@ class UserMe(BaseModel):
     last_name: str
     avatar: str
     verified: bool
+    email_verified: bool
     role: int
     is_contractor: bool
     organiztion: OrganizationLiteDTO
