@@ -8,7 +8,6 @@ __all__ = [
     "ContractorProfile",
     "CustomerProfile",
     "DraftTender",
-    "EgrulCompany",
     "FavoriteContractor",
     "Notification",
     "Notifications",
@@ -46,7 +45,6 @@ from .object_group import (
 )
 from .organization import (
     ContactInfo,
-    EgrulCompany,
     Organization,
     OrganizationDTO,
     OrganizationLiteDTO,

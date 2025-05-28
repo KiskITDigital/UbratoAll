@@ -43,7 +43,7 @@ async def signup_user(
     session_service: SessionService = Depends(),
     notice_service: NoticeService = Depends(),
 ) -> SignUpResponse:
-    org = org_service.get_organization_from_api(inn=user.inn)
+    org = await org_service.get_organization_from_api(inn=user.inn)
 
     created_user, created_org = await user_service.create(
         email=user.email,

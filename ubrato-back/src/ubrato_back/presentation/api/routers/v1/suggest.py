@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 
+from ubrato_back.application.organization.dto import ExternalOrganizationInfo
 from ubrato_back.infrastructure.postgres.readers.organization import OrganizationReader
 from ubrato_back.schemas import schema_models
 from ubrato_back.services import SuggestService
@@ -23,12 +24,12 @@ async def search_city(
 
 @router.get(
     "/company",
-    response_model=list[schema_models.EgrulCompany],
+    response_model=list[ExternalOrganizationInfo],
 )
 async def search_company(
     query: str,
     suggest_service: SuggestService = Depends(),
-) -> list[schema_models.EgrulCompany]:
+) -> list[ExternalOrganizationInfo]:
     return await suggest_service.search_company(query=query)
 
 

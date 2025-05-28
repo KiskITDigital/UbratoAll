@@ -46,13 +46,3 @@ class OrganizationDTO(BaseModel):
     ogrn: str
     kpp: str
     avatar: str | None
-
-
-class EgrulCompany(BaseModel):
-    name: str
-    director: str
-    inn: str
-    kpp: str
-    ogrn: str
-    registration_date: str
-    region: str

@@ -3,10 +3,10 @@ import hashlib
 import uuid
 from typing import Any
 
-from dadata import Dadata
 from fastapi import Depends, status
 
 from ubrato_back.config import get_config
+from ubrato_back.infrastructure.dadata.client import DadataClient
 from ubrato_back.infrastructure.postgres.models import (
     ContractorCV,
     ContractorLocation,
@@ -36,30 +36,30 @@ class OrganizationService:
         self.org_repository = org_repository
         self.profile_repository = profile_repository
         self.contractor_index = contractor_index
-        self.dadata = Dadata(get_config().dadata.api_key)
+        self._dadata_client = DadataClient(get_config().dadata.api_key)
 
-    def get_organization_from_api(self, inn: str) -> Organization:
-        result = self.dadata.find_by_id("party", inn)
+    async def get_organization_from_api(self, inn: str) -> Organization:
+        result = await self._dadata_client.get_organization_by_inn(inn)
 
-        if len(result) == 0:
+        if result is None:
             raise ServiceException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="INN NOT FOUND",
             )
-        hash = hashlib.md5(inn.encode())
-        id = "org_" + hash.hexdigest()
+        hash_id = hashlib.md5(inn.encode())
+        org_id = "org_" + hash_id.hexdigest()
 
         org = Organization(
-            id=id,
-            brand_name=result[0]["data"]["name"]["short"],
-            full_name=result[0]["data"]["name"]["full_with_opf"],
-            short_name=result[0]["data"]["name"]["short_with_opf"],
+            id=org_id,
             inn=inn,
-            okpo=result[0]["data"]["okpo"],
-            ogrn=result[0]["data"]["ogrn"],
-            kpp=result[0]["data"]["kpp"],
-            tax_code=int(result[0]["data"]["address"]["data"]["tax_office"]),
-            address=result[0]["data"]["address"]["unrestricted_value"],
+            brand_name=result.brand_name,
+            full_name=result.full_name,
+            short_name=result.short_name,
+            okpo=result.okpo,
+            ogrn=result.ogrn,
+            kpp=result.kpp,
+            tax_code=result.tax_code,
+            address=result.address,
         )
 
         return org
@@ -67,7 +67,7 @@ class OrganizationService:
     async def get_organization_by_id(self, org_id: str) -> Organization:
         org = await self.org_repository.get_organization_by_id(org_id=org_id)
         if org.update_at + datetime.timedelta(days=30) < datetime.datetime.now().astimezone():
-            upd_org = self.get_organization_from_api(org.inn)
+            upd_org = await self.get_organization_from_api(org.inn)
             org = await self.org_repository.update_org(upd_org=upd_org)
         return org
 
