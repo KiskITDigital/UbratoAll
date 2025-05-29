@@ -12,7 +12,7 @@ class DadataClient:
     async def get_organization_by_inn(self, inn: str) -> Organization | None:
         organizations = await self.get_organizations_by_inn(inn)
 
-        if len(organizations) > 0:
+        if len(organizations) == 0:
             return None
         return organizations[0]
 
