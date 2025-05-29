@@ -72,7 +72,6 @@ async def user_verification_history(
     dependencies=[Depends(authorized)],
 )
 async def get_me(
-    user_service: UserService = Depends(),
     user_reader: UserReader = Depends(),
     identity_provider: IdentityProvider = Depends(get_idp),
 ) -> UserMeWithOrg:
