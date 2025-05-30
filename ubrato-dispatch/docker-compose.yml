@@ -1,25 +1,38 @@
-version: '3'
+services:
+  app:
+    image: ubrato-email-sender
+    build: .
+    container_name: ubrato-email-sender-app
+    restart: unless-stopped
+    networks: 
+     - ubrato-back-nats-network
+    env_file:
+      - .env
+
+  # nats:
+  #   image: nats:2.11.4-alpine3.21
+  #   container_name: email-sender-nats
+  #   hostname: email-sender-nats
+  #   restart: unless-stopped
+  #   command:
+  #     - "--name=email-sender-nats"
+  #     - "--http_port=8222"
+  #     - "--js"
+  #     - "--sd=/data"
+  #   ports:
+  #     - "4222:4222"  # NATS client port
+  #     - "6222:6222"  # NATS cluster port
+  #     - "8222:8222"  # NATS monitoring port
+  #   networks: 
+  #    - email-sender-nats-network
+  #   volumes:
+  #     - email-sender-nats-data:/data
 
 networks:
-  ubrato-service:
-    driver: bridge
+  ubrato-back-nats-network:
+    name: ubrato-back-nats-network
+    external: true
 
-services:
-  service-nats:
-    container_name: service-nats
-    image: nats:2.10.14-alpine3.19
-    ports:
-      - "4222:4222"
-      - "6222:6222"
-      - "8222:8222"
-    networks: 
-     - ubrato-service
-    volumes:
-      - ./nats1:/data
-    command:
-      - "--name=service-nats"
-      - "--http_port=8222"
-      - "--js"
-      - "--sd=/data"
-    restart: "on-failure"
-    
+# volumes:
+#   email-sender-nats-data:
+#     name: email-sender-nats-data

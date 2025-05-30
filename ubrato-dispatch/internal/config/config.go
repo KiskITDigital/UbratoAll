@@ -1,42 +1,24 @@
 package config
 
 import (
-	"os"
+	"git.ubrato.ru/ubrato/dispatch-service/internal/infrastructure/email"
+	"git.ubrato.ru/ubrato/dispatch-service/internal/infrastructure/emailtemplater"
+	"git.ubrato.ru/ubrato/dispatch-service/internal/infrastructure/jetstream"
+	"git.ubrato.ru/ubrato/dispatch-service/internal/infrastructure/log"
+	"github.com/caarlos0/env/v10"
 )
 
-type Nats struct {
-	Addr string
-}
-
-type Smtp struct {
-	From  string
-	Login string
-	Pass  string
-	Host  string
-}
-
 type Config struct {
-	Nats Nats
-	Smtp Smtp
+	Nats           jetstream.Config      `envPrefix:"NATS_"`
+	Email          email.Config          `envPrefix:"EMAIL_"`
+	Log            log.Config            `envPrefix:"LOG_"`
+	EmailTemplater emailtemplater.Config `envPrefix:"EMAIL_TEMPLATER_"`
 }
 
-func Load() *Config {
-	return &Config{
-		Nats: Nats{
-			Addr: getEnv("NATS_ADDR"),
-		},
-		Smtp: Smtp{
-			From:  getEnv("EMAIL_FROM"),
-			Login: getEnv("EMAIL_LOGIN"),
-			Pass:  getEnv("EMAIL_PASS"),
-			Host:  getEnv("EMAIL_HOST"),
-		},
+func Load() (Config, error) {
+	var cfg Config
+	if err := env.Parse(&cfg); err != nil {
+		return Config{}, err
 	}
-}
-
-func getEnv(key string) string {
-	if value, exists := os.LookupEnv(key); exists {
-		return value
-	}
-	return ""
+	return cfg, nil
 }

@@ -4,4 +4,6 @@ const (
 	SendEmailTopic      = "email.send"
 	EmailResetPassTopic = "email.send.resetpass"
 	ConfirmEmailTopic   = "email.send.confirmation"
+
+	SendEmailStream = "email_queue"
 )

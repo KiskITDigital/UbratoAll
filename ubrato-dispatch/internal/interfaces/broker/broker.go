@@ -2,8 +2,6 @@ package broker
 
 import (
 	"context"
-
-	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 type Message struct {
@@ -18,6 +16,6 @@ type Subscription interface {
 type MsgHandler func(msg *Message) error
 
 type Broker interface {
-	PublishProto(ctx context.Context, topic string, msg protoreflect.ProtoMessage) error
+	// PublishProto(ctx context.Context, topic string, msg protoreflect.ProtoMessage) error
 	Subscribe(ctx context.Context, topic string, handleFunc MsgHandler) (Subscription, error)
 }

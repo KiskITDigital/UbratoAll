@@ -2,62 +2,90 @@ package main
 
 import (
 	"context"
-	"log/slog"
 	"os"
-	"sync"
+	"os/signal"
+	"sync/atomic"
+	"syscall"
+	"time"
 
-	"git.ubrato.ru/ubrato/dispatch-service/internal/broker/jetstream"
 	"git.ubrato.ru/ubrato/dispatch-service/internal/config"
-	"git.ubrato.ru/ubrato/dispatch-service/internal/service"
-	"git.ubrato.ru/ubrato/dispatch-service/internal/service/mail"
-	"git.ubrato.ru/ubrato/dispatch-service/internal/smtp"
+	"git.ubrato.ru/ubrato/dispatch-service/internal/infrastructure/email"
+	"git.ubrato.ru/ubrato/dispatch-service/internal/infrastructure/emailtemplater"
+	"git.ubrato.ru/ubrato/dispatch-service/internal/infrastructure/jetstream"
+	"git.ubrato.ru/ubrato/dispatch-service/internal/infrastructure/log"
+	"git.ubrato.ru/ubrato/dispatch-service/internal/interfaces/broker"
+	"git.ubrato.ru/ubrato/dispatch-service/internal/presentation/nats/handler"
+
+	"golang.org/x/sync/errgroup"
 )
 
-func main() {
-	sig := make(chan os.Signal, 1)
-	ctx := context.Background()
-	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
-	config := config.Load()
+var isShuttingDown atomic.Bool
 
-	jetstream, err := jetstream.New(config.Nats.Addr, logger)
+func waitShuttingDown(mainCtx context.Context, liveCtx context.Context, stopMainCtx context.CancelFunc) error {
+	<-liveCtx.Done()
+	isShuttingDown.Store(true)
+	duration := 25 * time.Second
+	timer := time.NewTimer(duration)
+	select {
+	case <-mainCtx.Done():
+		return nil
+	case <-timer.C:
+		stopMainCtx()
+		return nil
+	}
+}
+
+func main() {
+	mainCtx, stopMainCtx := context.WithCancel(context.Background())
+	defer stopMainCtx()
+	liveCtx, stopLiveCtx := signal.NotifyContext(mainCtx, os.Interrupt, syscall.SIGTERM)
+	defer stopLiveCtx()
+
+	go waitShuttingDown(mainCtx, liveCtx, stopMainCtx)
+
+	g, gCtx := errgroup.WithContext(liveCtx)
+
+	config, err := config.Load()
+	if err != nil {
+		panic(err)
+	}
+	logger := log.Setup(config.Log)
+	logger.Info("Starting ubrato-dispatch service")
+
+	emailTemplater := emailtemplater.New(config.EmailTemplater)
+	emailClient, err := email.NewClient(config.Email)
+	if err != nil {
+		logger.Error("Error email client creation", "error", err)
+		os.Exit(1)
+	}
+
+	js, err := jetstream.New(config.Nats, logger)
 	if err != nil {
 		logger.Error("Error opening nats connection", "error", err)
 		os.Exit(1)
 	}
-
-	smtpClient, err := smtp.NewSMTPClient(
-		config.Smtp.Login,
-		config.Smtp.Pass,
-		config.Smtp.Host,
-		config.Smtp.From,
-	)
-
-	if err != nil {
-		logger.Error("Error init smtp client", "error", err)
+	if err := jetstream.CreateStreams(liveCtx, js); err != nil {
+		logger.Error("Error init email client", "error", err)
 		os.Exit(1)
 	}
 
-	mailService := mail.NewService(ctx, jetstream, smtpClient)
+	handlersCollection := handler.NewCollection(gCtx, emailClient, emailTemplater)
+	subscription, err := js.Subscribe(gCtx, broker.SendEmailStream, handlersCollection.MainHandler)
 
-	services := service.Services{
-		Mail: mailService,
-	}
-
-	wg := sync.WaitGroup{}
-
-	err = services.Mail.Start()
 	if err != nil {
-		logger.Error("Error setup jetstream", "error", err)
-		os.Exit(1)
+		logger.Error("Error subscribing to jetstream", "error", err)
+		panic(err)
 	}
 
-	wg.Add(1)
-	go func() {
-		<-sig
-		logger.Info("Received kill signal")
-		defer services.Mail.Stop()
-		wg.Done()
-	}()
+	g.Go(func() error {
+		defer subscription.Stop()
 
-	wg.Wait()
+		<-gCtx.Done()
+		logger.Info("Receivemd interrupt signal")
+		return nil
+	})
+
+	if err := g.Wait(); err != nil {
+		panic(err)
+	}
 }
