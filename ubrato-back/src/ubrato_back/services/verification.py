@@ -5,6 +5,7 @@ from fastapi import Depends
 from ubrato_back.infrastructure.postgres.models import Document
 from ubrato_back.infrastructure.postgres.repos import VerificationRepository
 from ubrato_back.schemas import schema_models
+from ubrato_back.schemas.add_document import AddDocumentResponse
 
 
 class VerificationService:
@@ -23,16 +24,16 @@ class VerificationService:
 
         return doc_types
 
-    async def save_doc(self, link: str, user_id: str, type: int) -> str:
-        id = f"doc_{uuid.uuid4()}"
+    async def save_doc(self, link: str, user_id: str, type: int) -> AddDocumentResponse:
+        doc_id = f"doc_{uuid.uuid4()}"
         document = Document(
-            id=id,
+            id=doc_id,
             url=link,
             type=type,
             user_id=user_id,
         )
         await self.verf_repository.save_docs(document)
-        return id
+        return AddDocumentResponse(id=doc_id)
 
     async def get_user_doc(self, user_id: str) -> list[schema_models.VerificationDoc]:
         return await self.verf_repository.get_user_doc(user_id=user_id)

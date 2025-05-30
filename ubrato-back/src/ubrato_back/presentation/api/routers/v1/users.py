@@ -27,9 +27,8 @@ router = APIRouter(
 )
 
 
-@router.get(
+@router.post(
     "/me/verify",
-    response_model=SuccessResponse,
     responses={
         status.HTTP_400_BAD_REQUEST: {"model": ExceptionResponse},
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
@@ -40,9 +39,8 @@ router = APIRouter(
 async def user_requires_verification(
     verf_service: VerificationService = Depends(),
     user: JWTUser = Depends(get_user),
-) -> SuccessResponse:
+) -> None:
     await verf_service.create_verification_requests(user_id=user.id)
-    return SuccessResponse()
 
 
 @router.get(

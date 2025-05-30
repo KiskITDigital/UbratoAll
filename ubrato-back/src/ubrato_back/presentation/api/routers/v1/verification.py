@@ -42,8 +42,8 @@ async def save_user_doc(
     verf_service: VerificationService = Depends(),
     user: JWTUser = Depends(get_user),
 ) -> AddDocumentResponse:
-    id = await verf_service.save_doc(link=doc.link, type=doc.type, user_id=user.id)
-    return AddDocumentResponse(id=id)
+    result = await verf_service.save_doc(link=doc.link, type=doc.type, user_id=user.id)
+    return result
 
 
 @router.get(
