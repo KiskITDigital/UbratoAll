@@ -27,7 +27,7 @@ class User(Base):
     deleted_at: Mapped[datetime | None] = mapped_column(TIMESTAMP(timezone=True), nullable=True)
 
     documents = relationship("Document", back_populates="user")
-    organization = relationship("Organization", back_populates="user")
+    organization = relationship("Organization", back_populates="user", uselist=False)
     tender = relationship("Tender", back_populates="user")
     draft_tender = relationship("DraftTender", back_populates="user")
     session = relationship("Session", back_populates="user")
