@@ -42,7 +42,7 @@ from .draft_tender_object import DraftTenderObjectType
 from .draft_tender_service import DraftTenderServiceType
 from .logs import Logs
 from .notifications import Notification
-from .organiztion import Organization
+from .organization import Organization
 from .profile import (
     ContractorCV,
     ContractorLocation,

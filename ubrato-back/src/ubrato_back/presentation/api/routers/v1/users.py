@@ -64,7 +64,7 @@ async def user_verification_history(
 
 @router.get(
     "/me",
-    response_model=schema_models.UserMe,
+    response_model=UserMeWithOrg,
     responses={
         status.HTTP_400_BAD_REQUEST: {"model": ExceptionResponse},
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ExceptionResponse},
