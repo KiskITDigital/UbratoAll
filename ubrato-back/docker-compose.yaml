@@ -103,15 +103,15 @@ services:
     container_name: ubrato-back-nats
     hostname: ubrato-back-nats
     command:
-      - "--name=service-nats"
+      - "--name=ubrato-back-nats"
       - "--http_port=8222"
       - "--js"
       - "--sd=/data"
     restart: unless-stopped
     ports:
-      - "4222:4222"
-      - "6222:6222"
-      - "8222:8222"
+      - "4222:4222"  # NATS client port
+      - "6222:6222"  # NATS cluster port
+      - "8222:8222"  # NATS monitoring port
     networks:
       - ubrato-back-nats-network
     volumes:
