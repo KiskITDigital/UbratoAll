@@ -5,7 +5,6 @@ import "git.ubrato.ru/ubrato/dispatch-service/internal/interfaces/emailtemplater
 
 type SendEmailConfirmation struct {
 	RecipientEmail string
-	RecipientName  string
 	Salt           string
 }
 
