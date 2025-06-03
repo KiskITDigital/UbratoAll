@@ -14,4 +14,4 @@ class Organization:
     tax_code: int
     address: str
     registration_date: datetime
-    director: str
+    director: str | None

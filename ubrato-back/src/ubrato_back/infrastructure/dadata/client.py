@@ -34,7 +34,7 @@ class DadataClient:
                 tax_code=int(org["data"]["address"]["data"]["tax_office"]),
                 address=org["data"]["address"]["unrestricted_value"],
                 registration_date=datetime.fromtimestamp(org["data"]["state"]["registration_date"] // 1000),
-                director=org["data"]["management"]["name"],
+                director=org["data"]["management"]["name"] if org["data"]["management"] is not None else None,
             ) for org in result
         ]
         return organizations

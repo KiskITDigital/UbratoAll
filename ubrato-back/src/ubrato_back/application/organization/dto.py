@@ -5,4 +5,4 @@ from dataclasses import dataclass
 class ExternalOrganizationInfo:
     inn: str
     name: str
-    director: str
+    director: str | None
