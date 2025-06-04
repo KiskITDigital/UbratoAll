@@ -28,6 +28,7 @@ from ubrato_back.presentation.api.routers.v1 import (
     questionnaire,
     role,
     suggest,
+    survey,
     tender,
     users,
     verification,
@@ -87,6 +88,7 @@ app.include_router(users.router)
 app.include_router(health.router)
 app.include_router(role.router)
 app.include_router(manager.router)
+app.include_router(survey.router)
 app.include_router(tender.router)
 app.include_router(suggest.router)
 app.include_router(questionnaire.router)

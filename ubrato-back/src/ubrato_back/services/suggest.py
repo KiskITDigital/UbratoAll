@@ -23,4 +23,6 @@ class SuggestService:
 
     async def search_company(self, query: str) -> list[ExternalOrganizationInfo]:
         organizations = await self._dadata_client.get_organizations_by_inn(inn=query)
-        return [ExternalOrganizationInfo(inn=org.inn, name=org.short_name, director=org.director) for org in organizations]
+        return [
+            ExternalOrganizationInfo(inn=org.inn, name=org.short_name, director=org.director) for org in organizations
+        ]

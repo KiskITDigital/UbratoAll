@@ -30,3 +30,4 @@ from ubrato_back.infrastructure.postgres.models.tender_service import (  # noqa:
     TenderServiceType,
 )
 from ubrato_back.infrastructure.postgres.models.user import User  # noqa: F401
+from ubrato_back.infrastructure.postgres.models.survey import Survey  # noqa: F401
