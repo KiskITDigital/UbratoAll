@@ -30,7 +30,13 @@ async def search_company(
     query: str,
     suggest_service: SuggestService = Depends(),
 ) -> list[ExternalOrganizationInfo]:
-    return await suggest_service.search_company(query=query)
+    try:
+        return await suggest_service.search_company(query=query)
+    except ValueError as err:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=err.args[0],
+        )
 
 
 @router.get("/check-inn")
