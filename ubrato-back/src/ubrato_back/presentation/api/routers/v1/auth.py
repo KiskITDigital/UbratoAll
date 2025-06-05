@@ -213,8 +213,18 @@ async def confirm_email(
     token: str,
     user_service: UserService = Depends(),
     jwt_service: JWTService = Depends(),
+    notice_service: NoticeService = Depends(),
 ) -> SuccessResponse:
     access_token = jwt_service.decode_auth_jwt(token=token)
 
     await user_service.confirm_email(user_id=access_token.id)
+
+    await notice_service.add_notice(
+        user_id=access_token.id,
+        header="Пройдите верификацию",
+        msg="Вы успешно зарегистрировались. Пройдите верификацию компании",
+        href="https://ubrato.ru/profile/documents",
+        href_text="Пройти верификацию",
+        href_color=1,
+    )
     return SuccessResponse()
