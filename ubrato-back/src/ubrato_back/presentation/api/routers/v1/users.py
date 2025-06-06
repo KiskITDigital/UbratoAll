@@ -6,7 +6,7 @@ import pyotp
 from ubrato_back.application.identity.interface.identity_provider import IdentityProvider
 from ubrato_back.application.user.dto import UserMeWithOrg
 from ubrato_back.config import get_config
-from ubrato_back.infrastructure.broker.nats import NatsClient
+from ubrato_back.infrastructure.broker.nats import NatsClient, get_nats_connection
 from ubrato_back.infrastructure.broker.topic import EMAIL_DELETE_CONFIRMATION_TOPIC
 from ubrato_back.infrastructure.crypto.salt import generate_user_salt
 from ubrato_back.infrastructure.postgres.exceptions import RepositoryException
@@ -312,7 +312,7 @@ async def get_user_by_email(
 async def delete_user_account(
     identity_provider: Annotated[IdentityProvider, Depends(get_idp)],
     notice_service: Annotated[NoticeService, Depends()],
-    nats_client: Annotated[NatsClient, Depends()],
+    nats_client: Annotated[NatsClient, Depends(get_nats_connection)],
     user_repository: Annotated[UserRepository, Depends()],
 ) -> None:
     identity = await identity_provider.get_identity()
