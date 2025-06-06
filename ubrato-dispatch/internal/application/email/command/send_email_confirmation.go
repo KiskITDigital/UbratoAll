@@ -1,7 +1,9 @@
 package command
 
-import "git.ubrato.ru/ubrato/dispatch-service/internal/interfaces/email"
-import "git.ubrato.ru/ubrato/dispatch-service/internal/interfaces/emailtemplater"
+import (
+	"git.ubrato.ru/ubrato/dispatch-service/internal/interfaces/email"
+	"git.ubrato.ru/ubrato/dispatch-service/internal/interfaces/emailtemplater"
+)
 
 type SendEmailConfirmation struct {
 	RecipientEmail string
@@ -21,7 +23,7 @@ func NewSendEmailConfirmationHandler(
 }
 
 func (h *SendEmailConfirmationHandler) Handle(command SendEmailConfirmation) error {
-	subject, body, err := h.emailTemplater.GetConfirmationTemplate(emailtemplater.ConfirmationData{
+	subject, body, err := h.emailTemplater.GetEmailConfirmationTemplate(emailtemplater.EmailConfirmationData{
 		Salt:  command.Salt,
 		Email: command.RecipientEmail,
 	})

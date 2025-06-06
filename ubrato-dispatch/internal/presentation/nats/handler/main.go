@@ -12,6 +12,8 @@ func (c *Collection) MainHandler(msg *broker.Message) (err error) {
 		err = c.resetPassHandler(msg)
 	case broker.ConfirmEmailTopic:
 		err = c.emailConfirmHandler(msg)
+	case broker.EmailDeleteConfirmationTopic:
+		err = c.emailDeleteConfirmationHandler(msg)
 	default:
 		err = errors.New("topic not found")
 	}

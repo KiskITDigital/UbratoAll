@@ -32,7 +32,7 @@ func (t *templater) GetRecoveryCodeTemplate(data emailtemplater.RecoveryCodeData
 	return subject, body.String(), nil
 }
 
-func (t *templater) GetConfirmationTemplate(data emailtemplater.ConfirmationData) (string, string, error) {
+func (t *templater) GetEmailConfirmationTemplate(data emailtemplater.EmailConfirmationData) (string, string, error) {
 	template, err := template.ParseFiles(path.Join(t.rootDir, "emailConfirm.templ"))
 	if err != nil {
 		return "", "", err
@@ -41,5 +41,19 @@ func (t *templater) GetConfirmationTemplate(data emailtemplater.ConfirmationData
 	template.Execute(body, data)
 
 	subject := "Подтвеждение почты"
+	return subject, body.String(), nil
+}
+
+func (t *templater) GetDeleteAccountConfirmationTemplate(
+	data emailtemplater.DeleteAccountConfirmationData,
+) (string, string, error) {
+	template, err := template.ParseFiles(path.Join(t.rootDir, "deleteAccountConfirm.templ"))
+	if err != nil {
+		return "", "", err
+	}
+	body := new(strings.Builder)
+	template.Execute(body, data)
+
+	subject := "Удаление учетной записи на Ubrato"
 	return subject, body.String(), nil
 }

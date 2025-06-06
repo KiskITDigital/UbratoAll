@@ -56,7 +56,32 @@ func SendEmailConfirmation() {
 	}
 }
 
+func SendEmailDeleteAccountConfirmation() {
+	config, err := config.Load()
+	if err != nil {
+		panic(err)
+	}
+	emailTemplater := emailtemplater.New(config.EmailTemplater)
+	emailClient, err := email.NewClient(config.Email)
+	if err != nil {
+		panic(err)
+	}
+
+	handler := command.NewSendEmailDeleteAccountConfirmationHandler(emailTemplater, emailClient)
+	err = handler.Handle(command.SendEmailDeleteAccountConfirmation{
+		RecipientEmail: "SamWardenSad@gmail.com",
+		RecipientName: "Sam",
+		Salt:           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InVzcl81OTY5N2M0Yy0yYWEzLTRlM2QtYjRhYy0yYWY1YTBlYmQ2YzQiLCJleHAiOjE3NDg4MDM0NjZ9.N49v9jsIncl7IUb64iKKpOTB5OdVJ7EE9ZF66xMo-Pg",
+	})
+	if err != nil {
+		fmt.Printf("Failed to send email: %v\n", err)
+	} else {
+		fmt.Println("Email sent successfully!")
+	}
+}
+
 func main() {
 	// SendTestEmail()
-	SendEmailConfirmation()
+	// SendEmailConfirmation()
+	SendEmailDeleteAccountConfirmation()
 }

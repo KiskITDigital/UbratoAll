@@ -6,12 +6,19 @@ type RecoveryCodeData struct {
 	Salt  string
 }
 
-type ConfirmationData struct {
+type EmailConfirmationData struct {
 	Email string
+	Salt  string
+}
+
+type DeleteAccountConfirmationData struct {
+	Email string
+	Name  string
 	Salt  string
 }
 
 type Templater interface {
 	GetRecoveryCodeTemplate(data RecoveryCodeData) (string, string, error)
-	GetConfirmationTemplate(data ConfirmationData) (string, string, error)
+	GetEmailConfirmationTemplate(data EmailConfirmationData) (string, string, error)
+	GetDeleteAccountConfirmationTemplate(data DeleteAccountConfirmationData) (string, string, error)
 }
