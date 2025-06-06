@@ -48,8 +48,19 @@ router = APIRouter(
 async def user_requires_verification(
     verf_service: VerificationService = Depends(),
     user: JWTUser = Depends(get_user),
+    notice_service: NoticeService = Depends(),
 ) -> None:
-    await verf_service.create_verification_requests(user_id=user.id)
+    verification_request_id = await verf_service.create_verification_requests(user_id=user.id)
+    verification_request = await verf_service.get_verf_by_id(verification_request_id)
+    created_at = verification_request.created_at.strftime("%Y-%m-%d %H:%M:%S")
+    await notice_service.add_notice(
+        user_id=user.id,
+        header="Верификация",
+        msg=f"{created_at} Документы успешно отправлены. Дождитесь проверки",
+        href=None,
+        href_text=None,
+        href_color=None,
+    )
 
 
 @router.get(

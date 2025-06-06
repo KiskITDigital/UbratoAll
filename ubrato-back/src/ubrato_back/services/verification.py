@@ -3,6 +3,7 @@ import uuid
 from fastapi import Depends
 
 from ubrato_back.infrastructure.postgres.models import Document
+from ubrato_back.infrastructure.postgres.models.verification_requests import VerificationRequest
 from ubrato_back.infrastructure.postgres.repos import VerificationRepository
 from ubrato_back.schemas import schema_models
 from ubrato_back.schemas.add_document import AddDocumentResponse
@@ -44,8 +45,11 @@ class VerificationService:
     async def delete_doc_by_id(self, doc_id: str) -> None:
         return await self.verf_repository.delete_doc_by_id(doc_id=doc_id)
 
-    async def create_verification_requests(self, user_id: str) -> None:
-        await self.verf_repository.create_verification_requests(user_id=user_id)
+    async def create_verification_requests(self, user_id: str) -> str:
+        return await self.verf_repository.create_verification_requests(user_id=user_id)
 
     async def get_verification_history(self, user_id: str) -> list[schema_models.VerificationInfo]:
         return await self.verf_repository.get_verification_history(user_id=user_id)
+
+    async def get_verf_by_id(self, verf_id: str) -> VerificationRequest:
+        return await self.verf_repository.get_verf_by_id(verf_id=verf_id)

@@ -75,14 +75,12 @@ class VerificationRepository:
         await self.db.delete(doc)
         await self.db.commit()
 
-    async def create_verification_requests(self, user_id: str) -> None:
-        self.db.add(
-            VerificationRequest(
-                id=str(uuid.uuid4()),
-                user_id=user_id,
-            )
-        )
+    async def create_verification_requests(self, user_id: str) -> str:
+        verification_request_id = str(uuid.uuid4())
+        verification_request = VerificationRequest(id=verification_request_id, user_id=user_id)
+        self.db.add(verification_request)
         await self.db.commit()
+        return verification_request_id
 
     async def response_verification_requests(self, verf_id: str, is_verified: bool, msg: str | None) -> None:
         query = await self.db.execute(select(VerificationRequest).where(VerificationRequest.id == verf_id))
