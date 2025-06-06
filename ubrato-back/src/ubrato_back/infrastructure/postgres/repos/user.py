@@ -84,18 +84,16 @@ class UserRepository:
         return users
 
     async def get_by_id(self, user_id: str) -> schema_models.User:
-        query = await self.db.execute(select(User).where(User.id == user_id, User.deleted_at.is_(None)))
+        user: User | None = await self.db.scalar(select(User).where(User.id == user_id, User.deleted_at.is_(None)))
 
-        users = query.scalar()
-
-        if users is None:
+        if user is None:
             raise RepositoryException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=get_config().localization.config["errors"]["userid_not_found"].format(user_id),
                 sql_msg="",
             )
 
-        return schema_models.User(**users.__dict__)
+        return schema_models.User(**user.__dict__)
 
     async def update_avatar(self, user_id: str, avatar: str) -> None:
         query = await self.db.execute(select(User).where(User.id == user_id))

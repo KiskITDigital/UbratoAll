@@ -8,6 +8,7 @@ from fastapi import Depends, status
 from ubrato_back.config import get_config
 from ubrato_back.infrastructure.broker.nats import NatsClient, get_nats_connection
 from ubrato_back.infrastructure.broker.topic import EMAIL_CONFIRMATION_TOPIC, EMAIL_RESET_PASS_TOPIC
+from ubrato_back.infrastructure.crypto.salt import generate_user_salt
 from ubrato_back.infrastructure.postgres.models import Organization, User
 from ubrato_back.infrastructure.postgres.repos import TenderRepository, UserRepository
 from ubrato_back.infrastructure.typesense import ContractorIndex
@@ -103,11 +104,7 @@ class UserService:
     async def ask_reset_pass(self, email: str) -> None:
         user = await self.get_by_email(email=email)
 
-        totp = pyotp.TOTP(user.totp_salt, interval=1800)
-
-        salt = md5()
-        salt.update(totp.now().encode())
-
+        salt = generate_user_salt(totp_salt=user.totp_salt)
         payload = PasswordRecovery(email=user.email, salt=salt.hexdigest(), name=user.first_name)
 
         await self.nats_client.pub(EMAIL_RESET_PASS_TOPIC, payload=payload.SerializeToString())

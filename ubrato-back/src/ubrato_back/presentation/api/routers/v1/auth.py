@@ -37,11 +37,11 @@ router = APIRouter(
 async def signup_user(
     response: Response,
     user: SignUpRequest,
-    user_service: UserService = Depends(),
-    org_service: OrganizationService = Depends(),
-    jwt_service: JWTService = Depends(),
-    session_service: SessionService = Depends(),
-    notice_service: NoticeService = Depends(),
+    user_service: Annotated[UserService, Depends()],
+    org_service: Annotated[OrganizationService, Depends()],
+    jwt_service: Annotated[JWTService, Depends()],
+    session_service: Annotated[SessionService, Depends()],
+    notice_service: Annotated[NoticeService, Depends()],
 ) -> SignUpResponse:
     org = await org_service.get_organization_from_api(inn=user.inn)
 
@@ -94,10 +94,10 @@ async def signup_user(
 async def signin_user(
     response: Response,
     data: SignInRequest,
-    user_service: UserService = Depends(),
-    org_service: OrganizationService = Depends(),
-    jwt_service: JWTService = Depends(),
-    session_service: SessionService = Depends(),
+    user_service: Annotated[UserService, Depends()],
+    org_service: Annotated[OrganizationService, Depends()],
+    jwt_service: Annotated[JWTService, Depends()],
+    session_service: Annotated[SessionService, Depends()],
 ) -> SignInResponse:
     user = await user_service.get_by_email(data.email)
 
@@ -133,9 +133,9 @@ async def signin_user(
 )
 async def refresh_session(
     session_id: Annotated[str | None, Cookie()],
-    org_service: OrganizationService = Depends(),
-    jwt_service: JWTService = Depends(),
-    session_service: SessionService = Depends(),
+    org_service: Annotated[OrganizationService, Depends()],
+    jwt_service: Annotated[JWTService, Depends()],
+    session_service: Annotated[SessionService, Depends()],
 ) -> SignInResponse:
     if session_id is None:
         raise ServiceException(
@@ -158,7 +158,7 @@ async def refresh_session(
 )
 async def ask_reset_password(
     email: str,
-    user_service: UserService = Depends(),
+    user_service: Annotated[UserService, Depends()],
 ) -> SuccessResponse:
     await user_service.ask_reset_pass(email=email)
     return SuccessResponse()
@@ -174,7 +174,7 @@ async def ask_reset_password(
 )
 async def reset_password(
     data: ChangePasswordRequest,
-    user_service: UserService = Depends(),
+    user_service: Annotated[UserService, Depends()],
 ) -> SuccessResponse:
     await user_service.reset_password(email=data.email, password=data.password, code=data.code)
     return SuccessResponse()
@@ -190,9 +190,9 @@ async def reset_password(
     dependencies=[Depends(authorized)],
 )
 async def ask_email_confirmation(
-    user_service: UserService = Depends(),
-    jwt_service: JWTService = Depends(),
-    user: JWTUser = Depends(get_user),
+    user_service: Annotated[UserService, Depends()],
+    jwt_service: Annotated[JWTService, Depends()],
+    user: Annotated[JWTUser, Depends(get_user)],
 ) -> SuccessResponse:
     access_token = jwt_service.generate_auth_jwt(user_id=user.id)
     user_email = (await user_service.get_by_id(id=user.id)).email
@@ -211,9 +211,9 @@ async def ask_email_confirmation(
 )
 async def confirm_email(
     token: str,
-    user_service: UserService = Depends(),
-    jwt_service: JWTService = Depends(),
-    notice_service: NoticeService = Depends(),
+    user_service: Annotated[UserService, Depends()],
+    jwt_service: Annotated[JWTService, Depends()],
+    notice_service: Annotated[NoticeService, Depends()],
 ) -> SuccessResponse:
     access_token = jwt_service.decode_auth_jwt(token=token)
 

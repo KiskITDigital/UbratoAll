@@ -1,15 +1,23 @@
+from hashlib import md5
+from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
+import pyotp
 
 from ubrato_back.application.identity.interface.identity_provider import IdentityProvider
 from ubrato_back.application.user.dto import UserMeWithOrg
 from ubrato_back.config import get_config
+from ubrato_back.infrastructure.broker.nats import NatsClient
+from ubrato_back.infrastructure.broker.topic import EMAIL_DELETE_CONFIRMATION_TOPIC
+from ubrato_back.infrastructure.crypto.salt import generate_user_salt
 from ubrato_back.infrastructure.postgres.exceptions import RepositoryException
 from ubrato_back.infrastructure.postgres.readers.user import UserReader
+from ubrato_back.infrastructure.postgres.repos.user import UserRepository
 from ubrato_back.presentation.api.routers.v1.dependencies import authorized, get_idp, get_user
 from ubrato_back.schemas import schema_models
 from ubrato_back.schemas.exception import ExceptionResponse
 from ubrato_back.schemas.jwt_user import JWTUser
 from ubrato_back.schemas.offer_tender import OfferTenderRequest
+from ubrato_back.schemas.pb.models.v1.delete_account_confirmation_pb2 import DeleteAccountConfirmation
 from ubrato_back.schemas.success import SuccessResponse
 from ubrato_back.schemas.update_profile import UpdateUserInfoRequest, UpdAvatarRequest
 from ubrato_back.services import (
@@ -20,6 +28,7 @@ from ubrato_back.services import (
     UserService,
     VerificationService,
 )
+from ubrato_back.services.jwt import JWTService
 
 router = APIRouter(
     prefix="/v1/users",
@@ -301,7 +310,36 @@ async def get_user_by_email(
 
 @router.post("/me/delete")
 async def delete_user_account(
-    user: JWTUser = Depends(get_user),
+    identity_provider: Annotated[IdentityProvider, Depends(get_idp)],
+    notice_service: Annotated[NoticeService, Depends()],
+    nats_client: Annotated[NatsClient, Depends()],
+    user_repository: Annotated[UserRepository, Depends()],
+) -> None:
+    identity = await identity_provider.get_identity()
+    user = await user_repository.get_by_id(user_id=identity.id)
+    salt = generate_user_salt(user.totp_salt)
+    payload = DeleteAccountConfirmation(email=user.email,  salt=salt.hexdigest(), name=user.first_name)
+
+    await nats_client.pub(EMAIL_DELETE_CONFIRMATION_TOPIC, payload=payload.SerializeToString())
+    await notice_service.add_notice(
+        user_id=user.id,
+        header="Удаление аккаунта",
+        msg=(
+            "Вы инициировали процедуру удаления учетной записи на Ubrato.\n"
+            "Чтобы удалить учетную запись, пожалуйста, подтвердите свое решение по почте"
+        ),
+        href=None,
+        href_text=None,
+        href_color=None,
+    )
+
+
+@router.post("/me/confirm-delete")
+async def confirm_user_account_deletion(
+    token: str,
+    jwt_service: Annotated[JWTService, Depends()],
     user_service: UserService = Depends(),
 ) -> None:
-    await user_service.delete_user(user.id)
+    access_token = jwt_service.decode_auth_jwt(token=token)
+
+    await user_service.delete_user(access_token.id)
