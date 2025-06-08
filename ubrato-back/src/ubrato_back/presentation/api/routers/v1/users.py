@@ -1,3 +1,4 @@
+import datetime
 from hashlib import md5
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -52,7 +53,8 @@ async def user_requires_verification(
 ) -> None:
     verification_request_id = await verf_service.create_verification_requests(user_id=user.id)
     verification_request = await verf_service.get_verf_by_id(verification_request_id)
-    created_at = verification_request.created_at.strftime("%Y-%m-%d %H:%M:%S")
+    msk_tz = datetime.timezone(datetime.timedelta(hours=3))
+    created_at = verification_request.created_at.astimezone(msk_tz).strftime("%Y-%m-%d %H:%M:%S")
     await notice_service.add_notice(
         user_id=user.id,
         header="Верификация",
