@@ -1,5 +1,4 @@
 import datetime
-import hashlib
 import uuid
 from typing import Any
 
@@ -46,9 +45,8 @@ class OrganizationService:
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail="INN NOT FOUND",
             )
-        hash_id = hashlib.md5(inn.encode())
-        org_id = "org_" + hash_id.hexdigest()
 
+        org_id = str(uuid.uuid4())
         org = Organization(
             id=org_id,
             inn=inn,
