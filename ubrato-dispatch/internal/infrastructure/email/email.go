@@ -131,7 +131,7 @@ func (c *client) SendMail(auth smtp.Auth, from string, emailReceivers []string, 
 }
 
 func buildHeaders(from mail.Address, to []string, subject string) map[string]string {
-	subject = mime.BEncoding.Encode("UTF-8", "Подтверждение почты")
+	subject = mime.BEncoding.Encode("UTF-8", subject)
 
 	headers := make(map[string]string)
 	headers["From"] = from.String()
