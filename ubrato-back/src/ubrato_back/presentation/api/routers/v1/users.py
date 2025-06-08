@@ -1,35 +1,36 @@
 import datetime
-from hashlib import md5
 from typing import Annotated
-from fastapi import APIRouter, Depends, HTTPException, status
-import pyotp
 
-from ubrato_back.application.identity.interface.identity_provider import IdentityProvider
+from fastapi import APIRouter, Depends, HTTPException, status
+
+from ubrato_back.application.identity.interface.identity_provider import \
+    IdentityProvider
 from ubrato_back.application.user.dto import UserMeWithOrg
 from ubrato_back.config import get_config
-from ubrato_back.infrastructure.broker.nats import NatsClient, get_nats_connection
-from ubrato_back.infrastructure.broker.topic import EMAIL_DELETE_CONFIRMATION_TOPIC
+from ubrato_back.infrastructure.broker.nats import (NatsClient,
+                                                    get_nats_connection)
+from ubrato_back.infrastructure.broker.topic import \
+    EMAIL_DELETE_CONFIRMATION_TOPIC
 from ubrato_back.infrastructure.crypto.salt import generate_user_salt
 from ubrato_back.infrastructure.postgres.exceptions import RepositoryException
 from ubrato_back.infrastructure.postgres.readers.user import UserReader
 from ubrato_back.infrastructure.postgres.repos.user import UserRepository
-from ubrato_back.presentation.api.routers.v1.dependencies import authorized, get_idp, get_user
+from ubrato_back.presentation.api.routers.v1.dependencies import (authorized,
+                                                                  get_idp,
+                                                                  get_user)
 from ubrato_back.schemas import schema_models
+from ubrato_back.schemas.delete_account import DeleteAccountRequest
 from ubrato_back.schemas.exception import ExceptionResponse
 from ubrato_back.schemas.jwt_user import JWTUser
 from ubrato_back.schemas.offer_tender import OfferTenderRequest
-from ubrato_back.schemas.pb.models.v1.delete_account_confirmation_pb2 import DeleteAccountConfirmation
+from ubrato_back.schemas.pb.models.v1.delete_account_confirmation_pb2 import \
+    DeleteAccountConfirmation
 from ubrato_back.schemas.success import SuccessResponse
-from ubrato_back.schemas.update_profile import UpdateUserInfoRequest, UpdAvatarRequest
-from ubrato_back.services import (
-    NoticeService,
-    OrganizationService,
-    QuestionnaireService,
-    TenderService,
-    UserService,
-    VerificationService,
-)
-from ubrato_back.services.jwt import JWTService
+from ubrato_back.schemas.update_profile import (UpdateUserInfoRequest,
+                                                UpdAvatarRequest)
+from ubrato_back.services import (NoticeService, OrganizationService,
+                                  QuestionnaireService, TenderService,
+                                  UserService, VerificationService)
 
 router = APIRouter(
     prefix="/v1/users",
@@ -349,10 +350,16 @@ async def delete_user_account(
 
 @router.post("/me/confirm-delete")
 async def confirm_user_account_deletion(
-    token: str,
-    jwt_service: Annotated[JWTService, Depends()],
-    user_service: UserService = Depends(),
+    data: DeleteAccountRequest,
+    user_service: Annotated[UserService, Depends()],
+    user_repo: Annotated[UserRepository, Depends()],
 ) -> None:
-    access_token = jwt_service.decode_auth_jwt(token=token)
+    user = await user_repo.get_by_email(data.email)
+    salt = generate_user_salt(user.totp_salt)
+    if data.code != salt.hexdigest():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=get_config().localization.config["errors"]["expired_delete_account_code"],
+        )
 
-    await user_service.delete_user(access_token.id)
+    await user_service.delete_user(user.id)

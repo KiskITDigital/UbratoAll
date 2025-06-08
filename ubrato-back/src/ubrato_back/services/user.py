@@ -112,11 +112,7 @@ class UserService:
     async def reset_password(self, email: str, password: str, code: str) -> None:
         user = await self.get_by_email(email=email)
 
-        totp = pyotp.TOTP(user.totp_salt, interval=1800)
-
-        salt = md5()
-        salt.update(totp.now().encode())
-
+        salt = generate_user_salt(user.totp_salt)
         if salt.hexdigest() != code:
             raise ServiceException(
                 status_code=status.HTTP_400_BAD_REQUEST,
